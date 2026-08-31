@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN" data-color-theme="classic" data-theme="light" data-wb-style="rich">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI工作台UX规范卡片模板</title>
+  <!-- 复制到 cards/<card-name>/ 后使用此相对路径。 -->
+  <link rel="stylesheet" href="../../components.css">
+  <link rel="stylesheet" href="./card.css">
+</head>
+<body>
+  <main class="wb-card-composition" data-wb-layout="single" data-wb-editing="false" data-wb-grid-key="template-main" data-wb-edit-scope="template" data-wb-empty="false" style="max-width: 1120px; margin: 0 auto; padding: 24px;">
+    <!-- For a two-row analysis layout with a shorter second row, wrap row items in .wb-compact-tail-grid. -->
+    <!-- For a bordered header that starts at the card edge, use .wb-card.wb-flush-card > .wb-flush-head + .wb-flush-body. -->
+    <!-- Keep grid/card keys stable; persist data-wb-card-grid when a card moves within the same edit scope. -->
+    <!-- Wrap each chart in .wb-chart-frame; add .wb-chart-svg to SVG charts and never use preserveAspectRatio="none" when they contain text or points. -->
+    <!-- Build page-header controls in one non-wrapping .wb-page-control-group. Use .wb-page-period and the shared .wb-select.wb-page-filter composite at the shared 32px height; keep the native select as the value/change source and include select-interactions.js. -->
+    <!-- Use .wb-workspace-tab-bar > .wb-workspace-tab-list for top-level workbench tabs; the tinted list Surface must shrink to its tab content while a trailing tool stays independently aligned. -->
+    <!-- Use .wb-header > .wb-title-group for page headers: keep h1 above p in one content column; reserve the two-column icon layout for card headings. -->
+    <!-- Use .wb-quick-grid/.wb-quick-card for 64px quick entries, .wb-compact-row-list/.wb-compact-row for 32px analysis rows, and .wb-inline-action-list for a single trailing action. Composite quick entries use .is-composite + .wb-quick-card-main + .wb-hover-action; its visible Surface must stay opaque in both themes. -->
+    <!-- Keep rich as the default style; set data-wb-style="minimal" only through the shared canvas setting. Minimal also flattens title, metric, and quick-entry icons. Mark an intentionally dark feature card with .wb-special-dark-card so its Surface stays dark. Numeric sliders use .wb-range and update --wb-range-progress. -->
+    <!-- Use .wb-subpanel for composite-card modules and .wb-inner-tile for their compact facts; both use solid shared Surfaces and bounded shallow shadows without a second backdrop blur. -->
+    <!-- Mark every sticky table action header/cell with .wb-action-column and use a 32px .wb-primary-action so the opaque action Surface fully covers scrolled business copy. -->
+    <!-- In dense insight views, mark text command buttons with .wb-compact-action for the shared 32px height; group same-header commands in .wb-compact-action-group so they remain horizontal. Do not use it for tabs, filters, toggles, or icon-only controls. -->
+    <!-- Amount metrics use a pictographic wallet/coins/banknote SVG; never use 元, ¥, $, currency codes, or other visible glyphs as icon artwork. Quote-request titles use a document/clipboard icon. -->
+    <!-- Dark mode must use the shared Surface/Table tokens; never mix card, row, hover, or control backgrounds with white or add a top inset highlight. -->
+    <!-- If an adjacent authoritative record already shows the same identity, omit the approved duplicate identity block and render only the remaining facts as .wb-summary-metric-grid.wb-metric-grid > .wb-metric. -->
+    <!-- For a dense operating-baseline summary, use .wb-card.wb-compact-baseline-card with .wb-baseline-head-copy + .wb-baseline-meta above the shared metric grid. -->
+    <!-- Directional relationships use .wb-relation-flow: one upstream .wb-relation-node, a .wb-relation-branch, then .wb-relation-children containing downstream nodes. Add .is-three-way for three branches; visible tier labels may be omitted only when bilingual tier aria-label values remain. -->
+    <!-- Cross-workspace drill-downs use data-wb-route and the shared workspace-routing.js contract. A valid explicit route wins over action-label inference. Use .wb-entity-link for table entity values and do not attach routes to create, edit, process, or maintenance commands. -->
+    <!-- A list entity that promises details must open a real detail surface built only from existing row fields, preserve list state, and provide keyboard focus return. -->
+    <!-- A distributable canvas must run build_standalone_canvas.mjs so shared CSS, card renderers, routing, select, and chart behavior survive an isolated file copy. -->
+    <article class="wb-card" data-wb-card-key="card-template" data-wb-default-grid="template-main" data-wb-card-grid="template-main" aria-labelledby="cardTitle">
+      <header class="wb-card-head">
+        <div class="wb-title-group">
+          <!-- Use a semantic SVG/icon-library icon for the title; never use visible text as icon artwork. -->
+          <span class="wb-icon is-blue" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2v16Zm4-3H6v-5h2v5Zm4 0h-2V7h2v9Zm4 0h-2V9h2v7Zm4 0h-2V5h2v11Z"/></svg>
+          </span>
+          <div>
+            <h2 id="cardTitle" data-i18n="cardTitle">卡片标题</h2>
+            <p data-i18n="cardDescription">一句话说明统计对象、口径或排序规则</p>
+          </div>
+        </div>
+        <span class="wb-title-meta" data-i18n="cardMeta">统计范围：本月</span>
+      </header>
+
+      <section class="wb-summary-metric-grid wb-metric-grid" aria-label="核心指标">
+        <button class="wb-metric is-blue wb-route-target" type="button" data-wb-route="customer-insight">
+          <span class="wb-metric-label">指标一</span>
+          <strong>36</strong>
+          <small>指标口径或变化说明</small>
+        </button>
+        <button class="wb-metric is-cyan" type="button">
+          <span class="wb-metric-label">指标二</span>
+          <strong>13</strong>
+          <small>指标口径或变化说明</small>
+        </button>
+        <button class="wb-metric is-orange" type="button">
+          <span class="wb-metric-label">指标三</span>
+          <strong>3</strong>
+          <small>指标口径或变化说明</small>
+        </button>
+        <button class="wb-metric is-green" type="button">
+          <span class="wb-metric-label">指标四</span>
+          <strong>76%</strong>
+          <small>指标口径或变化说明</small>
+        </button>
+      </section>
+
+      <div class="wb-table-wrap" style="margin-top:16px;">
+        <table class="wb-table" aria-label="跨页签实体链接示例">
+          <tbody><tr><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="opportunity-insight">商机项目名称</button></td><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="customer-insight">客户名称</button></td></tr></tbody>
+        </table>
+      </div>
+
+      <section class="wb-analysis-group" aria-label="组合分析示例" style="margin-top:16px;">
+        <article class="wb-subpanel"><strong>分析模块一</strong><div class="wb-inner-tile" style="margin-top:12px;"><small>模块指标</small><strong class="wb-number" style="display:block;margin-top:6px;">68%</strong></div></article>
+        <article class="wb-subpanel"><strong>分析模块二</strong><div class="wb-inner-tile" style="margin-top:12px;"><small>模块指标</small><strong class="wb-number" style="display:block;margin-top:6px;">72%</strong></div></article>
+        <article class="wb-subpanel"><strong>分析模块三</strong><div class="wb-inner-tile" style="margin-top:12px;"><small>模块指标</small><strong class="wb-number" style="display:block;margin-top:6px;">59%</strong></div></article>
+      </section>
+    </article>
+  </main>
+  <!-- Include this shared behavior when the card contains bar, pie, or donut segments. -->
+  <script src="../../select-interactions.js"></script>
+  <script src="../../chart-interactions.js"></script>
+  <script src="../../workspace-routing.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "FX Workbench UX"
+  short_description: "从素材生成带完整画布配置的多页签工作台 HTML"
+  default_prompt: "使用 $fx-workbench-ux 根据我提供的需求和素材生成可打开的多页签工作台 HTML。"

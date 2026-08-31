@@ -1,0 +1,3 @@
+/* 只写当前卡片无法由 components.css 表达的业务结构。主题、明暗和多语由宿主统一注入。 */
+
+/* 示例：.my-card-specific-layout { display: grid; gap: var(--wb-gap-md); } */

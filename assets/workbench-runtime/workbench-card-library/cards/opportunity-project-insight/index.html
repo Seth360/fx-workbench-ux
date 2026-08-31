@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商机项目经营洞察卡片预览</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../../components.css">
+  <link rel="stylesheet" href="./card.css">
+  <style>body{margin:0;padding:16px;background:var(--wb-bg);font-family:var(--wb-font)}.preview{--canvas-bg:var(--wb-bg);--canvas-accent:var(--wb-accent);--canvas-text:var(--wb-text);--canvas-muted:var(--wb-text-muted);--canvas-line:var(--wb-border);--canvas-gap:16px;--canvas-radius:16px}</style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true"><defs>
+    <symbol id="vg-target" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10h-2a8 8 0 1 1-8-8V2Zm1 4v5h5V9h-3V6h-2Z"/></symbol>
+    <symbol id="vg-gauge" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a9 9 0 0 0-9 9c0 2.7 1.2 5.1 3 6.8l1.4-1.4A7 7 0 1 1 19 12h2a9 9 0 0 0-9-9Zm4.7 4.3-5.5 3.2A2 2 0 1 0 13.5 13l3.2-5.7Z"/></symbol>
+    <symbol id="vg-clipboard-text" viewBox="0 0 24 24"><path fill="currentColor" d="M9 3h6a2 2 0 0 1 2 2h2v16H5V5h2a2 2 0 0 1 2-2Zm0 4h6V5H9v2Zm0 4v2h6v-2H9Zm0 4v2h6v-2H9Z"/></symbol>
+    <symbol id="vg-chart-bar" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20V10h4v10H4Zm6 0V4h4v16h-4Zm6 0v-7h4v7h-4Z"/></symbol>
+    <symbol id="vg-heartbeat" viewBox="0 0 24 24"><path fill="currentColor" d="M3 12h4l2-5 4 10 2-5h6v2h-4.6L13 21 9 11l-.7 3H3v-2Z"/></symbol>
+    <symbol id="vg-wallet" viewBox="0 0 24 24"><path fill="currentColor" d="M20 7H6a1 1 0 0 1 0-2h11a1 1 0 0 0 0-2H6a4 4 0 0 0-4 4v12a4 4 0 0 0 4 4h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm0 14H6a2 2 0 0 1-2-2V8.46A3.97 3.97 0 0 0 6 9h14v3h-4a3 3 0 0 0 0 6h4v3Zm0-5h-4a1 1 0 0 1 0-2h4v2Z"/></symbol>
+    <symbol id="vg-shield-warning" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2 8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5l8-3Zm-1 5v7h2V7h-2Zm0 9v2h2v-2h-2Z"/></symbol>
+    <symbol id="vg-users-three" viewBox="0 0 24 24"><path fill="currentColor" d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm14 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4 21v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2H4Z"/></symbol>
+    <symbol id="vg-article" viewBox="0 0 24 24"><path fill="currentColor" d="M5 3h14v18H5V3Zm3 4v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h6v-2H8Z"/></symbol>
+  </defs></svg>
+  <main class="preview" id="preview"></main>
+  <script src="./card.js"></script>
+  <script>preview.innerHTML=WorkbenchOpportunityInsight.render();WorkbenchOpportunityInsight.mount(preview,{showToast:message=>console.info(message)});</script>
+</body>
+</html>
