@@ -1,53 +1,150 @@
 # FX Workbench UX
 
-`fx-workbench-ux` is a Codex skill for generating static, multi-tab Fxiaoke workbench HTML from prompts, documents, images, existing HTML, and Markdown.
+一键将来源需求转为符合 UI 规范、可直接打开和继续配置的纷享工作台。
 
-The bundled `ai-workbench-ux@1.4.28` runtime preserves the canvas settings experience, including rich/minimal styles, spacing and radius controls, six palettes, dark mode, Chinese/English, editable grid order, save, export, reset, shared workspace routing, and standalone single-file delivery.
+`fx-workbench-ux` 是一个面向 Codex 的工作台生成 Skill。它可以读取文字描述、需求文档、图片、现有 HTML 或多种素材的组合，提取其中的页面结构、业务数据、筛选条件和交互入口，生成符合 `ai-workbench-ux@1.4.28` 规范的静态多页签工作台 HTML。
 
-## Install
+生成结果不是设计稿或静态截图，而是一个可使用、可配置、可保存、可导出，并能独立分发的完整工作台。
 
-Clone the repository into the Codex skills directory:
+## 核心能力
+
+### 一键从来源需求生成工作台
+
+只需提供来源材料并说明期望结果，Skill 会自动完成页面盘点、信息提取、卡片选择、布局组织、主题适配和运行时接入。
+
+支持的来源不限于：
+
+| 来源 | 能力 |
+| --- | --- |
+| 文字描述 | 根据自然语言需求生成工作台、页签、卡片、筛选和操作入口 |
+| 需求文档 | 从 Word、PDF、Markdown、PRD 等文档中提取业务结构、指标、单位、状态和流程 |
+| 图片或界面截图 | 识别信息层级、页面结构和视觉参考，用于重建符合规范的工作台界面 |
+| 现有 HTML | 在保留业务数据、文案和关键交互的前提下进行 UI 美化、结构重组和规范化改造 |
+| 多种素材组合 | 综合文字、文档、图片和 HTML，按同一业务口径生成完整结果 |
+
+Skill 会保留来源中的业务事实，不会为了填满卡片而编造数字、趋势、负责人或 CRM 数据。来源明确但数据缺失时，会使用合适的空状态或范围清晰的占位内容。
+
+### 符合统一 UI 规范
+
+生成页面默认复用随 Skill 内置的工作台画布、设计 Token、公共组件和卡片规范，而不是临时拼装一个通用 Dashboard。
+
+- 使用统一的卡片、指标、列表、表格、图表和筛选组件
+- 保持稳定的信息层级、间距、字体、图标、圆角和交互状态
+- 使用语义化 SVG 图标，不用文字、缩写、数字、标点或 Emoji 代替图标
+- 保留来源中的标题、说明、数值、单位、筛选条件和操作入口
+- 宽表格在自身容器内滚动，不删减业务列，也不产生页面级异常溢出
+- 图表支持容器自适应、指针与键盘 Tooltip、入场动效和 reduced-motion 降级
+
+### 生成后可继续调整画布
+
+每个生成的工作台都保留完整的右侧画布设置面板，可直接调整：
+
+- **主题风格**：丰富、简约
+- **页面间距**：通过滑杆调整工作台内容密度
+- **卡片圆角**：通过滑杆调整卡片圆角大小
+- **六种颜色主题**：经典蓝、云杉绿、珊瑚橙、靛青、石墨红、中性灰
+- **明暗模式**：浅色、深色
+- **语言**：内置中文和 English，并通过统一多语字典支持继续扩展
+- **布局编辑**：打开设置后即可调整已注册区块和卡片的顺序、跨度与归属
+- **配置操作**：保存配置、导出配置、恢复默认
+
+保存操作会把当前画布状态写回 HTML 内嵌配置。重新打开保存后的文件，间距、圆角、主题、语言、明暗模式和布局仍会保持。
+
+### 桌面端与移动端适配
+
+生成结果按实际内容宽度响应，而不是只针对一个桌面截图尺寸设计。
+
+- 宽桌面：`1440x900`
+- 窄桌面：`1024x768`
+- 移动端：`390x844`
+- 设置抽屉打开后，卡片和图表会根据剩余宽度继续适配
+- 移动端页签、筛选组、宽表格和交易进度在各自区域内滚动，避免页面整体横向溢出
+- 中英文切换后继续保持布局、数据含义和交互状态稳定
+
+### 多页签与业务交互
+
+- 根据需求生成准确的顶层工作台页签，不额外保留无关模板页
+- 为每个页签、面板、网格和卡片生成稳定标识
+- 支持页签键盘导航和选中状态保持
+- 支持跨工作区路由、列表与详情切换、实体字段下钻和返回来源页签
+- 保留复合下拉、筛选、搜索、快捷入口、队列、图表、流程阶段和操作按钮等来源能力
+- 同一业务能力复用共享渲染器或数据适配层，避免重复卡片和重复计数
+
+### 可独立分发的单文件 HTML
+
+生成的可分发画布会内联当前共享 Token、组件、卡片样式与渲染器、工作区路由、下拉交互和图表交互。
+
+HTML 即使被复制到没有 `workbench-card-library` 的其他目录，也能继续显示全部页签内容并保留筛选、图表、路由、保存和配置能力，无需部署后端服务。
+
+## 安装
+
+将仓库克隆到 Codex Skills 目录：
 
 ```bash
 git clone https://github.com/Seth360/fx-workbench-ux.git ~/.codex/skills/fx-workbench-ux
 ```
 
-Start a new Codex task after installation, then invoke the skill with `$fx-workbench-ux`.
+安装完成后新建一个 Codex 任务，并确认技能列表中可以看到 `FX Workbench UX`。
 
-To update an existing installation:
+已有安装可以这样更新：
 
 ```bash
 git -C ~/.codex/skills/fx-workbench-ux pull --ff-only
 ```
 
-See [SHARE_GUIDE.md](./SHARE_GUIDE.md) for the Chinese installation and usage guide, and [SKILL.md](./SKILL.md) for the complete generation contract.
+## 快速使用
 
-## Included Runtime
+在请求开头调用 `$fx-workbench-ux`，然后提供来源材料和期望的工作台结构。
 
-- Standalone Fxiaoke workbench canvas
-- Shared tokens and components
-- Opportunity-project and customer-operating insight cards
-- Composite select and chart interactions
-- Cross-workspace routing
-- Standalone canvas build and verification scripts
+```text
+使用 $fx-workbench-ux，根据我提供的需求文档和界面截图生成以下工作台：
 
-## Verify
+1. 公司经营工作台
+2. 我的管理范围工作台
+3. 我的销售业务工作台
 
-Validate the bundled canvas runtime:
+保留来源中的指标、单位、筛选条件、表格字段和操作入口，不要编造缺失数据。
+生成符合工作台 UI 规范的多页签静态 HTML，并适配桌面端、移动端、深色模式和中英文。
+```
+
+也可以直接要求美化已有 HTML：
+
+```text
+使用 $fx-workbench-ux 美化这个 HTML。
+保留现有业务数据、页签、筛选值和交互事件，将页面改造成符合 ai-workbench-ux 规范的工作台，
+并保留间距、圆角、六种颜色主题、深色模式、中英文、保存、导出和移动端适配能力。
+```
+
+## 输出与验收
+
+Skill 会生成可打开的工作台 HTML，并报告页签清单、来源能力覆盖情况、复用的组件、保留的数据与交互，以及验证结果。
+
+验证画布运行时：
 
 ```bash
 node scripts/verify_canvas_runtime.mjs assets/workbench-runtime/fxiaoke-workbench-canvas.html
 ```
 
-Validate isolated single-file portability:
+验证复制到孤立目录后的单文件完整性：
 
 ```bash
 node assets/workbench-runtime/workbench-card-library/scripts/verify_standalone_canvas.mjs \
   assets/workbench-runtime/fxiaoke-workbench-canvas.html
 ```
 
-Validate shared routing:
+验证跨工作区路由：
 
 ```bash
 node assets/workbench-runtime/workbench-card-library/scripts/verify_workspace_routing.mjs
 ```
+
+更完整的安装与使用说明见 [SHARE_GUIDE.md](./SHARE_GUIDE.md)，完整生成契约见 [SKILL.md](./SKILL.md)。
+
+## 内置内容
+
+- 完整纷享工作台画布运行时
+- `ai-workbench-ux@1.4.28` 设计 Token、公共组件和卡片规范
+- 商机项目经营洞察与客户经营洞察卡片
+- 复合下拉与图表交互
+- 跨工作区路由
+- 单文件画布构建与验证脚本
