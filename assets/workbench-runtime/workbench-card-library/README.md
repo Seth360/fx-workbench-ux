@@ -1,7 +1,7 @@
 # AI工作台UX规范
 
 主题 ID：`ai-workbench-ux`  
-版本：`1.4.28`  
+版本：`1.4.30`  
 基准页面：`../fxiaoke-workbench-canvas.html` 的“模板库”与“公司经营”页签。
 
 本目录是工作台新卡片的唯一设计与交付位置。任何人或 AI 工具新增、改造卡片前，必须完整阅读 [CARD_SPEC.md](./CARD_SPEC.md)，复用 [tokens.css](./tokens.css) 和 [components.css](./components.css)，并把最终卡片文件放入 `cards/`。禁止在项目其他目录散落新的卡片实现。
@@ -25,6 +25,8 @@
 相邻权威记录已呈现同一身份时，后续摘要使用 `.wb-summary-metric-grid` 直接承载不重复的指标；上游/下游关系使用 `.wb-relation-flow` 与 `.wb-relation-branch` 纵向连接。关系方向清楚时可移除冗余可见层级标签，但须保留双语 `aria-label`；三分支使用 `.is-three-way` 让横线连接全部三条竖线。成对分析卡在容器足够宽时使用共享 6/12 + 6/12 或 5/12 + 7/12 跨度，只有内容宽度不足时才降为单列。
 
 同一页头的多个紧凑文字命令使用 `.wb-compact-action-group` 横向排列，并为每个按钮增加 `.wb-compact-action`，统一保持 32px 高度。
+
+列表结果分组使用透明无投影的 `.wb-filter-segmented`，不使用页签式玻璃底板和白字反白；表格状态使用内容宽度的 `.wb-status-tag`，负责人使用 `.wb-person-label > .wb-avatar` 保证亮色 SVG 居中。贴边卡必须让 `.wb-flush-head` 与 `.wb-flush-body` 成为卡片直接子项，正文桌面保留 `16px 20px 20px`、手机保留 `16px` 内边距。
 
 经营基本盘、当前阶段等紧凑四指标摘要使用 `.wb-compact-baseline-card`，以共享标题/元信息结构和指标网格减少内边距，不再维护页面私有的大留白摘要样式。
 

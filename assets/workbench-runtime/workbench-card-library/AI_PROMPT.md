@@ -7,7 +7,7 @@
 
 强制执行：
 1. 完整读取 workbench-card-library/CARD_SPEC.md、tokens.css、components.css 和 templates/card-template.html。
-2. 主题固定为 ai-workbench-ux@1.4.28，不自行创造新的视觉风格。
+2. 主题固定为 ai-workbench-ux@1.4.30，不自行创造新的视觉风格。
 3. 保留来源中的全部业务数据结构、数字、单位、标题、说明、筛选条件和交互；不得编造、删列、改名或改变含义。
 4. 优先复用现有类和 SVG 图标。图标容器 34x34px、图标 21x21px；所有图标必须按标题、操作或状态语义选择现有 SVG/统一图标库图标，禁止用中文、英文、字母缩写、数字或标点等可见文字生成或代替图标，禁止 emoji。把元、¥、$、货币代码或其他可见字符转成 SVG path 仍是文字式图标；金额指标必须使用钱包、钱币或钞票等纯图形图标，报价申请使用文档或剪贴板图标。没有完全匹配项时选择语义最接近的库内图标，不得退回文字图标。
 5. 主卡片必须复用弱色画布玻璃配方：当前色系页面底、74% 半透明白 Surface、半透明白边框、22px/140% 背景模糊和当前强调色轻阴影。确需内部模块时使用无背景模糊的 wb-subpanel 与 wb-inner-tile，分别读取共享实底 Surface 和浅层级 Shadow；禁止复用主卡阴影或形成玻璃套玻璃。
@@ -42,6 +42,8 @@
 32. 三个工作台的跨页签入口统一接入 workspace-routing.js：销售线索进入列表页，客户进入客户经营洞察，商机与明确的查看商机/查看洞察动作进入商机项目经营洞察。优先使用 data-wb-route 显式声明目标；列表返回来源工作台；新建、处理、维护、填写等命令不得被路由器拦截。详情型动作必须实际切换到对应详情页签，禁止只显示占位 Toast。列表实体详情只复用当前行已有字段，保留搜索/分页状态，进入详情后聚焦返回按钮，返回后聚焦列表搜索入口。
 33. 合法的显式 `data-wb-route` 必须优先于动作文案推断；表格项目名、客户名、公司名等跨页签实体值使用共享 `.wb-entity-link` 按钮，只让值本身可点击，并保留 hover、focus-visible、active、键盘激活和主题色状态。
 34. 可单独分发的画布 HTML 必须通过共享打包脚本内联 tokens.css、components.css、页面卡片 CSS/渲染器、workspace-routing.js、select-interactions.js 与 chart-interactions.js；复制到没有 workbench-card-library 的目录后，所有页签内容、路由、筛选和图表交互仍须完整，保存生成的 HTML 也必须继续保持单文件完整性。交付前运行 verify_standalone_canvas.mjs。
+35. 编辑态四方向拖拽目标线统一读取不透明主题强调色和共享 edit-guide Token，并完整绘制在目标卡片内部；左右缩放控件同样内收，禁止被 overflow 裁切。卡片 hover/focus 时右上角显示语义垃圾桶隐藏按钮，隐藏键随配置持久化；底部居中只显示一个“已隐藏 + 数量 + 还原全部”胶囊，恢复全部卡片，重置清空隐藏状态。激活分段项 hover 必须保持强调色；紧凑文字按钮统一使用共享 32px 次要/主要样式。
+36. 列表工具栏中的按等级/按状态/按负责人分组使用透明无投影的 wb-filter-segmented，选中与 hover 只使用强调色文字和弱强调 Surface，禁止页签底板、白底 hover 或白字反白。列表状态使用内容宽度、22px 高且双轴居中的 wb-status-tag；负责人使用 wb-person-label + 22px wb-avatar，14px currentColor SVG 必须以亮色前景居中。wb-flush-head 与 wb-flush-body 必须是 wb-flush-card 的直接子项，正文桌面使用 16px 20px 20px、手机使用 16px，禁止包装层导致 0 内边距。
 
 先检查现有组件是否足够，再实现。不要只给建议，直接产出可运行文件。
 ```
