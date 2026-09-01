@@ -6,7 +6,7 @@
   <!-- WB_INLINE_START workbench-card-library/tokens.css -->
 <style>
 /* inlined from workbench-card-library/tokens.css */
-/* ai-workbench-ux@1.4.30: portable canvases embed these shared tokens verbatim. */
+/* ai-workbench-ux@1.4.28: portable canvases embed these shared tokens verbatim. */
 :root {
   color-scheme: light;
   --wb-bg: #eef4fb;
@@ -60,7 +60,6 @@
   --wb-font-number: Inter, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --wb-module-head-min-height: 44px;
   --wb-module-head-padding: 10px 16px;
-  --wb-flush-body-padding: 16px 20px 20px;
   --wb-page-title-copy-gap: 4px;
   --wb-radius-sm: 8px;
   --wb-radius-md: 16px;
@@ -81,23 +80,8 @@
   --wb-edit-grid-gap: var(--wb-gap-md);
   --wb-edit-drag-opacity: 0.46;
   --wb-edit-drop-indicator-size: 3px;
-  --wb-edit-guide-size: 4px;
-  --wb-edit-guide-inset: 2px;
-  --wb-edit-guide-shadow: 0 0 0 2px var(--wb-card-surface), 0 0 0 4px color-mix(in srgb, var(--wb-accent) 24%, transparent);
-  --wb-card-hide-action-size: 32px;
-  --wb-hidden-bar-height: 40px;
   --wb-control-height: 34px;
   --wb-touch-target: 44px;
-  --wb-filter-segmented-height: 32px;
-  --wb-filter-segmented-gap: 4px;
-  --wb-filter-option-surface-strength: 7%;
-  --wb-filter-option-selected-surface-strength: 13%;
-  --wb-filter-option-border-strength: 24%;
-  --wb-status-tag-height: 22px;
-  --wb-status-tag-padding: 0 7px;
-  --wb-avatar-size: 22px;
-  --wb-avatar-icon-size: 14px;
-  --wb-avatar-foreground: #ffffff;
   --wb-page-filter-height: 32px;
   --wb-page-header-control-height: var(--wb-page-filter-height, 32px);
   --wb-workspace-tab-list-max-width: 100%;
@@ -218,7 +202,7 @@
   <!-- WB_INLINE_START workbench-card-library/components.css -->
 <style>
 /* inlined from workbench-card-library/components.css */
-/* ai-workbench-ux@1.4.30: portable canvases embed this file after tokens.css and remove only the import above. */
+/* ai-workbench-ux@1.4.28: portable canvases embed this file after tokens.css and remove only the import above. */
 
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; color: var(--wb-text); background: var(--wb-bg); font-family: var(--wb-font); font-size: 14px; line-height: 1.5; }
@@ -259,7 +243,7 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px s
 }
 .wb-card.wb-flush-card { padding: 0; }
 .wb-flush-card > .wb-flush-head { display: flex; min-height: var(--wb-module-head-min-height); align-items: center; margin: 0; padding: var(--wb-module-head-padding); border-bottom: 1px solid var(--wb-border-soft); }
-.wb-flush-card > .wb-flush-body { padding: var(--wb-flush-body-padding); }
+.wb-flush-card > .wb-flush-body { padding: 14px 16px 16px; }
 .wb-subpanel { min-width: 0; padding: 16px; background: var(--wb-subpanel-surface); border: 1px solid var(--wb-border-soft); border-radius: var(--wb-radius-sm); box-shadow: var(--wb-subpanel-shadow); backdrop-filter: none; -webkit-backdrop-filter: none; }
 .wb-inner-tile { min-width: 0; padding: 12px; background: var(--wb-inner-tile-surface); border: 1px solid var(--wb-border-soft); border-radius: var(--wb-radius-sm); box-shadow: var(--wb-inner-tile-shadow); backdrop-filter: none; -webkit-backdrop-filter: none; }
 .wb-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
@@ -329,61 +313,11 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px s
 .is-orange { --wb-tone: var(--wb-orange); }
 .is-red { --wb-tone: var(--wb-red); }
 .is-purple { --wb-tone: var(--wb-purple); }
-.is-gray { --wb-tone: var(--wb-text-muted); }
 
 .wb-segmented { display: inline-flex; min-height: var(--wb-control-height); padding: 3px; background: var(--wb-control-surface); border: 1px solid var(--wb-border); border-radius: var(--wb-radius-sm); box-shadow: var(--wb-shadow-control); backdrop-filter: blur(18px) saturate(var(--wb-glass-saturation)); -webkit-backdrop-filter: blur(18px) saturate(var(--wb-glass-saturation)); }
 .wb-segmented button { min-height: 28px; padding: 0 12px; color: var(--wb-text-muted); background: transparent; border: 0; border-radius: 5px; font-size: 12px; transition: color var(--wb-motion), background-color var(--wb-motion); }
 .wb-segmented button:hover { color: var(--wb-text); background: var(--wb-surface-hover); }
 .wb-segmented button[aria-selected="true"] { color: #fff; background: var(--wb-accent); }
-.wb-segmented button[aria-selected="true"]:hover { color: #fff; background: var(--wb-accent); }
-.wb-filter-segmented {
-  display: inline-flex;
-  width: max-content;
-  min-width: 0;
-  min-height: var(--wb-filter-segmented-height);
-  align-items: center;
-  gap: var(--wb-filter-segmented-gap);
-  padding: 0;
-  overflow-x: auto;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  scrollbar-width: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-.wb-filter-segmented::-webkit-scrollbar { display: none; }
-.wb-filter-segmented button {
-  min-width: max-content;
-  min-height: var(--wb-filter-segmented-height);
-  padding: 0 10px;
-  color: var(--wb-text-secondary);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--wb-radius-sm);
-  font-size: 11px;
-  font-weight: 650;
-  line-height: 1;
-  white-space: nowrap;
-  transition: color var(--wb-motion), background-color var(--wb-motion), border-color var(--wb-motion);
-}
-.wb-filter-segmented button:hover {
-  color: var(--wb-text);
-  background: color-mix(in srgb, var(--wb-accent) var(--wb-filter-option-surface-strength), var(--wb-surface-strong));
-  border-color: color-mix(in srgb, var(--wb-accent) 14%, transparent);
-}
-.wb-filter-segmented button[aria-selected="true"] {
-  color: color-mix(in srgb, var(--wb-accent) 78%, var(--wb-text));
-  background: color-mix(in srgb, var(--wb-accent) var(--wb-filter-option-selected-surface-strength), var(--wb-surface-strong));
-  border-color: color-mix(in srgb, var(--wb-accent) var(--wb-filter-option-border-strength), var(--wb-border));
-  font-weight: 750;
-}
-.wb-filter-segmented button[aria-selected="true"]:hover {
-  color: color-mix(in srgb, var(--wb-accent) 78%, var(--wb-text));
-  background: color-mix(in srgb, var(--wb-accent) calc(var(--wb-filter-option-selected-surface-strength) + 3%), var(--wb-surface-hover));
-  border-color: color-mix(in srgb, var(--wb-accent) calc(var(--wb-filter-option-border-strength) + 6%), var(--wb-border));
-}
 .wb-page-period,
 .wb-select.wb-page-filter { box-sizing: border-box; height: var(--wb-page-header-control-height, 32px); min-height: var(--wb-page-header-control-height, 32px); flex: 0 0 auto; }
 .wb-page-period > button { box-sizing: border-box; height: calc(var(--wb-page-header-control-height, 32px) - 8px); min-height: 0; white-space: nowrap; }
@@ -528,81 +462,12 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
 .wb-table th.wb-action-column { z-index: 3; background: var(--wb-action-column-head-surface); }
 .wb-primary-action { height: var(--wb-primary-action-height); min-height: var(--wb-primary-action-height); padding: 0 12px; color: #fff; background: var(--wb-accent); border: 1px solid var(--wb-accent); border-radius: var(--wb-radius-sm); font-size: 11px; font-weight: 700; }
 .wb-primary-action:hover { background: color-mix(in srgb, var(--wb-accent) 88%, #000); border-color: color-mix(in srgb, var(--wb-accent) 88%, #000); }
-.wb-compact-action {
-  display: inline-flex;
-  box-sizing: border-box;
-  height: var(--wb-compact-action-height);
-  min-height: var(--wb-compact-action-height);
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 0 12px;
-  color: var(--wb-text-secondary);
-  background: var(--wb-control-surface);
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius-sm);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
-  white-space: nowrap;
-  transition: color var(--wb-motion), background-color var(--wb-motion), border-color var(--wb-motion), box-shadow var(--wb-motion);
-}
-.wb-compact-action:hover { color: var(--wb-text); background: var(--wb-surface-hover); border-color: color-mix(in srgb, var(--wb-accent) 32%, var(--wb-border)); }
-.wb-compact-action:is(.is-primary, .wb-primary-action) { color: #fff; background: var(--wb-accent); border-color: var(--wb-accent); }
-.wb-compact-action:is(.is-primary, .wb-primary-action):hover { color: #fff; background: color-mix(in srgb, var(--wb-accent) 86%, #000); border-color: color-mix(in srgb, var(--wb-accent) 86%, #000); }
-.wb-compact-action:disabled { cursor: not-allowed; opacity: .52; }
+.wb-compact-action { box-sizing: border-box; height: var(--wb-compact-action-height); min-height: var(--wb-compact-action-height); }
 .wb-compact-action-group { display: flex; flex: 0 0 auto; flex-wrap: nowrap; align-items: center; gap: var(--wb-gap-xs); }
 .wb-boundary-note { color: var(--wb-text-muted); background: var(--wb-note-surface); border: 0; border-radius: var(--wb-radius-sm); }
 .wb-semantic-icon { fill: currentColor; }
 .wb-stage { display: inline-flex; min-height: 24px; align-items: center; padding: 0 8px; color: var(--wb-text-secondary); background: var(--wb-surface); border: 1px solid var(--wb-border); border-radius: 999px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 .wb-stage.is-risk { color: color-mix(in srgb, var(--wb-red) 84%, var(--wb-text)); background: color-mix(in srgb, var(--wb-red) 9%, var(--wb-surface)); border-color: color-mix(in srgb, var(--wb-red) 24%, transparent); }
-.wb-status-tag.wb-status-tag {
-  --wb-tone: var(--wb-blue);
-  display: inline-flex;
-  width: max-content;
-  min-width: 0;
-  min-height: var(--wb-status-tag-height);
-  align-items: center;
-  justify-content: center;
-  padding: var(--wb-status-tag-padding);
-  color: color-mix(in srgb, var(--wb-tone) 72%, var(--wb-text));
-  background: color-mix(in srgb, var(--wb-tone) 9%, var(--wb-surface-strong));
-  border: 1px solid color-mix(in srgb, var(--wb-tone) 24%, var(--wb-border));
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-}
-.wb-person-label.wb-person-label { display: inline-flex; width: max-content; min-width: 0; align-items: center; gap: 6px; color: var(--wb-text); line-height: 1.25; }
-.wb-avatar.wb-avatar {
-  display: inline-grid;
-  width: var(--wb-avatar-size);
-  height: var(--wb-avatar-size);
-  flex: 0 0 var(--wb-avatar-size);
-  place-items: center;
-  padding: 0;
-  color: var(--wb-avatar-foreground);
-  background: var(--wb-accent);
-  border: 0;
-  border-radius: 50%;
-  line-height: 0;
-}
-.wb-avatar.wb-avatar svg {
-  display: block;
-  width: var(--wb-avatar-icon-size);
-  height: var(--wb-avatar-icon-size);
-  color: inherit;
-  fill: currentColor;
-  stroke: currentColor;
-}
-.wb-avatar.wb-avatar :is(path, use, circle, rect, line, polyline, polygon) { color: inherit; fill: currentColor; }
-.wb-table .wb-status-tag.wb-status-tag { display: inline-flex; color: color-mix(in srgb, var(--wb-tone) 72%, var(--wb-text)); }
-.wb-table .wb-person-label.wb-person-label { display: inline-flex; color: var(--wb-text); }
-.wb-table .wb-avatar.wb-avatar { display: inline-grid; color: var(--wb-avatar-foreground); }
-.wb-table .wb-avatar.wb-avatar svg,
-.wb-table .wb-avatar.wb-avatar :is(path, use, circle, rect, line, polyline, polygon) { color: inherit; fill: currentColor; }
 .wb-table-foot { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; color: var(--wb-text-muted); font-size: 10px; }
 
 .wb-empty { display: grid; min-height: 220px; align-content: center; justify-items: center; padding: 24px; color: var(--wb-text-muted); text-align: center; }
@@ -632,7 +497,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
 @media (max-width: 900px) { .wb-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .wb-card-composition { grid-template-columns: minmax(0, 1fr); } .wb-card-composition > [data-wb-span="all"] { grid-column: auto; } .wb-analysis-group { grid-template-columns: 1fr; } }
 @media (max-width: 640px) {
   .wb-card { padding: 16px; }
-  .wb-flush-card > .wb-flush-body { padding: 16px; }
   .wb-card-head { align-items: stretch; flex-direction: column; }
   .wb-title-meta { align-self: flex-start; }
   .wb-metric-grid { grid-template-columns: 1fr; }
@@ -1632,7 +1496,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .wb-inner .wb-segmented { gap: 2px; padding: 4px; }
     .wb-inner .wb-segmented button { color: var(--muted); border-radius: 9px; font-weight: 600; transition: color var(--motion-fast) var(--ease-standard), background-color var(--motion-fast) var(--ease-standard); }
     .wb-inner .wb-segmented button:hover { color: var(--fg); background: rgba(255, 255, 255, 0.78); }
-    .wb-inner .wb-segmented button[aria-selected="true"]:hover { color: #fff; background: var(--wb-accent, var(--accent)); }
     .wb-inner .wb-segmented button.active { color: var(--accent-on); background: var(--accent); box-shadow: 0 8px 20px rgba(79, 140, 255, 0.24); }
     .wb-inner .wb-filter-select { padding-right: 34px; font-weight: 600; }
     .wb-inner .wb-summary,
@@ -2851,7 +2714,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .canvas-root.is-dark .workspace-tab.active { color: var(--canvas-text); background: var(--canvas-surface-strong); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28); }
     .canvas-root.is-dark .wb-inner .wb-segmented { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16); }
     .canvas-root.is-dark .wb-inner .wb-segmented button:hover { color: var(--fg); background: var(--canvas-surface-strong); }
-    .canvas-root.is-dark .wb-inner .wb-segmented button[aria-selected="true"]:hover { color: #fff; background: var(--wb-accent, var(--canvas-accent)); }
     .canvas-root.is-dark .wb-inner .wb-inline-composer { border-color: var(--border); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2); }
     .canvas-root.is-dark .wb-inner .wb-inline-composer:focus-within { border-color: color-mix(in srgb, var(--accent) 58%, var(--border)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent), 0 14px 32px rgba(0, 0, 0, 0.24); }
     .canvas-root.is-dark .wb-inner .wb-metric { color: var(--fg); background: color-mix(in srgb, var(--vg-icon-color) 12%, var(--surface-strong)); border: 1px solid color-mix(in srgb, var(--vg-icon-color) 28%, var(--border)) !important; }
@@ -3042,9 +2904,9 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       cursor: ew-resize;
       transition: opacity 140ms ease;
     }
-    .card-resize-handle::before { position: absolute; top: 50%; left: 5px; width: 4px; height: 44px; content: ""; background: var(--canvas-accent); border: 2px solid var(--canvas-panel); border-radius: 999px; box-shadow: 0 2px 8px color-mix(in srgb, var(--canvas-accent) 36%, transparent); transform: translateY(-50%); }
-    .card-resize-handle.is-left { left: 0; }
-    .card-resize-handle.is-right { right: 0; }
+    .card-resize-handle::before { position: absolute; top: 50%; left: 4px; width: 4px; height: 44px; content: ""; background: var(--canvas-accent); border: 2px solid var(--canvas-panel); border-radius: 999px; box-shadow: 0 2px 8px color-mix(in srgb, var(--canvas-accent) 36%, transparent); transform: translateY(-50%); }
+    .card-resize-handle.is-left { left: -7px; }
+    .card-resize-handle.is-right { right: -7px; }
     .canvas-root.edit-mode [data-resizable-card]:hover > .card-resize-handle.is-available,
     .canvas-root.is-resizing .card-resize-handle.is-active { display: block; opacity: 1; }
     .card-span-badge { display: none !important; }
@@ -3054,52 +2916,11 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .canvas-root [data-resizable-card].drop-left::after,
     .canvas-root [data-resizable-card].drop-right::after,
     .canvas-root [data-resizable-card].drop-top::after,
-    .canvas-root [data-resizable-card].drop-bottom::after { position: absolute; z-index: 30; content: ""; background: var(--canvas-accent); border-radius: 999px; box-shadow: var(--wb-edit-guide-shadow, 0 0 0 2px var(--canvas-panel), 0 0 0 4px color-mix(in srgb, var(--canvas-accent) 24%, transparent)); opacity: 1; pointer-events: none; }
-    .canvas-root [data-resizable-card].drop-left::after { top: 8px; bottom: 8px; left: var(--wb-edit-guide-inset, 2px); width: var(--wb-edit-guide-size, 4px); }
-    .canvas-root [data-resizable-card].drop-right::after { top: 8px; right: var(--wb-edit-guide-inset, 2px); bottom: 8px; width: var(--wb-edit-guide-size, 4px); }
-    .canvas-root [data-resizable-card].drop-top::after { top: var(--wb-edit-guide-inset, 2px); right: 8px; left: 8px; height: var(--wb-edit-guide-size, 4px); }
-    .canvas-root [data-resizable-card].drop-bottom::after { right: 8px; bottom: var(--wb-edit-guide-inset, 2px); left: 8px; height: var(--wb-edit-guide-size, 4px); }
-    .canvas-root [data-resizable-card][data-wb-hidden="true"] { display: none !important; }
-    .canvas-card-hide-button {
-      position: fixed;
-      z-index: 1250;
-      display: none;
-      width: var(--wb-card-hide-action-size, 32px);
-      height: var(--wb-card-hide-action-size, 32px);
-      place-items: center;
-      padding: 0;
-      color: #fff;
-      background: var(--canvas-danger, #ef6672);
-      border: 1px solid color-mix(in srgb, var(--canvas-danger, #ef6672) 82%, #fff);
-      border-radius: 8px;
-      box-shadow: 0 8px 20px color-mix(in srgb, var(--canvas-danger, #ef6672) 28%, transparent);
-    }
-    .canvas-root.edit-mode .canvas-card-hide-button.is-visible { display: grid; }
-    .canvas-card-hide-button:hover { background: color-mix(in srgb, var(--canvas-danger, #ef6672) 86%, #000); }
-    .canvas-card-hide-button svg { width: 17px; height: 17px; }
-    .canvas-hidden-bar {
-      position: fixed;
-      z-index: 1240;
-      bottom: 20px;
-      left: 50%;
-      display: none;
-      min-height: var(--wb-hidden-bar-height, 40px);
-      align-items: center;
-      gap: 9px;
-      padding: 4px 5px 4px 14px;
-      color: var(--canvas-text);
-      background: var(--canvas-panel);
-      border: 1px solid var(--canvas-line);
-      border-radius: 999px;
-      box-shadow: 0 14px 34px rgba(15, 23, 42, .18);
-      transform: translateX(-50%);
-      backdrop-filter: blur(18px) saturate(130%);
-    }
-    .canvas-root.edit-mode .canvas-hidden-bar:not([hidden]) { display: flex; }
-    .canvas-hidden-bar strong { font-size: 11px; }
-    .canvas-hidden-count { display: grid; min-width: 24px; height: 24px; place-items: center; padding: 0 7px; color: #fff; background: var(--canvas-accent); border-radius: 999px; font: 800 10px/1 var(--wb-font-number, Inter, sans-serif); }
-    .canvas-hidden-restore { height: 32px; padding: 0 12px; color: #fff; background: var(--canvas-accent); border: 1px solid var(--canvas-accent); border-radius: 999px; font-size: 11px; font-weight: 700; }
-    .canvas-root.is-dark .canvas-hidden-bar { background: var(--canvas-panel); box-shadow: 0 16px 34px rgba(0, 0, 0, .34); backdrop-filter: none; }
+    .canvas-root [data-resizable-card].drop-bottom::after { position: absolute; z-index: 24; content: ""; background: var(--canvas-accent); border-radius: 999px; box-shadow: 0 0 0 3px color-mix(in srgb, var(--canvas-accent) 18%, transparent); pointer-events: none; }
+    .canvas-root [data-resizable-card].drop-left::after { top: 8px; bottom: 8px; left: -5px; width: 3px; }
+    .canvas-root [data-resizable-card].drop-right::after { top: 8px; right: -5px; bottom: 8px; width: 3px; }
+    .canvas-root [data-resizable-card].drop-top::after { top: -5px; right: 8px; left: 8px; height: 3px; }
+    .canvas-root [data-resizable-card].drop-bottom::after { right: 8px; bottom: -5px; left: 8px; height: 3px; }
     .canvas-root.is-resizing { cursor: ew-resize; user-select: none; }
     .canvas-root.is-resizing iframe { pointer-events: none; }
     .canvas-toast { position: fixed; z-index: 1300; left: 50%; bottom: 28px; max-width: calc(100vw - 32px); padding: 9px 14px; color: #fff; background: rgba(18, 24, 34, .9); border-radius: 7px; font-size: 12px; opacity: 0; pointer-events: none; transform: translate(-50%, 10px); transition: opacity 160ms ease, transform 160ms ease; }
@@ -7478,7 +7299,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       // A freshly selected save target is empty, so it cannot be used as the source.
       const sourceHtmlAtLoad = "<!doctype html>\n" + document.documentElement.outerHTML;
       const storageKey = "fxiaoke-workbench-canvas-settings-v1";
-      const defaults = { spacing: 16, radius: 16, theme: "classic", style: "rich", dark: false, language: "zh", editing: false, workspace: "template", routeOriginWorkspace: "company", cardLayout: {}, cardOrder: {}, cardGrid: {}, hiddenCards: [], hiddenCardState: {} };
+      const defaults = { spacing: 16, radius: 16, theme: "classic", style: "rich", dark: false, language: "zh", editing: false, workspace: "template", routeOriginWorkspace: "company", cardLayout: {}, cardOrder: {}, cardGrid: {} };
       const savedConfigurationElement = document.getElementById("canvasSavedConfiguration");
       let embeddedConfiguration = {};
       try { embeddedConfiguration = JSON.parse(savedConfigurationElement?.textContent || "{}"); } catch (error) { embeddedConfiguration = {}; }
@@ -7875,8 +7696,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
             </section>
           </div>
         </aside>
-        <button class="canvas-card-hide-button" id="canvasCardHide" type="button" aria-label="隐藏卡片" title="隐藏卡片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path></svg></button>
-        <div class="canvas-hidden-bar" id="canvasHiddenBar" role="status" aria-live="polite" hidden><strong>已隐藏</strong><span class="canvas-hidden-count" id="canvasHiddenCount">0</span><button class="canvas-hidden-restore" id="canvasRestoreHidden" type="button">还原全部</button></div>
         <div class="canvas-toast" id="canvasToast" role="status" aria-live="polite"></div>`;
 
       appRoot.before(canvasApp);
@@ -7905,10 +7724,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       const saveButton = document.getElementById("canvasSave");
       const exportButton = document.getElementById("canvasExport");
       const resetButton = document.getElementById("canvasReset");
-      const cardHideButton = document.getElementById("canvasCardHide");
-      const hiddenBar = document.getElementById("canvasHiddenBar");
-      const hiddenCount = document.getElementById("canvasHiddenCount");
-      const restoreHiddenButton = document.getElementById("canvasRestoreHidden");
       const toast = document.getElementById("canvasToast");
       const languageTabs = [...document.querySelectorAll("[data-canvas-language]")];
       const styleOptions = [...document.querySelectorAll("[data-canvas-style]")];
@@ -7953,9 +7768,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       };
 
       const translationPairs = [
-        ["隐藏卡片", "Hide card"],
-        ["还原全部", "Restore all"],
-        ["已隐藏", "Hidden"],
         ["商机项目经营洞察", "Opportunity project insight"],
         ["客户经营洞察", "Customer operating insight"],
         ["模板库", "Template library"],
@@ -8682,8 +8494,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       state.cardGrid = state.cardGrid && typeof state.cardGrid === "object"
         ? Object.fromEntries(Object.entries(state.cardGrid).map(([key, gridKey]) => [key, legacyGridKeys[gridKey] || gridKey]))
         : {};
-      state.hiddenCards = Array.isArray(state.hiddenCards) ? [...new Set(state.hiddenCards.filter((key) => typeof key === "string"))] : [];
-      state.hiddenCardState = state.hiddenCardState && typeof state.hiddenCardState === "object" ? state.hiddenCardState : {};
 
       const editGridSpecs = [
         { selector: "#managementWorkbench", key: "management-root-grid", scope: "management", cardsSelector: ":scope > .wb-hero-grid, :scope > .wb-section, :scope > .wb-priority-grid, :scope > .wb-analysis-grid, :scope > .wb-quick-grid", layout: [[1, 12], [1, 12], [1, 12], [1, 12], [1, 12], [1, 12]] },
@@ -8771,12 +8581,8 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
           updateCard(card, layout);
         });
       });
-      const editableCardKeys = new Set(editableCards.map((entry) => entry.key));
-      state.hiddenCards = state.hiddenCards.filter((key) => editableCardKeys.has(key));
-      const hiddenCardKeys = new Set(state.hiddenCards);
-      const getEditableCard = (element) => editableCards.find((entry) => entry.card === element.closest?.("[data-resizable-card]"));
-      const allEntriesForGrid = (grid) => [...grid.children].map((card) => editableCards.find((entry) => entry.card === card)).filter(Boolean);
-      const entriesForGrid = (grid) => allEntriesForGrid(grid).filter((entry) => !hiddenCardKeys.has(entry.key));
+      const getEditableCard = (element) => editableCards.find((entry) => entry.card === element.closest("[data-resizable-card]"));
+      const entriesForGrid = (grid) => [...grid.children].map((card) => editableCards.find((entry) => entry.card === card)).filter(Boolean);
       editableCards.forEach((entry) => {
         const storedGrid = gridByKey.get(state.cardGrid[entry.key]);
         if (!storedGrid || storedGrid === entry.grid || gridScopes.get(storedGrid) !== entry.scope || entry.card === storedGrid || entry.card.contains(storedGrid)) return;
@@ -8786,7 +8592,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       });
       gridByKey.forEach((grid, gridKey) => {
         const storedOrder = Array.isArray(state.cardOrder[gridKey]) ? state.cardOrder[gridKey] : [];
-        const defaultEntries = allEntriesForGrid(grid).sort((a, b) => a.sequence - b.sequence);
+        const defaultEntries = entriesForGrid(grid).sort((a, b) => a.sequence - b.sequence);
         const entriesByKey = new Map(defaultEntries.map((entry) => [entry.key, entry]));
         const storedKeys = storedOrder.filter((key) => entriesByKey.has(key));
         const storedKeySet = new Set(storedKeys);
@@ -8843,7 +8649,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         state.cardLayout = state.cardLayout || {};
         state.cardOrder = state.cardOrder || {};
         state.cardGrid = state.cardGrid || {};
-        const entries = allEntriesForGrid(grid);
+        const entries = entriesForGrid(grid);
         entries.forEach((entry) => {
           state.cardLayout[entry.key] = { ...entry.layout };
           state.cardGrid[entry.key] = grid.dataset.editGridKey;
@@ -8869,110 +8675,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         refreshSharedHandles(grid);
         syncEmptyGrid(grid);
       });
-
-      let activeHideEntry = null;
-      const hideCardHideButton = () => {
-        activeHideEntry = null;
-        cardHideButton.classList.remove("is-visible");
-      };
-      const positionCardHideButton = () => {
-        if (!state.editing || !activeHideEntry || hiddenCardKeys.has(activeHideEntry.key)) {
-          hideCardHideButton();
-          return;
-        }
-        const rect = activeHideEntry.card.getBoundingClientRect();
-        if (rect.width < 1 || rect.height < 1 || rect.bottom < 0 || rect.top > window.innerHeight) {
-          hideCardHideButton();
-          return;
-        }
-        const size = 32;
-        cardHideButton.style.left = `${Math.max(6, Math.min(window.innerWidth - size - 6, rect.right - size - 8))}px`;
-        cardHideButton.style.top = `${Math.max(6, rect.top + 8)}px`;
-        cardHideButton.classList.add("is-visible");
-      };
-      const showCardHideButton = (entry) => {
-        if (!state.editing || !entry || hiddenCardKeys.has(entry.key)) return;
-        activeHideEntry = entry;
-        positionCardHideButton();
-      };
-      const updateHiddenUi = () => {
-        const validKeys = [...hiddenCardKeys].filter((key) => editableCardKeys.has(key));
-        state.hiddenCards = validKeys;
-        hiddenCount.textContent = String(validKeys.length);
-        hiddenBar.hidden = validKeys.length === 0;
-        editableCards.forEach((entry) => {
-          const hidden = hiddenCardKeys.has(entry.key);
-          entry.card.hidden = hidden;
-          entry.card.dataset.wbHidden = String(hidden);
-          entry.card.setAttribute("aria-hidden", String(hidden));
-        });
-        gridByKey.forEach((grid) => {
-          refreshSharedHandles(grid);
-          syncEmptyGrid(grid);
-        });
-        if (!state.editing) hideCardHideButton();
-      };
-      const hideEditableCard = (entry) => {
-        if (!entry || hiddenCardKeys.has(entry.key)) return;
-        const children = [...entry.grid.children];
-        state.hiddenCardState[entry.key] = {
-          grid: entry.grid.dataset.editGridKey,
-          index: children.indexOf(entry.card),
-          layout: { ...entry.layout }
-        };
-        hiddenCardKeys.add(entry.key);
-        updateHiddenUi();
-        hideCardHideButton();
-        save();
-        showToast("卡片已隐藏");
-      };
-      const restoreAllHiddenCards = () => {
-        const restorations = [...hiddenCardKeys].map((key) => {
-          const entry = editableCards.find((item) => item.key === key);
-          return entry ? { entry, snapshot: state.hiddenCardState[key] || {} } : null;
-        }).filter(Boolean).sort((a, b) => (a.snapshot.index ?? a.entry.sequence) - (b.snapshot.index ?? b.entry.sequence));
-        restorations.forEach(({ entry, snapshot }) => {
-          const targetGrid = gridByKey.get(snapshot.grid) || entry.defaultGrid;
-          const targetIndex = Math.max(0, Number.isInteger(snapshot.index) ? snapshot.index : targetGrid.children.length);
-          const reference = targetGrid.children[targetIndex] || null;
-          targetGrid.insertBefore(entry.card, reference);
-          entry.grid = targetGrid;
-          entry.layout = snapshot.layout && typeof snapshot.layout === "object" ? { ...snapshot.layout } : { ...entry.defaultLayout };
-          updateCard(entry.card, entry.layout);
-          entry.card.dataset.wbCardGrid = targetGrid.dataset.editGridKey;
-        });
-        hiddenCardKeys.clear();
-        state.hiddenCardState = {};
-        updateHiddenUi();
-        gridByKey.forEach((grid) => persistGrid(grid));
-        save();
-        showToast("已还原全部卡片");
-      };
-      canvasApp.addEventListener("pointerover", (event) => {
-        if (event.target.closest("#canvasCardHide")) return;
-        const entry = getEditableCard(event.target);
-        if (entry) showCardHideButton(entry);
-        else hideCardHideButton();
-      });
-      canvasApp.addEventListener("focusin", (event) => {
-        const entry = getEditableCard(event.target);
-        if (entry) showCardHideButton(entry);
-      });
-      canvasApp.addEventListener("pointerleave", (event) => {
-        if (event.relatedTarget === cardHideButton || cardHideButton.contains(event.relatedTarget)) return;
-        hideCardHideButton();
-      });
-      cardHideButton.addEventListener("click", () => hideEditableCard(activeHideEntry));
-      cardHideButton.addEventListener("keydown", (event) => {
-        if (event.key !== "Escape") return;
-        const card = activeHideEntry?.card;
-        hideCardHideButton();
-        card?.focus?.();
-      });
-      restoreHiddenButton.addEventListener("click", restoreAllHiddenCards);
-      window.addEventListener("resize", positionCardHideButton);
-      document.addEventListener("scroll", positionCardHideButton, true);
-      updateHiddenUi();
 
       let resizeSession = null;
       canvasApp.addEventListener("pointerdown", (event) => {
@@ -9145,8 +8847,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         state.cardLayout = state.cardLayout && typeof state.cardLayout === "object" ? state.cardLayout : {};
         state.cardOrder = state.cardOrder && typeof state.cardOrder === "object" ? state.cardOrder : {};
         state.cardGrid = state.cardGrid && typeof state.cardGrid === "object" ? state.cardGrid : {};
-        state.hiddenCards = [...hiddenCardKeys];
-        state.hiddenCardState = state.hiddenCardState && typeof state.hiddenCardState === "object" ? state.hiddenCardState : {};
         if (!document.querySelector(`[data-canvas-theme="${state.theme}"]`)) state.theme = defaults.theme;
         canvasApp.dataset.theme = state.theme;
         canvasApp.dataset.wbStyle = state.style;
@@ -9174,7 +8874,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
           button.setAttribute("aria-selected", String(selected));
           button.tabIndex = selected ? 0 : -1;
         });
-        updateHiddenUi();
         applyLanguage();
       };
       const openPanel = () => {
@@ -9189,7 +8888,6 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       };
       const closePanel = (restoreFocus = true) => {
         state.editing = false;
-        hideCardHideButton();
         apply();
         settingsPanel.classList.remove("open");
         canvasApp.classList.remove("settings-open");
@@ -9243,7 +8941,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       if (window.WorkbenchWorkspaceRouting) window.WorkbenchWorkspaceRouting.register(canvasApp);
       if (window.WorkbenchOpportunityInsight) window.WorkbenchOpportunityInsight.mount(canvasApp, { showToast });
       if (window.WorkbenchCustomerInsight) window.WorkbenchCustomerInsight.mount(canvasApp, { showToast });
-      const configurationPayload = () => ({ ...state, editing: false, version: 4, savedAt: new Date().toISOString() });
+      const configurationPayload = () => ({ ...state, editing: false, version: 3, savedAt: new Date().toISOString() });
       const htmlWithConfiguration = (source, payload) => {
         const startTag = '<script type="application/json" id="canvasSavedConfiguration">';
         const endTag = "</" + "script>";
@@ -9357,12 +9055,8 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       });
       resetButton.addEventListener("click", () => {
         const editing = settingsPanel.classList.contains("open");
-        hiddenCardKeys.clear();
-        state = { ...defaults, editing, cardLayout: {}, cardOrder: {}, cardGrid: {}, hiddenCards: [], hiddenCardState: {} };
+        state = { ...defaults, editing, cardLayout: {}, cardOrder: {}, cardGrid: {} };
         editableCards.forEach((entry) => {
-          entry.card.hidden = false;
-          entry.card.dataset.wbHidden = "false";
-          entry.card.setAttribute("aria-hidden", "false");
           entry.grid = entry.defaultGrid;
           entry.layout = { ...entry.defaultLayout };
           entry.defaultGrid.appendChild(entry.card);

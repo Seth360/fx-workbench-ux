@@ -12,7 +12,6 @@
   <main class="wb-card-composition" data-wb-layout="single" data-wb-editing="false" data-wb-grid-key="template-main" data-wb-edit-scope="template" data-wb-empty="false" style="max-width: 1120px; margin: 0 auto; padding: 24px;">
     <!-- For a two-row analysis layout with a shorter second row, wrap row items in .wb-compact-tail-grid. -->
     <!-- For a bordered header that starts at the card edge, use .wb-card.wb-flush-card > .wb-flush-head + .wb-flush-body. -->
-    <!-- Keep .wb-flush-head and .wb-flush-body as direct card children so the shared 16px 20px 20px body padding (16px on mobile) cannot collapse to zero. -->
     <!-- Keep grid/card keys stable; persist data-wb-card-grid when a card moves within the same edit scope. -->
     <!-- Wrap each chart in .wb-chart-frame; add .wb-chart-svg to SVG charts and never use preserveAspectRatio="none" when they contain text or points. -->
     <!-- Build page-header controls in one non-wrapping .wb-page-control-group. Use .wb-page-period and the shared .wb-select.wb-page-filter composite at the shared 32px height; keep the native select as the value/change source and include select-interactions.js. -->
@@ -23,9 +22,6 @@
     <!-- Use .wb-subpanel for composite-card modules and .wb-inner-tile for their compact facts; both use solid shared Surfaces and bounded shallow shadows without a second backdrop blur. -->
     <!-- Mark every sticky table action header/cell with .wb-action-column and use a 32px .wb-primary-action so the opaque action Surface fully covers scrolled business copy. -->
     <!-- In dense insight views, mark text command buttons with .wb-compact-action for the shared 32px height; group same-header commands in .wb-compact-action-group so they remain horizontal. Do not use it for tabs, filters, toggles, or icon-only controls. -->
-    <!-- Compact text actions use the full shared secondary style; add .is-primary or .wb-primary-action for the accent-filled primary style. Active segmented options must keep their accent fill on hover. -->
-    <!-- For list grouping filters use .wb-filter-segmented, not a tab-like .wb-segmented. Use .wb-status-tag for content-width 22px list states and .wb-person-label > .wb-avatar for bright centered reviewer icons. -->
-    <!-- Edit-mode drop guides and resize handles stay fully inside card boundaries. The canvas runtime owns the hover hide button, persisted hidden keys, one bottom hidden-count capsule, Restore all, and reset behavior; card-local CSS must not clip or override these controls. -->
     <!-- Amount metrics use a pictographic wallet/coins/banknote SVG; never use 元, ¥, $, currency codes, or other visible glyphs as icon artwork. Quote-request titles use a document/clipboard icon. -->
     <!-- Dark mode must use the shared Surface/Table tokens; never mix card, row, hover, or control backgrounds with white or add a top inset highlight. -->
     <!-- If an adjacent authoritative record already shows the same identity, omit the approved duplicate identity block and render only the remaining facts as .wb-summary-metric-grid.wb-metric-grid > .wb-metric. -->
