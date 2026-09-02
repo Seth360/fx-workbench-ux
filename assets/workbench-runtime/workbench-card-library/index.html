@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI工作台UX规范</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./components.css">
   <style>
     .catalog { max-width: 1180px; margin: 0 auto; padding: 24px; }
@@ -41,6 +42,7 @@
     .demo-outcome-list i { width: 7px; height: 7px; background: var(--wb-tone); border-radius: 50%; }
     .demo-outcome-list b { color: var(--wb-text); font-family: var(--wb-font-number); font-size: 12px; }
     .control-demo { display: flex; min-height: 96px; flex-wrap: wrap; align-items: flex-start; gap: 12px; padding-top: 4px; }
+    .catalog-filter-row { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
     .control-demo.wb-page-control-group { width: max-content; max-width: 100%; flex-wrap: nowrap; overflow-x: auto; }
     .control-demo .wb-select { width: min(100%, 260px); }
     .catalog-quick-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -57,7 +59,7 @@
     .catalog-relation-demo > .wb-relation-tier:first-child { width: min(100%, 280px); justify-self: center; }
     .catalog-relation-demo .wb-relation-node { padding: 10px; font-size: 10px; text-align: center; }
     @media (max-width: 900px) { .catalog-toolbar { align-items: stretch; flex-direction: column; } .catalog-actions { justify-content: flex-start; } .palette-menu { right: auto; left: 0; } .catalog-grid, .catalog-density-grid { grid-template-columns: 1fr; } .span-2 { grid-column: auto; } }
-    @media (max-width: 760px) { .catalog { padding: 14px 12px 24px; } .catalog-grid, .catalog-quick-grid { grid-template-columns: 1fr; } .span-2 { grid-column: auto; } .catalog-actions { align-items: stretch; flex-wrap: wrap; } .palette-picker { flex: 1 1 100%; } .palette-trigger { width: 100%; } }
+    @media (max-width: 760px) { .catalog { padding: 14px 12px 24px; } .catalog-grid, .catalog-quick-grid { grid-template-columns: 1fr; } .span-2 { grid-column: auto; } .catalog-actions, .catalog-filter-row { align-items: stretch; flex-wrap: wrap; } .palette-picker { flex: 1 1 100%; } .palette-trigger { width: 100%; } }
   </style>
 </head>
 <body>
@@ -71,7 +73,7 @@
 
   <main class="catalog">
     <header class="catalog-toolbar wb-header">
-      <div class="wb-title-group"><h1 data-i18n="pageTitle">AI工作台UX规范</h1><p data-i18n="pageSubtitle">ai-workbench-ux@1.4.28 · 组件与视觉回归目录</p></div>
+      <div class="wb-title-group"><h1 data-i18n="pageTitle">AI工作台UX规范</h1><p data-i18n="pageSubtitle">ai-workbench-ux@1.4.32 · 组件与视觉回归目录</p></div>
       <div class="catalog-actions">
         <div class="palette-picker">
           <button class="palette-trigger" type="button" aria-haspopup="menu" aria-expanded="false" data-palette-trigger data-i18n-aria="paletteControl">
@@ -225,6 +227,11 @@
               </div>
             </div>
           </div>
+          <div class="wb-compact-action-group" style="margin-top:12px;">
+            <button class="wb-compact-action" type="button" data-i18n="secondaryCommand">次要命令</button>
+            <button class="wb-compact-action is-primary" type="button" data-i18n="primaryCommand">主要命令</button>
+          </div>
+          <p class="wb-boundary-note" style="margin-top:12px;" data-i18n="editAffordanceNote">编辑态引导线与缩放控件完全内收；卡片隐藏由右上角图标与底部唯一恢复胶囊管理</p>
         </article>
       </section>
 
@@ -235,12 +242,20 @@
             <div class="wb-title-group"><span class="wb-icon is-red"><svg aria-hidden="true"><use href="#icon-risk"/></svg></span><div><h2 data-i18n="riskTitle">需要关注的重大项目风险</h2><p data-i18n="riskDesc">存在明确项目风险</p></div></div>
             <span class="wb-title-meta" data-i18n="viewAll">3 项 · 查看全部 ›</span>
           </header>
+          <div class="catalog-filter-row">
+            <div class="wb-filter-segmented" role="group" aria-label="风险结果分组" data-i18n-aria="riskGrouping">
+              <button type="button" aria-selected="true" data-i18n="groupByLevel">按等级</button>
+              <button type="button" aria-selected="false" data-i18n="groupByStatus">按状态</button>
+              <button type="button" aria-selected="false" data-i18n="groupByOwner">按负责人</button>
+            </div>
+            <span class="wb-person-label"><span class="wb-avatar"><svg aria-hidden="true"><use href="#icon-users"/></svg></span><span data-i18n="ownerRisk">张风控</span></span>
+          </div>
           <div class="wb-table-wrap">
             <table class="wb-table">
               <thead><tr><th style="width:22%" data-i18n="opportunityName">商机项目名称</th><th style="width:22%" data-i18n="tradingCustomer">交易客户</th><th style="width:12%" data-i18n="level">级别</th><th style="width:16%" data-i18n="stage">阶段</th><th style="width:16%" data-i18n="waitTime">等待时间</th><th class="wb-action-column" style="width:12%" data-i18n="quickAction">快捷处理</th></tr></thead>
               <tbody>
-                <tr><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="opportunity-insight" data-i18n="project1">扫地机耐划伤结构件</button></td><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="customer-insight" data-i18n="company1">苏州精密注塑有限公司</button></td><td><span class="wb-stage is-risk">S</span></td><td><span class="wb-stage" data-i18n="sampleStage">试样阶段</span></td><td><b style="color:var(--wb-red)" data-i18n="days12">12天</b></td><td class="wb-action-column"><button class="wb-primary-action" type="button" data-i18n="handle">处理</button></td></tr>
-                <tr><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="opportunity-insight" data-i18n="project2">高压连接器材料替换</button></td><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="customer-insight" data-i18n="company2">华东汽车连接器有限公司</button></td><td><span class="wb-stage">A</span></td><td><span class="wb-stage" data-i18n="importStage">导入阶段</span></td><td><b style="color:var(--wb-red)" data-i18n="days18">18天</b></td><td class="wb-action-column"><button class="wb-primary-action" type="button" data-i18n="handle">处理</button></td></tr>
+                <tr><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="opportunity-insight" data-i18n="project1">扫地机耐划伤结构件</button></td><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="customer-insight" data-i18n="company1">苏州精密注塑有限公司</button></td><td><span class="wb-status-tag is-red" data-i18n="highRisk">高风险</span></td><td><span class="wb-status-tag is-purple" data-i18n="reviewing">复核中</span></td><td><b style="color:var(--wb-red)" data-i18n="days12">12天</b></td><td class="wb-action-column"><button class="wb-primary-action" type="button" data-i18n="handle">处理</button></td></tr>
+                <tr><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="opportunity-insight" data-i18n="project2">高压连接器材料替换</button></td><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="customer-insight" data-i18n="company2">华东汽车连接器有限公司</button></td><td><span class="wb-status-tag is-orange" data-i18n="mediumRisk">中风险</span></td><td><span class="wb-status-tag is-green" data-i18n="handled">已处理</span></td><td><b style="color:var(--wb-red)" data-i18n="days18">18天</b></td><td class="wb-action-column"><button class="wb-primary-action" type="button" data-i18n="handle">处理</button></td></tr>
               </tbody>
             </table>
           </div>
@@ -254,13 +269,13 @@
     (function () {
       var messages = {
         zh: {
-          pageTitle: "AI工作台UX规范", pageSubtitle: "ai-workbench-ux@1.4.28 · 组件与视觉回归目录",
+          pageTitle: "AI工作台UX规范", pageSubtitle: "ai-workbench-ux@1.4.32 · 组件与视觉回归目录",
           paletteControl: "选择色系", paletteMenu: "色系列表", languageControl: "语言切换", appearanceControl: "明暗模式切换", styleControl: "主题风格",
           workspaceTabs: "工作台页签导航", workspaceTabsTitle: "内容宽度页签组", workspaceTabsDesc: "底色包裹页签，工具动作独立靠右", workspaceTabsAria: "工作台切换", templateLibrary: "模板库", companyOperation: "公司经营", managementScope: "我的管理范围", salesBusiness: "我的销售业务", canvasSettings: "画布设置",
           paletteClassic: "经典蓝", paletteSpruce: "云杉绿", paletteCoral: "珊瑚橙", paletteIndigo: "靛青", paletteRose: "石墨红", paletteGraphite: "中性灰",
-          light: "浅色", dark: "深色", minimal: "简约", rich: "丰富", metricCard: "指标卡片", analysisCard: "分析卡片", riskTableCard: "风险表格卡片", selectControl: "枚举筛选控件", densityComponents: "快捷入口与紧凑列表", compositeCard: "组合卡内部层级",
+          light: "浅色", dark: "深色", minimal: "简约", rich: "丰富", metricCard: "指标卡片", analysisCard: "分析卡片", riskTableCard: "风险表格卡片", selectControl: "枚举筛选控件", densityComponents: "快捷入口与紧凑列表", compositeCard: "组合卡内部层级", riskGrouping: "风险结果分组", groupByLevel: "按等级", groupByStatus: "按状态", groupByOwner: "按负责人", ownerRisk: "张风控", ownerLegal: "李法务", highRisk: "高风险", mediumRisk: "中风险", reviewing: "复核中", handled: "已处理",
           compositeTitle: "项目推进与业务闭环", compositeDesc: "主卡、分析子面板与内部指标保持清晰层级", stageStructure: "商机阶段结构", trialClosure: "试料反馈闭环", approvedResults: "审批通过后的客户结论", quoteFeedback: "材料报价反馈", approvedQuotes: "审批通过后的逐材料反馈", trialPassRate: "试料通过率", priceFeedbackRate: "价格反馈填写率", descriptionRate: "反馈说明填写率", relationDemoAria: "三分支客户关系", currentTierAria: "当前客户层级", downstreamTierAria: "三个下游客户层级", currentCustomer: "当前客户", downstreamCustomer: "注塑厂", downstreamMold: "模具厂", downstreamAgent: "经销商",
-          densityTitle: "统一卡片密度", densityDesc: "快捷入口、阶段行与右侧单一处理动作", refreshInsight: "刷新洞察", openCrm: "打开 CRM", salesLeads: "销售线索", validReserve: "有效储备", createSalesLead: "新建销售线索", teamCustomers: "团队客户", active90: "近90天活跃", opportunityProjects: "商机项目", validPipeline: "有效在途", businessContact: "商务接触", trialStage: "试样阶段", fiveItems: "5 项", threeItems: "3 项", feedbackPending: "客户测试反馈未闭环", overdueSeven: "试样阶段 · 逾期7天",
+          densityTitle: "统一卡片密度", densityDesc: "快捷入口、阶段行与右侧单一处理动作", refreshInsight: "刷新洞察", openCrm: "打开 CRM", secondaryCommand: "次要命令", primaryCommand: "主要命令", editAffordanceNote: "编辑态引导线与缩放控件完全内收；卡片隐藏由右上角图标与底部唯一恢复胶囊管理", salesLeads: "销售线索", validReserve: "有效储备", createSalesLead: "新建销售线索", teamCustomers: "团队客户", active90: "近90天活跃", opportunityProjects: "商机项目", validPipeline: "有效在途", businessContact: "商务接触", trialStage: "试样阶段", fiveItems: "5 项", threeItems: "3 项", feedbackPending: "客户测试反馈未闭环", overdueSeven: "试样阶段 · 逾期7天",
           selectTitle: "管理单元筛选", selectDesc: "圆角弹层、轻投影与完整键盘操作", reportingPeriod: "统计周期", quarter: "本季度", last90Days: "近90天", managementUnit: "管理单元", allUnits: "全部管理单元", aviationUnit: "低空飞行事业部", cleaningUnit: "清洁家电事业部", energyUnit: "新能源事业部", pcrUnit: "PCR与共聚酯事业部",
           baseTitle: "经营基本盘", baseDesc: "点击数字进入 CRM 原生筛选列表", periodAll: "本月 · 全部区域",
           activeCustomers: "活跃客户", activeDesc: "近90天有商机或有效互动", expectedAmount: "预计项目金额", expectedAmountValue: "6,703.5万元", pipelineCount: "13 个在途商机", activeOpp: "在途商机", opportunityDesc: "预计金额 6,703.5 万元",
@@ -274,13 +289,13 @@
           pageSize: "每页10条 · 共3条", pageNumber: "第1 / 1页"
         },
         en: {
-          pageTitle: "AI Workbench UX Guidelines", pageSubtitle: "ai-workbench-ux@1.4.28 · Component and visual regression catalog",
+          pageTitle: "AI Workbench UX Guidelines", pageSubtitle: "ai-workbench-ux@1.4.32 · Component and visual regression catalog",
           paletteControl: "Choose color palette", paletteMenu: "Color palettes", languageControl: "Language", appearanceControl: "Appearance", styleControl: "Theme style",
           workspaceTabs: "Workbench Tab Navigation", workspaceTabsTitle: "Content-width Tab Group", workspaceTabsDesc: "The Surface wraps the tabs while tools remain independently aligned", workspaceTabsAria: "Switch workbench", templateLibrary: "Template Library", companyOperation: "Company Operations", managementScope: "My Management Scope", salesBusiness: "My Sales Business", canvasSettings: "Canvas settings",
           paletteClassic: "Classic Blue", paletteSpruce: "Spruce Green", paletteCoral: "Coral Orange", paletteIndigo: "Indigo", paletteRose: "Graphite Red", paletteGraphite: "Neutral Gray",
-          light: "Light", dark: "Dark", minimal: "Minimal", rich: "Rich", metricCard: "Metric Card", analysisCard: "Analysis Card", riskTableCard: "Risk Table Card", selectControl: "Enumeration Filter", densityComponents: "Quick Entries and Compact Lists", compositeCard: "Composite Card Hierarchy",
+          light: "Light", dark: "Dark", minimal: "Minimal", rich: "Rich", metricCard: "Metric Card", analysisCard: "Analysis Card", riskTableCard: "Risk Table Card", selectControl: "Enumeration Filter", densityComponents: "Quick Entries and Compact Lists", compositeCard: "Composite Card Hierarchy", riskGrouping: "Risk result grouping", groupByLevel: "By level", groupByStatus: "By status", groupByOwner: "By owner", ownerRisk: "Zhang · Risk", ownerLegal: "Li · Legal", highRisk: "High risk", mediumRisk: "Medium risk", reviewing: "In review", handled: "Handled",
           compositeTitle: "Project Progress and Business Closure", compositeDesc: "Keep the parent card, analysis subpanels, and inner metrics visually distinct", stageStructure: "Opportunity Stage Mix", trialClosure: "Trial Feedback Closure", approvedResults: "Customer results after approval", quoteFeedback: "Material Quote Feedback", approvedQuotes: "Per-material feedback after approval", trialPassRate: "Trial pass rate", priceFeedbackRate: "Price feedback completion", descriptionRate: "Feedback note completion", relationDemoAria: "Three-branch customer relationship", currentTierAria: "Current customer tier", downstreamTierAria: "Three downstream customer tier", currentCustomer: "Current customer", downstreamCustomer: "Injection molding plant", downstreamMold: "Mold factory", downstreamAgent: "Distributor",
-          densityTitle: "Unified Card Density", densityDesc: "Quick entries, stage rows, and one trailing action", refreshInsight: "Refresh insight", openCrm: "Open CRM", salesLeads: "Sales leads", validReserve: "Valid reserve", createSalesLead: "Create sales lead", teamCustomers: "Team customers", active90: "Active in 90 days", opportunityProjects: "Opportunities", validPipeline: "Active pipeline", businessContact: "Business contact", trialStage: "Trial stage", fiveItems: "5 items", threeItems: "3 items", feedbackPending: "Customer test feedback pending", overdueSeven: "Trial stage · 7 days overdue",
+          densityTitle: "Unified Card Density", densityDesc: "Quick entries, stage rows, and one trailing action", refreshInsight: "Refresh insight", openCrm: "Open CRM", secondaryCommand: "Secondary command", primaryCommand: "Primary command", editAffordanceNote: "Edit guides and resize affordances stay inside card bounds; a top-right icon and one bottom restore capsule manage hidden cards", salesLeads: "Sales leads", validReserve: "Valid reserve", createSalesLead: "Create sales lead", teamCustomers: "Team customers", active90: "Active in 90 days", opportunityProjects: "Opportunities", validPipeline: "Active pipeline", businessContact: "Business contact", trialStage: "Trial stage", fiveItems: "5 items", threeItems: "3 items", feedbackPending: "Customer test feedback pending", overdueSeven: "Trial stage · 7 days overdue",
           selectTitle: "Management Unit Filter", selectDesc: "Rounded popover, soft shadow, and complete keyboard operation", reportingPeriod: "Reporting period", quarter: "This quarter", last90Days: "Last 90 days", managementUnit: "Management unit", allUnits: "All management units", aviationUnit: "Low-altitude aviation BU", cleaningUnit: "Cleaning appliances BU", energyUnit: "New energy BU", pcrUnit: "PCR and copolyester BU",
           baseTitle: "Operating Baseline", baseDesc: "Select a number to open the native CRM filtered list", periodAll: "This month · All regions",
           activeCustomers: "Active customers", activeDesc: "Opportunity or valid interaction in the last 90 days", expectedAmount: "Expected project amount", expectedAmountValue: "CNY 67.035m", pipelineCount: "13 open opportunities", activeOpp: "Open opportunities", opportunityDesc: "Est. amount CNY 67.035m",

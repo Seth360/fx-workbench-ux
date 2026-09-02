@@ -30,12 +30,24 @@ try {
 
   const canvasRenderer = html.indexOf("canvasApp.innerHTML =");
   assert.ok(canvasRenderer > 0, "canvas renderer is missing");
+  assert.match(html, /id="canvasCrmNavigation"/);
+  assert.match(html, /crm-navigation-mode/);
+  assert.match(html, /canvas-root\.crm-navigation-enabled\.settings-open\s*\{\s*padding-right:\s*360px/);
+  assert.match(html, /canvas-navigation-host \.workspace-card\s*\{[\s\S]{0,260}?overflow: visible/);
+  assert.match(html, /const dedupeCanvasContent = \(\) =>/);
+  assert.doesNotMatch(html, /data-canvas-subworkspace=/);
+  assert.doesNotMatch(html, /const selectCanvasSubworkspace/);
+  for (const duplicateKey of ["company-quick-strip", "company-baseline", "scope-quick-grid", "scope-baseline-card", "scope-major-project-risks", "personal-quick-grid", "personal-project-warnings", "customer-insight-record"]) {
+    assert.match(html, new RegExp(`data-od-id=\\\"${duplicateKey}\\\"`), `${duplicateKey} source must remain available for runtime dedupe`);
+  }
   for (const [globalName, owner] of [["WorkbenchOpportunityInsight", "window"], ["WorkbenchCustomerInsight", "window"], ["WorkbenchWorkspaceRouting", "global"]]) {
     const definition = html.indexOf(`${owner}.${globalName} =`);
     assert.ok(definition >= 0 && definition < canvasRenderer, `${globalName} must be defined before canvas rendering`);
   }
-  assert.match(html, /data-canvas-panel="opportunity-insight"[\s\S]{0,500}?WorkbenchOpportunityInsight\.render\(\)/);
-  assert.match(html, /data-canvas-panel="customer-insight"[\s\S]{0,500}?WorkbenchCustomerInsight\.render\(\)/);
+  const detailPanel = html.indexOf('id="canvasDetailPanel"');
+  assert.ok(detailPanel >= 0, "merged detail panel is missing");
+  assert.ok(html.indexOf("WorkbenchOpportunityInsight.render()", detailPanel) > detailPanel, "opportunity insight must render inside detail panel");
+  assert.ok(html.indexOf("WorkbenchCustomerInsight.render()", detailPanel) > detailPanel, "customer insight must render inside detail panel");
 
   const sourceCapture = html.indexOf("const sourceHtmlAtLoad =");
   assert.ok(sourceCapture > 0 && sourceCapture < canvasRenderer, "saved-source capture must precede canvas rendering");

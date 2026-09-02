@@ -46,7 +46,7 @@
 
   function register(root, workspaceKeys) {
     if (!root?.querySelectorAll) return [];
-    const allowed = new Set(workspaceKeys || ["company", "management-scope", "sales-business"]);
+    const allowed = new Set(workspaceKeys || ["home", "detail", "list"]);
     const routeTargets = new Set(Object.values(ROUTES));
     const registered = [];
     root.querySelectorAll("[data-canvas-panel] [data-workbench-action]").forEach((element) => {

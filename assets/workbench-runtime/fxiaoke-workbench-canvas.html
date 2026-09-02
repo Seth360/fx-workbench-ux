@@ -6,7 +6,7 @@
   <!-- WB_INLINE_START workbench-card-library/tokens.css -->
 <style>
 /* inlined from workbench-card-library/tokens.css */
-/* ai-workbench-ux@1.4.28: portable canvases embed these shared tokens verbatim. */
+/* ai-workbench-ux@1.4.32: portable canvases embed these shared tokens verbatim. */
 :root {
   color-scheme: light;
   --wb-bg: #eef4fb;
@@ -60,6 +60,7 @@
   --wb-font-number: Inter, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --wb-module-head-min-height: 44px;
   --wb-module-head-padding: 10px 16px;
+  --wb-flush-body-padding: 16px 20px 20px;
   --wb-page-title-copy-gap: 4px;
   --wb-radius-sm: 8px;
   --wb-radius-md: 16px;
@@ -76,12 +77,28 @@
   --wb-gap-sm: 12px;
   --wb-gap-md: 16px;
   --wb-gap-lg: 20px;
+  --wb-flat-source-gap: var(--wb-gap-md);
   --wb-composition-aside-min: 320px;
   --wb-edit-grid-gap: var(--wb-gap-md);
   --wb-edit-drag-opacity: 0.46;
   --wb-edit-drop-indicator-size: 3px;
+  --wb-edit-guide-size: 4px;
+  --wb-edit-guide-inset: 2px;
+  --wb-edit-guide-shadow: 0 0 0 2px var(--wb-card-surface), 0 0 0 4px color-mix(in srgb, var(--wb-accent) 24%, transparent);
+  --wb-card-hide-action-size: 32px;
+  --wb-hidden-bar-height: 40px;
   --wb-control-height: 34px;
   --wb-touch-target: 44px;
+  --wb-filter-segmented-height: 32px;
+  --wb-filter-segmented-gap: 4px;
+  --wb-filter-option-surface-strength: 7%;
+  --wb-filter-option-selected-surface-strength: 13%;
+  --wb-filter-option-border-strength: 24%;
+  --wb-status-tag-height: 22px;
+  --wb-status-tag-padding: 0 7px;
+  --wb-avatar-size: 22px;
+  --wb-avatar-icon-size: 14px;
+  --wb-avatar-foreground: #ffffff;
   --wb-page-filter-height: 32px;
   --wb-page-header-control-height: var(--wb-page-filter-height, 32px);
   --wb-workspace-tab-list-max-width: 100%;
@@ -202,7 +219,7 @@
   <!-- WB_INLINE_START workbench-card-library/components.css -->
 <style>
 /* inlined from workbench-card-library/components.css */
-/* ai-workbench-ux@1.4.28: portable canvases embed this file after tokens.css and remove only the import above. */
+/* ai-workbench-ux@1.4.32: portable canvases embed this file after tokens.css and remove only the import above. */
 
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; color: var(--wb-text); background: var(--wb-bg); font-family: var(--wb-font); font-size: 14px; line-height: 1.5; }
@@ -243,7 +260,7 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px s
 }
 .wb-card.wb-flush-card { padding: 0; }
 .wb-flush-card > .wb-flush-head { display: flex; min-height: var(--wb-module-head-min-height); align-items: center; margin: 0; padding: var(--wb-module-head-padding); border-bottom: 1px solid var(--wb-border-soft); }
-.wb-flush-card > .wb-flush-body { padding: 14px 16px 16px; }
+.wb-flush-card > .wb-flush-body { padding: var(--wb-flush-body-padding); }
 .wb-subpanel { min-width: 0; padding: 16px; background: var(--wb-subpanel-surface); border: 1px solid var(--wb-border-soft); border-radius: var(--wb-radius-sm); box-shadow: var(--wb-subpanel-shadow); backdrop-filter: none; -webkit-backdrop-filter: none; }
 .wb-inner-tile { min-width: 0; padding: 12px; background: var(--wb-inner-tile-surface); border: 1px solid var(--wb-border-soft); border-radius: var(--wb-radius-sm); box-shadow: var(--wb-inner-tile-shadow); backdrop-filter: none; -webkit-backdrop-filter: none; }
 .wb-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
@@ -313,11 +330,61 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px s
 .is-orange { --wb-tone: var(--wb-orange); }
 .is-red { --wb-tone: var(--wb-red); }
 .is-purple { --wb-tone: var(--wb-purple); }
+.is-gray { --wb-tone: var(--wb-text-muted); }
 
 .wb-segmented { display: inline-flex; min-height: var(--wb-control-height); padding: 3px; background: var(--wb-control-surface); border: 1px solid var(--wb-border); border-radius: var(--wb-radius-sm); box-shadow: var(--wb-shadow-control); backdrop-filter: blur(18px) saturate(var(--wb-glass-saturation)); -webkit-backdrop-filter: blur(18px) saturate(var(--wb-glass-saturation)); }
 .wb-segmented button { min-height: 28px; padding: 0 12px; color: var(--wb-text-muted); background: transparent; border: 0; border-radius: 5px; font-size: 12px; transition: color var(--wb-motion), background-color var(--wb-motion); }
 .wb-segmented button:hover { color: var(--wb-text); background: var(--wb-surface-hover); }
 .wb-segmented button[aria-selected="true"] { color: #fff; background: var(--wb-accent); }
+.wb-segmented button[aria-selected="true"]:hover { color: #fff; background: var(--wb-accent); }
+.wb-filter-segmented {
+  display: inline-flex;
+  width: max-content;
+  min-width: 0;
+  min-height: var(--wb-filter-segmented-height);
+  align-items: center;
+  gap: var(--wb-filter-segmented-gap);
+  padding: 0;
+  overflow-x: auto;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  scrollbar-width: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.wb-filter-segmented::-webkit-scrollbar { display: none; }
+.wb-filter-segmented button {
+  min-width: max-content;
+  min-height: var(--wb-filter-segmented-height);
+  padding: 0 10px;
+  color: var(--wb-text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--wb-radius-sm);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color var(--wb-motion), background-color var(--wb-motion), border-color var(--wb-motion);
+}
+.wb-filter-segmented button:hover {
+  color: var(--wb-text);
+  background: color-mix(in srgb, var(--wb-accent) var(--wb-filter-option-surface-strength), var(--wb-surface-strong));
+  border-color: color-mix(in srgb, var(--wb-accent) 14%, transparent);
+}
+.wb-filter-segmented button[aria-selected="true"] {
+  color: color-mix(in srgb, var(--wb-accent) 78%, var(--wb-text));
+  background: color-mix(in srgb, var(--wb-accent) var(--wb-filter-option-selected-surface-strength), var(--wb-surface-strong));
+  border-color: color-mix(in srgb, var(--wb-accent) var(--wb-filter-option-border-strength), var(--wb-border));
+  font-weight: 750;
+}
+.wb-filter-segmented button[aria-selected="true"]:hover {
+  color: color-mix(in srgb, var(--wb-accent) 78%, var(--wb-text));
+  background: color-mix(in srgb, var(--wb-accent) calc(var(--wb-filter-option-selected-surface-strength) + 3%), var(--wb-surface-hover));
+  border-color: color-mix(in srgb, var(--wb-accent) calc(var(--wb-filter-option-border-strength) + 6%), var(--wb-border));
+}
 .wb-page-period,
 .wb-select.wb-page-filter { box-sizing: border-box; height: var(--wb-page-header-control-height, 32px); min-height: var(--wb-page-header-control-height, 32px); flex: 0 0 auto; }
 .wb-page-period > button { box-sizing: border-box; height: calc(var(--wb-page-header-control-height, 32px) - 8px); min-height: 0; white-space: nowrap; }
@@ -462,12 +529,80 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
 .wb-table th.wb-action-column { z-index: 3; background: var(--wb-action-column-head-surface); }
 .wb-primary-action { height: var(--wb-primary-action-height); min-height: var(--wb-primary-action-height); padding: 0 12px; color: #fff; background: var(--wb-accent); border: 1px solid var(--wb-accent); border-radius: var(--wb-radius-sm); font-size: 11px; font-weight: 700; }
 .wb-primary-action:hover { background: color-mix(in srgb, var(--wb-accent) 88%, #000); border-color: color-mix(in srgb, var(--wb-accent) 88%, #000); }
-.wb-compact-action { box-sizing: border-box; height: var(--wb-compact-action-height); min-height: var(--wb-compact-action-height); }
+.wb-compact-action {
+  display: inline-flex;
+  box-sizing: border-box;
+  height: var(--wb-compact-action-height);
+  min-height: var(--wb-compact-action-height);
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  color: var(--wb-text-secondary);
+  background: var(--wb-control-surface);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color var(--wb-motion), background-color var(--wb-motion), border-color var(--wb-motion), box-shadow var(--wb-motion);
+}
+.wb-compact-action:hover { color: var(--wb-text); background: var(--wb-surface-hover); border-color: color-mix(in srgb, var(--wb-accent) 32%, var(--wb-border)); }
+.wb-compact-action:is(.is-primary, .wb-primary-action) { color: #fff; background: var(--wb-accent); border-color: var(--wb-accent); }
+.wb-compact-action:is(.is-primary, .wb-primary-action):hover { color: #fff; background: color-mix(in srgb, var(--wb-accent) 86%, #000); border-color: color-mix(in srgb, var(--wb-accent) 86%, #000); }
+.wb-compact-action:disabled { cursor: not-allowed; opacity: .52; }
 .wb-compact-action-group { display: flex; flex: 0 0 auto; flex-wrap: nowrap; align-items: center; gap: var(--wb-gap-xs); }
 .wb-boundary-note { color: var(--wb-text-muted); background: var(--wb-note-surface); border: 0; border-radius: var(--wb-radius-sm); }
 .wb-semantic-icon { fill: currentColor; }
 .wb-stage { display: inline-flex; min-height: 24px; align-items: center; padding: 0 8px; color: var(--wb-text-secondary); background: var(--wb-surface); border: 1px solid var(--wb-border); border-radius: 999px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 .wb-stage.is-risk { color: color-mix(in srgb, var(--wb-red) 84%, var(--wb-text)); background: color-mix(in srgb, var(--wb-red) 9%, var(--wb-surface)); border-color: color-mix(in srgb, var(--wb-red) 24%, transparent); }
+.wb-status-tag.wb-status-tag {
+  display: inline-flex;
+  width: max-content;
+  min-width: 0;
+  min-height: var(--wb-status-tag-height);
+  align-items: center;
+  justify-content: center;
+  padding: var(--wb-status-tag-padding);
+  color: color-mix(in srgb, var(--wb-tone) 72%, var(--wb-text));
+  background: color-mix(in srgb, var(--wb-tone) 9%, var(--wb-surface-strong));
+  border: 1px solid color-mix(in srgb, var(--wb-tone) 24%, var(--wb-border));
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+.wb-person-label.wb-person-label { display: inline-flex; width: max-content; min-width: 0; align-items: center; gap: 6px; color: var(--wb-text); line-height: 1.25; }
+.wb-avatar.wb-avatar {
+  display: inline-grid;
+  width: var(--wb-avatar-size);
+  height: var(--wb-avatar-size);
+  flex: 0 0 var(--wb-avatar-size);
+  place-items: center;
+  padding: 0;
+  color: var(--wb-avatar-foreground);
+  background: var(--wb-accent);
+  border: 0;
+  border-radius: 50%;
+  line-height: 0;
+}
+.wb-avatar.wb-avatar svg {
+  display: block;
+  width: var(--wb-avatar-icon-size);
+  height: var(--wb-avatar-icon-size);
+  color: inherit;
+  fill: currentColor;
+  stroke: currentColor;
+}
+.wb-avatar.wb-avatar :is(path, use, circle, rect, line, polyline, polygon) { color: inherit; fill: currentColor; }
+.wb-table .wb-status-tag.wb-status-tag { display: inline-flex; color: color-mix(in srgb, var(--wb-tone) 72%, var(--wb-text)); }
+.wb-table .wb-person-label.wb-person-label { display: inline-flex; color: var(--wb-text); }
+.wb-table .wb-avatar.wb-avatar { display: inline-grid; color: var(--wb-avatar-foreground); }
+.wb-table .wb-avatar.wb-avatar svg,
+.wb-table .wb-avatar.wb-avatar :is(path, use, circle, rect, line, polyline, polygon) { color: inherit; fill: currentColor; }
 .wb-table-foot { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; color: var(--wb-text-muted); font-size: 10px; }
 
 .wb-empty { display: grid; min-height: 220px; align-content: center; justify-items: center; padding: 24px; color: var(--wb-text-muted); text-align: center; }
@@ -479,6 +614,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
 .wb-equal-grid > * { display: flex; min-width: 0; flex-direction: column; }
 .wb-equal-grid > * > .wb-card { height: auto; flex: 1; }
 .wb-card-composition { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(var(--wb-composition-aside-min), .75fr); align-items: start; gap: var(--wb-edit-grid-gap); }
+.wb-flat-source-flow { display: flex; min-width: 0; flex-direction: column; gap: var(--wb-flat-source-gap, var(--wb-gap-md)); }
 .wb-card-composition[data-wb-layout="single"] { grid-template-columns: minmax(0, 1fr); }
 .wb-card-composition[data-wb-empty="true"] { display: none; }
 .wb-card-composition > [data-wb-card-key] { min-width: 0; }
@@ -497,6 +633,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
 @media (max-width: 900px) { .wb-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .wb-card-composition { grid-template-columns: minmax(0, 1fr); } .wb-card-composition > [data-wb-span="all"] { grid-column: auto; } .wb-analysis-group { grid-template-columns: 1fr; } }
 @media (max-width: 640px) {
   .wb-card { padding: 16px; }
+  .wb-flush-card > .wb-flush-body { padding: 16px; }
   .wb-card-head { align-items: stretch; flex-direction: column; }
   .wb-title-meta { align-self: flex-start; }
   .wb-metric-grid { grid-template-columns: 1fr; }
@@ -1496,6 +1633,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .wb-inner .wb-segmented { gap: 2px; padding: 4px; }
     .wb-inner .wb-segmented button { color: var(--muted); border-radius: 9px; font-weight: 600; transition: color var(--motion-fast) var(--ease-standard), background-color var(--motion-fast) var(--ease-standard); }
     .wb-inner .wb-segmented button:hover { color: var(--fg); background: rgba(255, 255, 255, 0.78); }
+    .wb-inner .wb-segmented button[aria-selected="true"]:hover { color: #fff; background: var(--wb-accent, var(--accent)); }
     .wb-inner .wb-segmented button.active { color: var(--accent-on); background: var(--accent); box-shadow: 0 8px 20px rgba(79, 140, 255, 0.24); }
     .wb-inner .wb-filter-select { padding-right: 34px; font-weight: 600; }
     .wb-inner .wb-summary,
@@ -2714,6 +2852,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .canvas-root.is-dark .workspace-tab.active { color: var(--canvas-text); background: var(--canvas-surface-strong); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28); }
     .canvas-root.is-dark .wb-inner .wb-segmented { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16); }
     .canvas-root.is-dark .wb-inner .wb-segmented button:hover { color: var(--fg); background: var(--canvas-surface-strong); }
+    .canvas-root.is-dark .wb-inner .wb-segmented button[aria-selected="true"]:hover { color: #fff; background: var(--wb-accent, var(--canvas-accent)); }
     .canvas-root.is-dark .wb-inner .wb-inline-composer { border-color: var(--border); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2); }
     .canvas-root.is-dark .wb-inner .wb-inline-composer:focus-within { border-color: color-mix(in srgb, var(--accent) 58%, var(--border)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent), 0 14px 32px rgba(0, 0, 0, 0.24); }
     .canvas-root.is-dark .wb-inner .wb-metric { color: var(--fg); background: color-mix(in srgb, var(--vg-icon-color) 12%, var(--surface-strong)); border: 1px solid color-mix(in srgb, var(--vg-icon-color) 28%, var(--border)) !important; }
@@ -2904,9 +3043,9 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       cursor: ew-resize;
       transition: opacity 140ms ease;
     }
-    .card-resize-handle::before { position: absolute; top: 50%; left: 4px; width: 4px; height: 44px; content: ""; background: var(--canvas-accent); border: 2px solid var(--canvas-panel); border-radius: 999px; box-shadow: 0 2px 8px color-mix(in srgb, var(--canvas-accent) 36%, transparent); transform: translateY(-50%); }
-    .card-resize-handle.is-left { left: -7px; }
-    .card-resize-handle.is-right { right: -7px; }
+    .card-resize-handle::before { position: absolute; top: 50%; left: 5px; width: 4px; height: 44px; content: ""; background: var(--canvas-accent); border: 2px solid var(--canvas-panel); border-radius: 999px; box-shadow: 0 2px 8px color-mix(in srgb, var(--canvas-accent) 36%, transparent); transform: translateY(-50%); }
+    .card-resize-handle.is-left { left: 0; }
+    .card-resize-handle.is-right { right: 0; }
     .canvas-root.edit-mode [data-resizable-card]:hover > .card-resize-handle.is-available,
     .canvas-root.is-resizing .card-resize-handle.is-active { display: block; opacity: 1; }
     .card-span-badge { display: none !important; }
@@ -2916,11 +3055,52 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .canvas-root [data-resizable-card].drop-left::after,
     .canvas-root [data-resizable-card].drop-right::after,
     .canvas-root [data-resizable-card].drop-top::after,
-    .canvas-root [data-resizable-card].drop-bottom::after { position: absolute; z-index: 24; content: ""; background: var(--canvas-accent); border-radius: 999px; box-shadow: 0 0 0 3px color-mix(in srgb, var(--canvas-accent) 18%, transparent); pointer-events: none; }
-    .canvas-root [data-resizable-card].drop-left::after { top: 8px; bottom: 8px; left: -5px; width: 3px; }
-    .canvas-root [data-resizable-card].drop-right::after { top: 8px; right: -5px; bottom: 8px; width: 3px; }
-    .canvas-root [data-resizable-card].drop-top::after { top: -5px; right: 8px; left: 8px; height: 3px; }
-    .canvas-root [data-resizable-card].drop-bottom::after { right: 8px; bottom: -5px; left: 8px; height: 3px; }
+    .canvas-root [data-resizable-card].drop-bottom::after { position: absolute; z-index: 30; content: ""; background: var(--canvas-accent); border-radius: 999px; box-shadow: var(--wb-edit-guide-shadow, 0 0 0 2px var(--canvas-panel), 0 0 0 4px color-mix(in srgb, var(--canvas-accent) 24%, transparent)); opacity: 1; pointer-events: none; }
+    .canvas-root [data-resizable-card].drop-left::after { top: 8px; bottom: 8px; left: var(--wb-edit-guide-inset, 2px); width: var(--wb-edit-guide-size, 4px); }
+    .canvas-root [data-resizable-card].drop-right::after { top: 8px; right: var(--wb-edit-guide-inset, 2px); bottom: 8px; width: var(--wb-edit-guide-size, 4px); }
+    .canvas-root [data-resizable-card].drop-top::after { top: var(--wb-edit-guide-inset, 2px); right: 8px; left: 8px; height: var(--wb-edit-guide-size, 4px); }
+    .canvas-root [data-resizable-card].drop-bottom::after { right: 8px; bottom: var(--wb-edit-guide-inset, 2px); left: 8px; height: var(--wb-edit-guide-size, 4px); }
+    .canvas-root [data-resizable-card][data-wb-hidden="true"] { display: none !important; }
+    .canvas-card-hide-button {
+      position: fixed;
+      z-index: 1250;
+      display: none;
+      width: var(--wb-card-hide-action-size, 32px);
+      height: var(--wb-card-hide-action-size, 32px);
+      place-items: center;
+      padding: 0;
+      color: #fff;
+      background: var(--canvas-danger, #ef6672);
+      border: 1px solid color-mix(in srgb, var(--canvas-danger, #ef6672) 82%, #fff);
+      border-radius: 8px;
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--canvas-danger, #ef6672) 28%, transparent);
+    }
+    .canvas-root.edit-mode .canvas-card-hide-button.is-visible { display: grid; }
+    .canvas-card-hide-button:hover { background: color-mix(in srgb, var(--canvas-danger, #ef6672) 86%, #000); }
+    .canvas-card-hide-button svg { width: 17px; height: 17px; }
+    .canvas-hidden-bar {
+      position: fixed;
+      z-index: 1240;
+      bottom: 20px;
+      left: 50%;
+      display: none;
+      min-height: var(--wb-hidden-bar-height, 40px);
+      align-items: center;
+      gap: 9px;
+      padding: 4px 5px 4px 14px;
+      color: var(--canvas-text);
+      background: var(--canvas-panel);
+      border: 1px solid var(--canvas-line);
+      border-radius: 999px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, .18);
+      transform: translateX(-50%);
+      backdrop-filter: blur(18px) saturate(130%);
+    }
+    .canvas-root.edit-mode .canvas-hidden-bar:not([hidden]) { display: flex; }
+    .canvas-hidden-bar strong { font-size: 11px; }
+    .canvas-hidden-count { display: grid; min-width: 24px; height: 24px; place-items: center; padding: 0 7px; color: #fff; background: var(--canvas-accent); border-radius: 999px; font: 800 10px/1 var(--wb-font-number, Inter, sans-serif); }
+    .canvas-hidden-restore { height: 32px; padding: 0 12px; color: #fff; background: var(--canvas-accent); border: 1px solid var(--canvas-accent); border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .canvas-root.is-dark .canvas-hidden-bar { background: var(--canvas-panel); box-shadow: 0 16px 34px rgba(0, 0, 0, .34); backdrop-filter: none; }
     .canvas-root.is-resizing { cursor: ew-resize; user-select: none; }
     .canvas-root.is-resizing iframe { pointer-events: none; }
     .canvas-toast { position: fixed; z-index: 1300; left: 50%; bottom: 28px; max-width: calc(100vw - 32px); padding: 9px 14px; color: #fff; background: rgba(18, 24, 34, .9); border-radius: 7px; font-size: 12px; opacity: 0; pointer-events: none; transform: translate(-50%, 10px); transition: opacity 160ms ease, transform 160ms ease; }
@@ -2954,7 +3134,42 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .canvas-workspace-tab:active { transform: translateY(1px); }
     .canvas-workspace-tab.active { color: var(--canvas-text); background: var(--canvas-panel); box-shadow: 0 1px 4px rgba(20, 34, 55, .12); }
     .canvas-panel { min-width: 0; }
-    #canvasTemplatePanel { display: flex; flex-direction: column; gap: var(--canvas-gap); }
+    #canvasHomePanel { display: flex; flex-direction: column; gap: var(--canvas-gap); }
+    #canvasHomePanel > [data-home-source-panel], #canvasDetailPanel > .detail-source-panel { min-width: 0; }
+    #canvasDetailPanel { display: flex; flex-direction: column; gap: var(--canvas-gap); }
+    /* 首页/详情页承接来源卡片，但不再呈现来源工作台的额外分组表面。 */
+    .canvas-flat-source-panel { display: flex; min-width: 0; flex-direction: column; gap: var(--canvas-gap); }
+    .canvas-flat-source-panel > .wb-inner,
+    .canvas-flat-source-panel > .company-canvas-page,
+    .canvas-flat-source-panel > .scope-canvas-page,
+    .canvas-flat-source-panel > .opportunity-insight-page,
+    .canvas-flat-source-panel > .customer-insight-page {
+      max-width: none;
+      padding: 0;
+      background: transparent;
+    }
+    .canvas-crm-navigation-toggle { display: inline-flex; height: 32px; align-items: center; gap: 8px; margin-left: auto; color: var(--canvas-muted); font-size: 11px; font-weight: 650; white-space: nowrap; cursor: pointer; }
+    .canvas-crm-navigation-toggle input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .canvas-crm-navigation-toggle .toggle-track { position: relative; display: inline-block; width: 34px; height: 20px; flex: 0 0 34px; background: var(--canvas-range-track); border: 1px solid var(--canvas-line); border-radius: 999px; transition: background-color 160ms ease, border-color 160ms ease; }
+    .canvas-crm-navigation-toggle .toggle-track::after { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; content: ""; background: var(--canvas-panel); border-radius: 50%; box-shadow: 0 1px 3px rgba(15, 23, 42, .22); transition: transform 160ms ease; }
+    .canvas-crm-navigation-toggle input:checked + .toggle-track { background: var(--canvas-accent); border-color: var(--canvas-accent); }
+    .canvas-crm-navigation-toggle input:checked + .toggle-track::after { transform: translateX(14px); }
+    .canvas-crm-navigation-toggle:focus-within .toggle-track { outline: 2px solid color-mix(in srgb, var(--canvas-accent) 42%, transparent); outline-offset: 2px; }
+    body.crm-navigation-mode { height: auto; min-height: 100%; overflow-x: clip; overflow-y: auto; }
+    .canvas-root.crm-navigation-enabled { min-height: 100%; height: auto; padding-right: 0; background: transparent; }
+    .canvas-root.crm-navigation-enabled.settings-open { padding-right: 360px; }
+    .app-root.canvas-navigation-host { height: auto; min-height: 100vh; }
+    .app-root.canvas-navigation-host .app-shell { height: auto; min-height: calc(100vh - 48px); }
+    .app-root.canvas-navigation-host .workspace-column { height: auto; min-height: calc(100vh - 48px); }
+    .app-root.canvas-navigation-host .workspace-column > .workspace-tabs,
+    .app-root.canvas-navigation-host #operationWorkbench,
+    .app-root.canvas-navigation-host #workspaceBuilder,
+    .app-root.canvas-navigation-host #workspaceEmpty { display: none !important; }
+    .app-root.canvas-navigation-host .workspace-card { min-height: calc(100vh - 96px); height: auto; padding: 0; overflow: visible; background: transparent; border: 0; box-shadow: none; }
+    .app-root.canvas-navigation-host .workspace-column { min-height: 0; padding: 0; }
+    .app-root.canvas-navigation-host .canvas-root .canvas-stage { min-height: 0; }
+    .app-root.canvas-navigation-host .canvas-root .canvas-toolbar { position: sticky; }
+    .canvas-root.is-dark .canvas-crm-navigation-toggle .toggle-track::after { background: var(--canvas-surface-strong); }
     .canvas-company-panel { padding-bottom: 8px; }
     .company-canvas-page { display: grid; gap: var(--canvas-gap); }
     .company-canvas-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 4px 4px 0; }
@@ -3215,6 +3430,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .canvas-toolbar .workspace-tab-list::-webkit-scrollbar { display: none; }
     .canvas-toolbar .workspace-tab { min-width: max-content; }
     .canvas-toolbar > .tool-button { flex: 0 0 auto; margin-left: auto; color: var(--canvas-text); }
+    .canvas-toolbar > .canvas-crm-navigation-toggle + .tool-button { margin-left: 0; }
     .canvas-toolbar > .tool-button:hover { color: var(--canvas-text); background: var(--canvas-surface-strong, var(--canvas-panel)); }
     .canvas-toolbar > .tool-button > svg { width: 18px; height: 18px; }
     .canvas-company-panel { padding-bottom: 0; }
@@ -3523,6 +3739,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
     .canvas-root.is-dark .quality-column:nth-child(2) .quality-alerts div:nth-child(2) { background: color-mix(in srgb, var(--vg-purple) 9%, #171e28); }
     @media (max-width: 760px) {
       .canvas-root.settings-open { padding-right: 100vw; }
+      .canvas-root.crm-navigation-enabled.settings-open { padding-right: 0; }
       .canvas-settings { width: 100vw; }
       .canvas-root.settings-open .canvas-toolbar,
       .canvas-root.settings-open .canvas-stage { visibility: hidden; }
@@ -3555,6 +3772,9 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       .canvas-root.settings-open.edit-mode #canvasCompanyPanel .wb-metric-grid > [data-resizable-card] { grid-column: span 6 !important; }
       .canvas-root.settings-open.edit-mode #canvasCompanyPanel .company-middle-grid > [data-resizable-card],
       .canvas-root.settings-open.edit-mode #canvasCompanyPanel .company-bi-grid > [data-resizable-card] { grid-column: 1 / -1 !important; }
+      .canvas-root.crm-navigation-enabled.settings-open .wb-header { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+      .canvas-root.crm-navigation-enabled.settings-open .wb-filters { width: 100%; max-width: 100%; justify-content: flex-start; overflow-x: auto; }
+      .canvas-root.crm-navigation-enabled.settings-open [data-edit-grid] > [data-resizable-card] { grid-column: 1 / -1 !important; }
     }
     @media (max-width: 900px) {
       .canvas-root.edit-mode [data-edit-grid] > [data-resizable-card] { grid-column: 1 / -1 !important; }
@@ -7067,7 +7287,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
 
   function register(root, workspaceKeys) {
     if (!root?.querySelectorAll) return [];
-    const allowed = new Set(workspaceKeys || ["company", "management-scope", "sales-business"]);
+    const allowed = new Set(workspaceKeys || ["home", "detail", "list"]);
     const routeTargets = new Set(Object.values(ROUTES));
     const registered = [];
     root.querySelectorAll("[data-canvas-panel] [data-workbench-action]").forEach((element) => {
@@ -7299,7 +7519,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       // A freshly selected save target is empty, so it cannot be used as the source.
       const sourceHtmlAtLoad = "<!doctype html>\n" + document.documentElement.outerHTML;
       const storageKey = "fxiaoke-workbench-canvas-settings-v1";
-      const defaults = { spacing: 16, radius: 16, theme: "classic", style: "rich", dark: false, language: "zh", editing: false, workspace: "template", routeOriginWorkspace: "company", cardLayout: {}, cardOrder: {}, cardGrid: {} };
+      const defaults = { spacing: 16, radius: 16, theme: "classic", style: "rich", dark: false, language: "zh", editing: false, workspace: "home", routeOriginWorkspace: "home", crmNavigation: false, cardLayout: {}, cardOrder: {}, cardGrid: {}, hiddenCards: [], hiddenCardState: {} };
       const savedConfigurationElement = document.getElementById("canvasSavedConfiguration");
       let embeddedConfiguration = {};
       try { embeddedConfiguration = JSON.parse(savedConfigurationElement?.textContent || "{}"); } catch (error) { embeddedConfiguration = {}; }
@@ -7315,25 +7535,23 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       canvasApp.innerHTML = `
         <header class="canvas-toolbar workspace-tabs wb-workspace-tab-bar">
           <div class="workspace-tab-list wb-workspace-tab-list" role="tablist" aria-label="工作台切换">
-            <button class="workspace-tab wb-workspace-tab active" id="canvasTemplateTab" type="button" role="tab" aria-selected="true" aria-controls="canvasTemplatePanel" tabindex="0" data-canvas-workspace="template">模板库</button>
-            <button class="workspace-tab wb-workspace-tab" id="canvasCompanyTab" type="button" role="tab" aria-selected="false" aria-controls="canvasCompanyPanel" tabindex="-1" data-canvas-workspace="company">公司经营</button>
-            <button class="workspace-tab wb-workspace-tab" id="canvasManagementScopeTab" type="button" role="tab" aria-selected="false" aria-controls="canvasManagementScopePanel" tabindex="-1" data-canvas-workspace="management-scope">我的管理范围</button>
-            <button class="workspace-tab wb-workspace-tab" id="canvasSalesBusinessTab" type="button" role="tab" aria-selected="false" aria-controls="canvasSalesBusinessPanel" tabindex="-1" data-canvas-workspace="sales-business">我的销售业务</button>
-            <button class="workspace-tab wb-workspace-tab" id="canvasOpportunityInsightTab" type="button" role="tab" aria-selected="false" aria-controls="canvasOpportunityInsightPanel" tabindex="-1" data-canvas-workspace="opportunity-insight">商机项目经营洞察</button>
-            <button class="workspace-tab wb-workspace-tab" id="canvasCustomerInsightTab" type="button" role="tab" aria-selected="false" aria-controls="canvasCustomerInsightPanel" tabindex="-1" data-canvas-workspace="customer-insight">客户经营洞察</button>
+            <button class="workspace-tab wb-workspace-tab active" id="canvasHomeTab" type="button" role="tab" aria-selected="true" aria-controls="canvasHomePanel" tabindex="0" data-canvas-workspace="home">首页</button>
+            <button class="workspace-tab wb-workspace-tab" id="canvasDetailTab" type="button" role="tab" aria-selected="false" aria-controls="canvasDetailPanel" tabindex="-1" data-canvas-workspace="detail">详情页</button>
             <button class="workspace-tab wb-workspace-tab" id="canvasListTab" type="button" role="tab" aria-selected="false" aria-controls="canvasListPanel" tabindex="-1" data-canvas-workspace="list">列表页</button>
           </div>
+          <label class="canvas-crm-navigation-toggle" for="canvasCrmNavigation"><span>显示CRM导航</span><input id="canvasCrmNavigation" type="checkbox"><span class="toggle-track" aria-hidden="true"></span></label>
           <button class="tool-button canvas-settings-button" id="canvasSettingsOpen" type="button" title="画布设置" aria-label="打开画布设置" aria-controls="canvasSettings" aria-expanded="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
           </button>
         </header>
         <main class="canvas-stage">
           <div class="canvas-board" id="canvasBoard" aria-label="工作台卡片画布">
-            <div class="canvas-panel" id="canvasTemplatePanel" role="tabpanel" aria-labelledby="canvasTemplateTab" data-canvas-panel="template">
-              <section class="workbench-zone" id="managementCanvas" aria-label="管理工作台卡片"></section>
-              <section class="workbench-zone" id="salesCanvas" aria-label="销售工作台卡片"></section>
-            </div>
-            <section class="canvas-panel canvas-company-panel" id="canvasCompanyPanel" role="tabpanel" aria-labelledby="canvasCompanyTab" data-canvas-panel="company" hidden>
+            <div class="canvas-panel" id="canvasHomePanel" role="tabpanel" aria-labelledby="canvasHomeTab" data-canvas-panel="home">
+            <section class="canvas-flat-source-panel wb-flat-source-flow" id="canvasTemplateSourcePanel" data-home-source-panel>
+                <section class="workbench-zone" id="managementCanvas" aria-label="管理工作台卡片"></section>
+                <section class="workbench-zone" id="salesCanvas" aria-label="销售工作台卡片"></section>
+              </section>
+            <section class="canvas-panel canvas-company-panel" id="canvasCompanyPanel" aria-label="公司经营" data-home-source-panel hidden>
               <div class="company-canvas-page wb-inner">
                 <header class="wb-header">
                   <div class="wb-title-group"><h1>公司经营</h1><p>公司整体经营视角 · 数据更新于 2026年8月10日 09:30</p></div>
@@ -7463,7 +7681,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
                 </section>
               </div>
             </section>
-            <section class="canvas-panel" id="canvasManagementScopePanel" role="tabpanel" aria-labelledby="canvasManagementScopeTab" data-canvas-panel="management-scope" hidden>
+            <section class="canvas-panel" id="canvasManagementScopePanel" aria-label="我的管理范围" data-home-source-panel hidden>
               <div class="scope-canvas-page wb-inner">
                 <header class="wb-header">
                   <div class="wb-title-group"><h1>我的管理范围</h1><p>行业大区、销售团队、项目推进与需要管理者协调的业务事项 · 数据更新于 2026年8月10日 09:30</p></div>
@@ -7558,7 +7776,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
               </div>
             </section>
 
-            <section class="canvas-panel" id="canvasSalesBusinessPanel" role="tabpanel" aria-labelledby="canvasSalesBusinessTab" data-canvas-panel="sales-business" hidden>
+            <section class="canvas-panel" id="canvasSalesBusinessPanel" aria-label="我的销售业务" data-home-source-panel hidden>
               <div class="scope-canvas-page wb-inner">
                 <header class="wb-header"><div class="wb-title-group"><h1>我的销售业务</h1><p>从今天要做的事出发，直接进入客户与商机项目完成销售工作 · 数据更新于 2026年8月10日 09:30</p></div><div class="wb-filters wb-page-control-group"><div class="wb-segmented wb-page-period" role="group" aria-label="个人销售统计周期"><button class="active" type="button" data-scope-period="本月" aria-pressed="true">本月</button><button type="button" data-scope-period="本季度" aria-pressed="false">本季度</button><button type="button" data-scope-period="近90天" aria-pressed="false">近90天</button></div></div></header>
 
@@ -7587,11 +7805,14 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
                 </div>
               </div>
             </section>
-            <section class="canvas-panel" id="canvasOpportunityInsightPanel" role="tabpanel" aria-labelledby="canvasOpportunityInsightTab" data-canvas-panel="opportunity-insight" data-wb-card-key="opportunity-insight-page-root" data-wb-default-grid="opportunity-insight-canvas" data-wb-card-grid="opportunity-insight-canvas" hidden>
+            </div>
+            <section class="canvas-panel" id="canvasDetailPanel" role="tabpanel" aria-labelledby="canvasDetailTab" data-canvas-panel="detail">
+            <section class="canvas-panel detail-source-panel" id="canvasOpportunityInsightPanel" aria-label="商机项目洞察" data-wb-card-key="opportunity-insight-page-root" data-wb-default-grid="opportunity-insight-canvas" data-wb-card-grid="opportunity-insight-canvas">
               ${window.WorkbenchOpportunityInsight ? window.WorkbenchOpportunityInsight.render() : ""}
             </section>
-            <section class="canvas-panel" id="canvasCustomerInsightPanel" role="tabpanel" aria-labelledby="canvasCustomerInsightTab" data-canvas-panel="customer-insight" data-wb-card-key="customer-insight-page-root" data-wb-default-grid="customer-insight-canvas" data-wb-card-grid="customer-insight-canvas" hidden>
+            <section class="canvas-panel detail-source-panel" id="canvasCustomerInsightPanel" aria-label="客户洞察" data-wb-card-key="customer-insight-page-root" data-wb-default-grid="customer-insight-canvas" data-wb-card-grid="customer-insight-canvas">
               ${window.WorkbenchCustomerInsight ? window.WorkbenchCustomerInsight.render() : ""}
+            </section>
             </section>
             <section class="canvas-panel" id="canvasListPanel" role="tabpanel" aria-labelledby="canvasListTab" data-canvas-panel="list" hidden>
               <div class="list-canvas-page wb-inner">
@@ -7696,6 +7917,8 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
             </section>
           </div>
         </aside>
+        <button class="canvas-card-hide-button" id="canvasCardHide" type="button" aria-label="隐藏卡片" title="隐藏卡片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path></svg></button>
+        <div class="canvas-hidden-bar" id="canvasHiddenBar" role="status" aria-live="polite" hidden><strong>已隐藏</strong><span class="canvas-hidden-count" id="canvasHiddenCount">0</span><button class="canvas-hidden-restore" id="canvasRestoreHidden" type="button">还原全部</button></div>
         <div class="canvas-toast" id="canvasToast" role="status" aria-live="polite"></div>`;
 
       appRoot.before(canvasApp);
@@ -7708,12 +7931,36 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       salesWorkbench.removeAttribute("role");
       document.getElementById("managementCanvas").appendChild(managementWorkbench);
       document.getElementById("salesCanvas").appendChild(salesWorkbench);
+      const dedupeCanvasContent = () => {
+        [
+          "#canvasCompanyPanel > .company-canvas-page > .wb-header",
+          "#canvasManagementScopePanel > .scope-canvas-page > .wb-header",
+          "#canvasSalesBusinessPanel > .scope-canvas-page > .wb-header",
+          "#canvasCustomerInsightPanel > .customer-insight-page > .customer-page-header",
+          "[data-od-id=\"company-quick-strip\"]",
+          "[data-od-id=\"company-baseline\"]",
+          "[data-od-id=\"scope-quick-grid\"]",
+          "[data-od-id=\"scope-baseline-card\"]",
+          "[data-od-id=\"scope-major-project-risks\"]",
+          "[data-od-id=\"personal-quick-grid\"]",
+          "[data-od-id=\"personal-project-warnings\"]",
+          "[data-od-id=\"customer-insight-record\"]"
+        ].forEach((selector) => canvasApp.querySelectorAll(selector).forEach((node) => node.remove()));
+        canvasApp.querySelectorAll("[data-home-source-panel], .detail-source-panel").forEach((panel) => {
+          panel.hidden = false;
+          panel.classList.add("canvas-flat-source-panel", "wb-flat-source-flow");
+          panel.removeAttribute("data-canvas-subpanel");
+        });
+      };
+      dedupeCanvasContent();
       appRoot.hidden = true;
       appRoot.setAttribute("aria-hidden", "true");
       requestAnimationFrame(() => window.dispatchEvent(new Event("workbench-layout-change")));
 
       const settingsPanel = document.getElementById("canvasSettings");
       const settingsOpen = document.getElementById("canvasSettingsOpen");
+      const crmNavigationInput = document.getElementById("canvasCrmNavigation");
+      const workspaceCard = document.getElementById("workspaceCard");
       const settingsClose = document.getElementById("canvasSettingsClose");
       const scrim = document.getElementById("canvasScrim");
       const spacingInput = document.getElementById("canvasSpacing");
@@ -7724,6 +7971,10 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       const saveButton = document.getElementById("canvasSave");
       const exportButton = document.getElementById("canvasExport");
       const resetButton = document.getElementById("canvasReset");
+      const cardHideButton = document.getElementById("canvasCardHide");
+      const hiddenBar = document.getElementById("canvasHiddenBar");
+      const hiddenCount = document.getElementById("canvasHiddenCount");
+      const restoreHiddenButton = document.getElementById("canvasRestoreHidden");
       const toast = document.getElementById("canvasToast");
       const languageTabs = [...document.querySelectorAll("[data-canvas-language]")];
       const styleOptions = [...document.querySelectorAll("[data-canvas-style]")];
@@ -7737,6 +7988,10 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       } catch (error) {
         state = { ...defaults, ...embeddedConfiguration };
       }
+      const workspaceMigration = { template: "home", company: "home", "management-scope": "home", "sales-business": "home", "opportunity-insight": "detail", "customer-insight": "detail" };
+      state.workspace = workspaceMigration[state.workspace] || state.workspace;
+      state.routeOriginWorkspace = workspaceMigration[state.routeOriginWorkspace] || state.routeOriginWorkspace;
+      state.crmNavigation = Boolean(state.crmNavigation);
       state.editing = false;
 
       const selectCanvasWorkspace = (workspace, focus = false) => {
@@ -7763,11 +8018,36 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         if (focus) activeTab.focus();
       };
 
+      const syncCrmNavigationHost = () => {
+        const enabled = Boolean(state.crmNavigation);
+        const mountedInShell = workspaceCard && canvasApp.parentElement === workspaceCard;
+        if (enabled && workspaceCard && !mountedInShell) workspaceCard.appendChild(canvasApp);
+        if (!enabled && mountedInShell) appRoot.before(canvasApp);
+        document.body.classList.toggle("canvas-mode", !enabled);
+        document.body.classList.toggle("crm-navigation-mode", enabled);
+        appRoot.hidden = !enabled;
+        appRoot.setAttribute("aria-hidden", String(!enabled));
+        appRoot.classList.toggle("canvas-navigation-host", enabled);
+        canvasApp.classList.toggle("crm-navigation-enabled", enabled);
+      };
+
       const save = () => {
         try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch (error) { /* Storage is optional. */ }
       };
 
       const translationPairs = [
+        ["隐藏卡片", "Hide card"],
+        ["还原全部", "Restore all"],
+        ["已隐藏", "Hidden"],
+        ["显示CRM导航", "Show CRM navigation"],
+        ["首页", "Home"],
+        ["详情页", "Detail"],
+        ["模板库", "Template library"],
+        ["商机项目洞察", "Opportunity project insight"],
+        ["客户洞察", "Customer insight"],
+        ["首页工作台切换", "Home workbench switcher"],
+        ["详情工作台切换", "Detail workbench switcher"],
+        ["已转到首页", "Switched to Home"],
         ["商机项目经营洞察", "Opportunity project insight"],
         ["客户经营洞察", "Customer operating insight"],
         ["模板库", "Template library"],
@@ -8494,8 +8774,11 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       state.cardGrid = state.cardGrid && typeof state.cardGrid === "object"
         ? Object.fromEntries(Object.entries(state.cardGrid).map(([key, gridKey]) => [key, legacyGridKeys[gridKey] || gridKey]))
         : {};
+      state.hiddenCards = Array.isArray(state.hiddenCards) ? [...new Set(state.hiddenCards.filter((key) => typeof key === "string"))] : [];
+      state.hiddenCardState = state.hiddenCardState && typeof state.hiddenCardState === "object" ? state.hiddenCardState : {};
 
       const editGridSpecs = [
+        { selector: "#canvasHomePanel", key: "home-root-grid", scope: "home", cardsSelector: ":scope > .workbench-zone, :scope > [data-home-source-panel]", layout: [[1, 12], [1, 12], [1, 12], [1, 12], [1, 12]] },
         { selector: "#managementWorkbench", key: "management-root-grid", scope: "management", cardsSelector: ":scope > .wb-hero-grid, :scope > .wb-section, :scope > .wb-priority-grid, :scope > .wb-analysis-grid, :scope > .wb-quick-grid", layout: [[1, 12], [1, 12], [1, 12], [1, 12], [1, 12], [1, 12]] },
         { selector: "#managementWorkbench .wb-hero-grid", key: "management-hero-grid", scope: "management", layout: [[1, 8], [9, 4]] },
         { selector: "#managementWorkbench .wb-metric-grid", key: "management-metric-grid", scope: "management", layout: [[1, 3], [4, 3], [7, 3], [10, 3]] },
@@ -8524,6 +8807,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         { selector: "#canvasCustomerInsightPanel .customer-insight-page", key: "customer-insight-page-grid", scope: "customer-insight", cardsSelector: ":scope > .customer-record-card, :scope > .customer-metric-grid, :scope > .customer-mainline-card, :scope > .customer-analysis-grid", layout: [[1, 12], [1, 12], [1, 12], [1, 12]] },
         { selector: "#canvasCustomerInsightPanel .customer-metric-grid", key: "customer-insight-metric-grid", scope: "customer-insight", layout: [[1, 3], [4, 3], [7, 3], [10, 3]] },
         { selector: "#canvasCustomerInsightPanel .customer-analysis-grid", key: "customer-insight-analysis-grid-v3", scope: "customer-insight", layout: [[1, 7], [8, 5], [1, 5], [6, 7], [1, 7], [8, 5]] },
+        { selector: "#canvasDetailPanel", key: "detail-root-grid", scope: "detail", cardsSelector: ":scope > .detail-source-panel", layout: [[1, 12], [1, 12]] },
         { selector: "#canvasListPanel .list-canvas-page", key: "list-page-grid", scope: "list-page", layout: [[1, 12], [1, 12], [1, 12]] }
       ];
       const editableCards = [];
@@ -8581,8 +8865,12 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
           updateCard(card, layout);
         });
       });
-      const getEditableCard = (element) => editableCards.find((entry) => entry.card === element.closest("[data-resizable-card]"));
-      const entriesForGrid = (grid) => [...grid.children].map((card) => editableCards.find((entry) => entry.card === card)).filter(Boolean);
+      const editableCardKeys = new Set(editableCards.map((entry) => entry.key));
+      state.hiddenCards = state.hiddenCards.filter((key) => editableCardKeys.has(key));
+      const hiddenCardKeys = new Set(state.hiddenCards);
+      const getEditableCard = (element) => editableCards.find((entry) => entry.card === element.closest?.("[data-resizable-card]"));
+      const allEntriesForGrid = (grid) => [...grid.children].map((card) => editableCards.find((entry) => entry.card === card)).filter(Boolean);
+      const entriesForGrid = (grid) => allEntriesForGrid(grid).filter((entry) => !hiddenCardKeys.has(entry.key));
       editableCards.forEach((entry) => {
         const storedGrid = gridByKey.get(state.cardGrid[entry.key]);
         if (!storedGrid || storedGrid === entry.grid || gridScopes.get(storedGrid) !== entry.scope || entry.card === storedGrid || entry.card.contains(storedGrid)) return;
@@ -8592,7 +8880,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       });
       gridByKey.forEach((grid, gridKey) => {
         const storedOrder = Array.isArray(state.cardOrder[gridKey]) ? state.cardOrder[gridKey] : [];
-        const defaultEntries = entriesForGrid(grid).sort((a, b) => a.sequence - b.sequence);
+        const defaultEntries = allEntriesForGrid(grid).sort((a, b) => a.sequence - b.sequence);
         const entriesByKey = new Map(defaultEntries.map((entry) => [entry.key, entry]));
         const storedKeys = storedOrder.filter((key) => entriesByKey.has(key));
         const storedKeySet = new Set(storedKeys);
@@ -8649,7 +8937,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         state.cardLayout = state.cardLayout || {};
         state.cardOrder = state.cardOrder || {};
         state.cardGrid = state.cardGrid || {};
-        const entries = entriesForGrid(grid);
+        const entries = allEntriesForGrid(grid);
         entries.forEach((entry) => {
           state.cardLayout[entry.key] = { ...entry.layout };
           state.cardGrid[entry.key] = grid.dataset.editGridKey;
@@ -8675,6 +8963,110 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         refreshSharedHandles(grid);
         syncEmptyGrid(grid);
       });
+
+      let activeHideEntry = null;
+      const hideCardHideButton = () => {
+        activeHideEntry = null;
+        cardHideButton.classList.remove("is-visible");
+      };
+      const positionCardHideButton = () => {
+        if (!state.editing || !activeHideEntry || hiddenCardKeys.has(activeHideEntry.key)) {
+          hideCardHideButton();
+          return;
+        }
+        const rect = activeHideEntry.card.getBoundingClientRect();
+        if (rect.width < 1 || rect.height < 1 || rect.bottom < 0 || rect.top > window.innerHeight) {
+          hideCardHideButton();
+          return;
+        }
+        const size = 32;
+        cardHideButton.style.left = `${Math.max(6, Math.min(window.innerWidth - size - 6, rect.right - size - 8))}px`;
+        cardHideButton.style.top = `${Math.max(6, rect.top + 8)}px`;
+        cardHideButton.classList.add("is-visible");
+      };
+      const showCardHideButton = (entry) => {
+        if (!state.editing || !entry || hiddenCardKeys.has(entry.key)) return;
+        activeHideEntry = entry;
+        positionCardHideButton();
+      };
+      const updateHiddenUi = () => {
+        const validKeys = [...hiddenCardKeys].filter((key) => editableCardKeys.has(key));
+        state.hiddenCards = validKeys;
+        hiddenCount.textContent = String(validKeys.length);
+        hiddenBar.hidden = validKeys.length === 0;
+        editableCards.forEach((entry) => {
+          const hidden = hiddenCardKeys.has(entry.key);
+          entry.card.hidden = hidden;
+          entry.card.dataset.wbHidden = String(hidden);
+          entry.card.setAttribute("aria-hidden", String(hidden));
+        });
+        gridByKey.forEach((grid) => {
+          refreshSharedHandles(grid);
+          syncEmptyGrid(grid);
+        });
+        if (!state.editing) hideCardHideButton();
+      };
+      const hideEditableCard = (entry) => {
+        if (!entry || hiddenCardKeys.has(entry.key)) return;
+        const children = [...entry.grid.children];
+        state.hiddenCardState[entry.key] = {
+          grid: entry.grid.dataset.editGridKey,
+          index: children.indexOf(entry.card),
+          layout: { ...entry.layout }
+        };
+        hiddenCardKeys.add(entry.key);
+        updateHiddenUi();
+        hideCardHideButton();
+        save();
+        showToast("卡片已隐藏");
+      };
+      const restoreAllHiddenCards = () => {
+        const restorations = [...hiddenCardKeys].map((key) => {
+          const entry = editableCards.find((item) => item.key === key);
+          return entry ? { entry, snapshot: state.hiddenCardState[key] || {} } : null;
+        }).filter(Boolean).sort((a, b) => (a.snapshot.index ?? a.entry.sequence) - (b.snapshot.index ?? b.entry.sequence));
+        restorations.forEach(({ entry, snapshot }) => {
+          const targetGrid = gridByKey.get(snapshot.grid) || entry.defaultGrid;
+          const targetIndex = Math.max(0, Number.isInteger(snapshot.index) ? snapshot.index : targetGrid.children.length);
+          const reference = targetGrid.children[targetIndex] || null;
+          targetGrid.insertBefore(entry.card, reference);
+          entry.grid = targetGrid;
+          entry.layout = snapshot.layout && typeof snapshot.layout === "object" ? { ...snapshot.layout } : { ...entry.defaultLayout };
+          updateCard(entry.card, entry.layout);
+          entry.card.dataset.wbCardGrid = targetGrid.dataset.editGridKey;
+        });
+        hiddenCardKeys.clear();
+        state.hiddenCardState = {};
+        updateHiddenUi();
+        gridByKey.forEach((grid) => persistGrid(grid));
+        save();
+        showToast("已还原全部卡片");
+      };
+      canvasApp.addEventListener("pointerover", (event) => {
+        if (event.target.closest("#canvasCardHide")) return;
+        const entry = getEditableCard(event.target);
+        if (entry) showCardHideButton(entry);
+        else hideCardHideButton();
+      });
+      canvasApp.addEventListener("focusin", (event) => {
+        const entry = getEditableCard(event.target);
+        if (entry) showCardHideButton(entry);
+      });
+      canvasApp.addEventListener("pointerleave", (event) => {
+        if (event.relatedTarget === cardHideButton || cardHideButton.contains(event.relatedTarget)) return;
+        hideCardHideButton();
+      });
+      cardHideButton.addEventListener("click", () => hideEditableCard(activeHideEntry));
+      cardHideButton.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        const card = activeHideEntry?.card;
+        hideCardHideButton();
+        card?.focus?.();
+      });
+      restoreHiddenButton.addEventListener("click", restoreAllHiddenCards);
+      window.addEventListener("resize", positionCardHideButton);
+      document.addEventListener("scroll", positionCardHideButton, true);
+      updateHiddenUi();
 
       let resizeSession = null;
       canvasApp.addEventListener("pointerdown", (event) => {
@@ -8844,20 +9236,26 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         state.radius = Math.min(24, Math.max(0, Number(state.radius) || 0));
         state.language = state.language === "en" ? "en" : "zh";
         state.style = state.style === "minimal" ? "minimal" : "rich";
+        state.workspace = ["home", "detail", "list"].includes(state.workspace) ? state.workspace : defaults.workspace;
+        state.crmNavigation = Boolean(state.crmNavigation);
         state.cardLayout = state.cardLayout && typeof state.cardLayout === "object" ? state.cardLayout : {};
         state.cardOrder = state.cardOrder && typeof state.cardOrder === "object" ? state.cardOrder : {};
         state.cardGrid = state.cardGrid && typeof state.cardGrid === "object" ? state.cardGrid : {};
+        state.hiddenCards = [...hiddenCardKeys];
+        state.hiddenCardState = state.hiddenCardState && typeof state.hiddenCardState === "object" ? state.hiddenCardState : {};
         if (!document.querySelector(`[data-canvas-theme="${state.theme}"]`)) state.theme = defaults.theme;
         canvasApp.dataset.theme = state.theme;
         canvasApp.dataset.wbStyle = state.style;
         canvasApp.classList.toggle("is-dark", Boolean(state.dark));
         canvasApp.classList.toggle("edit-mode", Boolean(state.editing));
+        syncCrmNavigationHost();
         canvasApp.style.setProperty("--canvas-gap", `${state.spacing}px`);
         canvasApp.style.setProperty("--canvas-radius", `${state.radius}px`);
         selectCanvasWorkspace(state.workspace);
         spacingInput.value = state.spacing;
         radiusInput.value = state.radius;
         darkInput.checked = Boolean(state.dark);
+        if (crmNavigationInput) crmNavigationInput.checked = state.crmNavigation;
         spacingValue.value = `${state.spacing}px`;
         radiusValue.value = `${state.radius}px`;
         updateRangeProgress(spacingInput);
@@ -8874,6 +9272,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
           button.setAttribute("aria-selected", String(selected));
           button.tabIndex = selected ? 0 : -1;
         });
+        updateHiddenUi();
         applyLanguage();
       };
       const openPanel = () => {
@@ -8888,6 +9287,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       };
       const closePanel = (restoreFocus = true) => {
         state.editing = false;
+        hideCardHideButton();
         apply();
         settingsPanel.classList.remove("open");
         canvasApp.classList.remove("settings-open");
@@ -8902,21 +9302,20 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
       };
-      const routableWorkspaces = new Set(["company", "management-scope", "sales-business"]);
+      const routableWorkspaces = new Set(["home"]);
       let routeOriginWorkspace = routableWorkspaces.has(state.routeOriginWorkspace)
         ? state.routeOriginWorkspace
-        : routableWorkspaces.has(state.workspace) ? state.workspace : "company";
+        : routableWorkspaces.has(state.workspace) ? state.workspace : "home";
       const routeLabels = {
         list: { zh: "列表页", en: "List" },
         "customer-insight": { zh: "客户经营洞察", en: "Customer operating insight" },
         "opportunity-insight": { zh: "商机项目经营洞察", en: "Opportunity project insight" }
       };
-      const workspaceReturnTarget = () => routableWorkspaces.has(routeOriginWorkspace) ? routeOriginWorkspace : "company";
+      const workspaceReturnTarget = () => routableWorkspaces.has(routeOriginWorkspace) ? routeOriginWorkspace : "home";
+      const workspaceForRoute = (target) => target === "customer-insight" || target === "opportunity-insight" ? "detail" : target;
       const updateListBackTarget = () => {
         const back = canvasApp.querySelector("[data-list-back]");
-        const labels = state.language === "en"
-          ? { company: "Company operations", "management-scope": "My management scope", "sales-business": "My sales business" }
-          : { company: "公司经营", "management-scope": "我的管理范围", "sales-business": "我的销售业务" };
+        const labels = state.language === "en" ? { home: "Home" } : { home: "首页" };
         if (!back) return;
         const label = labels[workspaceReturnTarget()] || labels.company;
         const backLabel = state.language === "en" ? `Back to ${label}` : `返回${label}`;
@@ -8924,24 +9323,25 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         back.title = backLabel;
       };
       const navigateToWorkspace = (target, trigger) => {
-        if (!workspaceTabs.some((tab) => tab.dataset.canvasWorkspace === target)) return false;
+        const workspaceTarget = workspaceForRoute(target);
+        if (!workspaceTabs.some((tab) => tab.dataset.canvasWorkspace === workspaceTarget)) return false;
         if (routableWorkspaces.has(state.workspace)) {
           routeOriginWorkspace = state.workspace;
           state.routeOriginWorkspace = routeOriginWorkspace;
         }
-        selectCanvasWorkspace(target, true);
+        selectCanvasWorkspace(workspaceTarget, true);
         requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
         if (target === "list") updateListBackTarget();
         save();
         const routeLabel = routeLabels[target] || { zh: target, en: target };
         showToast(state.language === "en" ? `Switched to ${routeLabel.en}` : `已转到${routeLabel.zh}`);
-        trigger?.setAttribute("aria-controls", workspaceTabs.find((tab) => tab.dataset.canvasWorkspace === target)?.getAttribute("aria-controls") || "");
+        trigger?.setAttribute("aria-controls", workspaceTabs.find((tab) => tab.dataset.canvasWorkspace === workspaceTarget)?.getAttribute("aria-controls") || "");
         return true;
       };
       if (window.WorkbenchWorkspaceRouting) window.WorkbenchWorkspaceRouting.register(canvasApp);
       if (window.WorkbenchOpportunityInsight) window.WorkbenchOpportunityInsight.mount(canvasApp, { showToast });
       if (window.WorkbenchCustomerInsight) window.WorkbenchCustomerInsight.mount(canvasApp, { showToast });
-      const configurationPayload = () => ({ ...state, editing: false, version: 3, savedAt: new Date().toISOString() });
+      const configurationPayload = () => ({ ...state, editing: false, version: 4, savedAt: new Date().toISOString() });
       const htmlWithConfiguration = (source, payload) => {
         const startTag = '<script type="application/json" id="canvasSavedConfiguration">';
         const endTag = "</" + "script>";
@@ -9011,6 +9411,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       spacingInput.addEventListener("input", () => { state.spacing = Number(spacingInput.value); apply(); save(); });
       radiusInput.addEventListener("input", () => { state.radius = Number(radiusInput.value); apply(); save(); });
       darkInput.addEventListener("change", () => { state.dark = darkInput.checked; apply(); save(); });
+      crmNavigationInput?.addEventListener("change", () => { state.crmNavigation = crmNavigationInput.checked; apply(); save(); });
       saveButton.addEventListener("click", saveConfigurationToHtml);
       exportButton.addEventListener("click", exportConfiguration);
       styleOptions.forEach((button, index) => {
@@ -9018,7 +9419,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         button.addEventListener("keydown", (event) => {
           if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
           event.preventDefault();
-          let nextIndex = index;
+          let nextIndex = groupTabs.indexOf(button);
           if (event.key === 'ArrowLeft') nextIndex = (index - 1 + styleOptions.length) % styleOptions.length;
           if (event.key === 'ArrowRight') nextIndex = (index + 1) % styleOptions.length;
           if (event.key === 'Home') nextIndex = 0;
@@ -9055,8 +9456,12 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
       });
       resetButton.addEventListener("click", () => {
         const editing = settingsPanel.classList.contains("open");
-        state = { ...defaults, editing, cardLayout: {}, cardOrder: {}, cardGrid: {} };
+        hiddenCardKeys.clear();
+        state = { ...defaults, editing, cardLayout: {}, cardOrder: {}, cardGrid: {}, hiddenCards: [], hiddenCardState: {} };
         editableCards.forEach((entry) => {
+          entry.card.hidden = false;
+          entry.card.dataset.wbHidden = "false";
+          entry.card.setAttribute("aria-hidden", "false");
           entry.grid = entry.defaultGrid;
           entry.layout = { ...entry.defaultLayout };
           entry.defaultGrid.appendChild(entry.card);
@@ -9082,7 +9487,7 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         if (routeTrigger && navigateToWorkspace(routeTrigger.dataset.wbRoute, routeTrigger)) return;
         const listBack = event.target.closest("[data-list-back]");
         if (listBack) {
-          const returnWorkspace = workspaceReturnTarget();
+        const returnWorkspace = workspaceReturnTarget();
           selectCanvasWorkspace(returnWorkspace, true);
           save();
           return;
@@ -9147,9 +9552,9 @@ select.wb-select { width: 100%; height: var(--wb-control-height); padding: 0 30p
         }
         const goSalesBusiness = event.target.closest("[data-go-sales-business]");
         if (goSalesBusiness) {
-          selectCanvasWorkspace("sales-business", true);
+          selectCanvasWorkspace("home", true);
           save();
-          showToast("已转到我的销售业务");
+          showToast("已转到首页");
         }
         const companyPeriod = event.target.closest("[data-company-period]");
         if (companyPeriod) {

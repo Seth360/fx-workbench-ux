@@ -1,4 +1,4 @@
 interface:
   display_name: "FX Workbench UX"
-  short_description: "从素材生成带完整画布配置的多页签工作台 HTML"
-  default_prompt: "使用 $fx-workbench-ux 根据我提供的需求和素材生成可打开的多页签工作台 HTML。"
+  short_description: "从素材生成或重生成带完整画布配置的工作台 HTML"
+  default_prompt: "使用 $fx-workbench-ux 根据我提供的需求和素材生成完整工作台 HTML；即使我只说美化或优化现有 HTML，也按规范结构重新生成。"

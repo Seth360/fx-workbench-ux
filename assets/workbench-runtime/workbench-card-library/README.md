@@ -1,8 +1,8 @@
 # AI工作台UX规范
 
 主题 ID：`ai-workbench-ux`  
-版本：`1.4.28`  
-基准页面：`../fxiaoke-workbench-canvas.html` 的“模板库”与“公司经营”页签。
+版本：`1.4.32`
+基准页面：`../fxiaoke-workbench-canvas.html` 的“首页”“详情页”和“列表页”工作区；首页/详情页直接承载去重后的来源卡片，不再套来源子页签或额外分组表面。
 
 本目录是工作台新卡片的唯一设计与交付位置。任何人或 AI 工具新增、改造卡片前，必须完整阅读 [CARD_SPEC.md](./CARD_SPEC.md)，复用 [tokens.css](./tokens.css) 和 [components.css](./components.css)，并把最终卡片文件放入 `cards/`。禁止在项目其他目录散落新的卡片实现。
 
@@ -16,6 +16,8 @@
 6. 在 `index.html` 添加卡片入口或示例，便于视觉回归。
 7. 每次收到新的 UI 修正意见，都必须同步更新 `CARD_SPEC.md`、公共 Token/组件、`AI_PROMPT.md`、目录示例和 `CHANGELOG.md`，不能只修实施页面。
 
+当用户对现有 HTML 只说“按照 Skill 美化”“优化页面”“调整风格”或其他宽泛改造要求时，默认执行完整重生成：输入文件用于提取业务事实和交互，输出从 bundled canvas 按规范结构重组为完整 HTML，不在旧 DOM 上叠加覆盖样式。只有明确指定保留现有 DOM、只修某个问题或最小改动时，才走增量编辑。
+
 顶部工作台导航使用 `.wb-workspace-tab-bar > .wb-workspace-tab-list`。页签列表的 Surface 仅包裹内容，不扩张为通栏；末端工具独立靠右，窄屏由页签列表自身横向滚动。
 
 页面级页头使用 `.wb-header > .wb-title-group` 的单列结构，标题在上、说明在下；34px 图标列只用于卡片标题，禁止页面标题因误入图标列而逐字竖排。
@@ -25,6 +27,8 @@
 相邻权威记录已呈现同一身份时，后续摘要使用 `.wb-summary-metric-grid` 直接承载不重复的指标；上游/下游关系使用 `.wb-relation-flow` 与 `.wb-relation-branch` 纵向连接。关系方向清楚时可移除冗余可见层级标签，但须保留双语 `aria-label`；三分支使用 `.is-three-way` 让横线连接全部三条竖线。成对分析卡在容器足够宽时使用共享 6/12 + 6/12 或 5/12 + 7/12 跨度，只有内容宽度不足时才降为单列。
 
 同一页头的多个紧凑文字命令使用 `.wb-compact-action-group` 横向排列，并为每个按钮增加 `.wb-compact-action`，统一保持 32px 高度。
+
+列表结果分组使用透明无投影的 `.wb-filter-segmented`，不使用页签式玻璃底板和白字反白；表格状态使用内容宽度的 `.wb-status-tag`，负责人使用 `.wb-person-label > .wb-avatar` 保证亮色 SVG 居中。贴边卡必须让 `.wb-flush-head` 与 `.wb-flush-body` 成为卡片直接子项，正文桌面保留 `16px 20px 20px`、手机保留 `16px` 内边距。
 
 经营基本盘、当前阶段等紧凑四指标摘要使用 `.wb-compact-baseline-card`，以共享标题/元信息结构和指标网格减少内边距，不再维护页面私有的大留白摘要样式。
 

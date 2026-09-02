@@ -1,0 +1,51 @@
+# UI 回归反馈回写模板
+
+这份模板用于处理“其他人拿到 Skill 后生成的页面有多个 UI 问题”。附件 HTML、截图和浏览器批注是证据，不是新的规范来源。
+
+## 1. 记录样本
+
+```text
+样本文件：/absolute/path/to/generated.html
+来源请求/原型：/absolute/path/to/source.html 或截图说明
+复现视口：1440x900 / 1024x768 / 390x844
+主题状态：浅色/深色，色系，中文/English，设置抽屉开关
+问题编号：R-YYYYMMDD-01
+```
+
+## 2. 每条问题的最小记录
+
+| 字段 | 内容 |
+| --- | --- |
+| 现象 | 用户看到的具体错位、缺失、溢出或交互失效 |
+| DOM/CSS 证据 | 选择器、属性、计算尺寸、截图或校验器输出 |
+| 根因 | 运行时缺失、共享组件被覆盖、页面适配错误或数据缺失 |
+| 可泛化规则 | 能约束下一次生成且不依赖单页文案的“必须/禁止”句子 |
+| 影响层 | runtime / token-component / card-adapter / data-only |
+| 验证 | 要运行的静态命令、浏览器状态和预期结果 |
+
+## 3. 分层决策
+
+- **runtime**：设置抽屉、顶栏、编辑态、拖拽引导、隐藏/还原、保存、资源内联。缺失时从 `assets/workbench-runtime/fxiaoke-workbench-canvas.html` 重新生成；不要在业务页复制一个近似实现。
+- **token-component**：图标、页头筛选、卡片密度、表格、图表、主题和响应式规则。同步 `CARD_SPEC.md`、`tokens.css`、`components.css`、模板/目录示例、`AI_PROMPT.md`、`README.md`、`AGENTS.md` 和 `CHANGELOG.md`。
+- **card-adapter**：业务结构、字段、文案、单位和单页交互。只修改 `cards/<card-name>/` 或页面适配，并更新来源覆盖清单。
+- **data-only**：事实数值或状态变化。不要为了单个样本提升规范版本。
+
+## 4. 交付门禁
+
+```bash
+node /absolute/path/to/fx-workbench-ux/scripts/verify_canvas_runtime.mjs /absolute/path/to/generated.html
+node /absolute/path/to/workbench-card-library/scripts/verify_standalone_canvas.mjs /absolute/path/to/generated.html
+unzip -t /absolute/path/to/fx-workbench-ux-<date>.zip
+```
+
+浏览器至少检查 1440x900、1024x768、390x844；设置抽屉打开后仍要验证页签、主题、语言、保存/重开、拖拽、隐藏/还原、无页面级横向溢出。特别确认：
+
+- `#canvasCardHide`、`#canvasHiddenBar`、`#canvasRestoreHidden`、`hiddenCards`、`hiddenCardState` 和 `--wb-edit-guide-*` 同时存在且可操作；
+- 图标容器由语义 SVG/图标库构成，不包含 `DX`、`人`、`日`、`AI`、`⌕` 等可见字符替代图形；
+- 页头枚举筛选使用 `.wb-select.wb-page-filter` 和 `.wb-page-control-group`，保留原生值/change 与键盘行为；
+- 除明确设计为内部滚动的表格/轨道外，注册网格的 `scrollWidth` 不大于 `clientWidth`；连接箭头和装饰线没有负偏移到卡片外；页面文字不使用 `clamp(...vw...)` 或负字距；
+- 保存后的孤立 HTML 不依赖 `workbench-card-library` 相对资源，仍能显示所有页签并重新加载配置。
+
+## 5. 同步与分享
+
+修改 canonical 工作区后，复制到 Skill 的 `assets/workbench-runtime/`；修改 Skill 入口规则后同步 canonical 工作区的规范文件。提升语义版本，在 `CHANGELOG.md` 写明问题、根因、规则、影响组件和验证结果。重新生成带日期且不覆盖旧包的 ZIP，并把 ZIP、校验摘要和安装路径一起交给使用者。

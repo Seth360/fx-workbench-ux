@@ -1,4 +1,4 @@
-/* ai-workbench-ux@1.4.28: portable canvases embed these shared tokens verbatim. */
+/* ai-workbench-ux@1.4.32: portable canvases embed these shared tokens verbatim. */
 :root {
   color-scheme: light;
   --wb-bg: #eef4fb;
@@ -52,6 +52,7 @@
   --wb-font-number: Inter, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --wb-module-head-min-height: 44px;
   --wb-module-head-padding: 10px 16px;
+  --wb-flush-body-padding: 16px 20px 20px;
   --wb-page-title-copy-gap: 4px;
   --wb-radius-sm: 8px;
   --wb-radius-md: 16px;
@@ -68,12 +69,28 @@
   --wb-gap-sm: 12px;
   --wb-gap-md: 16px;
   --wb-gap-lg: 20px;
+  --wb-flat-source-gap: var(--wb-gap-md);
   --wb-composition-aside-min: 320px;
   --wb-edit-grid-gap: var(--wb-gap-md);
   --wb-edit-drag-opacity: 0.46;
   --wb-edit-drop-indicator-size: 3px;
+  --wb-edit-guide-size: 4px;
+  --wb-edit-guide-inset: 2px;
+  --wb-edit-guide-shadow: 0 0 0 2px var(--wb-card-surface), 0 0 0 4px color-mix(in srgb, var(--wb-accent) 24%, transparent);
+  --wb-card-hide-action-size: 32px;
+  --wb-hidden-bar-height: 40px;
   --wb-control-height: 34px;
   --wb-touch-target: 44px;
+  --wb-filter-segmented-height: 32px;
+  --wb-filter-segmented-gap: 4px;
+  --wb-filter-option-surface-strength: 7%;
+  --wb-filter-option-selected-surface-strength: 13%;
+  --wb-filter-option-border-strength: 24%;
+  --wb-status-tag-height: 22px;
+  --wb-status-tag-padding: 0 7px;
+  --wb-avatar-size: 22px;
+  --wb-avatar-icon-size: 14px;
+  --wb-avatar-foreground: #ffffff;
   --wb-page-filter-height: 32px;
   --wb-page-header-control-height: var(--wb-page-filter-height, 32px);
   --wb-workspace-tab-list-max-width: 100%;

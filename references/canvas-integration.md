@@ -11,8 +11,9 @@ The generated HTML must preserve these elements and their live behavior:
 | Canvas shell | `#canvasApp`, `.canvas-toolbar.workspace-tabs`, `#canvasBoard`, and a trailing `#canvasSettingsOpen` control |
 | Generated navigation | `.wb-workspace-tab-list` entries with `data-canvas-workspace`, matching `data-canvas-panel` panels, ARIA tab semantics, and arrow/Home/End navigation |
 | Settings | `#canvasSettings`, rich/minimal style options, spacing/radius sliders, six theme buttons, dark-mode toggle, Chinese/English tabs, Save, Export, Reset |
-| Configuration | `#canvasSavedConfiguration`, embedded configuration loading, local persistence as an optional cache, and Save's HTML-writing or downloaded-HTML fallback |
-| Edit mode | Opening settings sets `editing: true`; closing it clears editing; stable page and nested-card keys restore order, span, and cross-grid ownership |
+| Configuration | `#canvasSavedConfiguration`, embedded configuration loading, `hiddenCards` plus `hiddenCardState`, local persistence as an optional cache, and Save's HTML-writing or downloaded-HTML fallback |
+| Edit mode | Opening settings sets `editing: true`; closing it clears editing; stable page and nested-card keys restore order, span, and cross-grid ownership; opaque accent drag guides and contained resize handles remain visible |
+| Card visibility | `#canvasCardHide` exposes one semantic hide action for the hovered/focused card; `#canvasHiddenBar` shows the hidden count and `#canvasRestoreHidden` restores all cards to their recorded grid, index, and span |
 | Library behavior | `tokens.css`, `components.css`, `select-interactions.js`, and `chart-interactions.js` are linked with paths valid from the output HTML |
 
 Do not replace these mechanisms with a separate React app, a simplified static panel, or a localStorage-only implementation.
@@ -22,6 +23,14 @@ Do not replace these mechanisms with a separate React app, a simplified static p
 Adapt the generated output by changing the document title, visible generated tab list, matching panels, business data, source-backed interactions, localization entries, and card registration/default-layout data. Keep the canvas settings selectors and state shape compatible with the baseline.
 
 The baseline contains example workspaces. They are source material, not a mandatory output shape. A generated page with two requested workbenches must show two top-level tabs, not two generated tabs plus the baseline examples.
+
+## Regenerating Supplied HTML
+
+When the user broadly asks to beautify, optimize, restyle, improve, or adapt a supplied HTML according to this Skill, treat the request as full regeneration even if the wording does not explicitly say "rebuild". The supplied file is evidence for the coverage inventory, not the default implementation base.
+
+Build a new complete document from the bundled runtime, replace its example workspace inventory with the source-backed inventory, and reconstruct retained cards and interactions through shared components or adapters. Do not append a page-level override stylesheet to the supplied file, keep a defective or incomplete settings runtime because it already exists, or deliver only a visual patch.
+
+This interpretation changes only when the user explicitly requests a bounded edit that preserves the current implementation, such as fixing one named defect or retaining the existing DOM. A full regeneration must still preserve all source business facts and interactions or record an explicitly approved omission.
 
 ## Stable Key Pattern
 

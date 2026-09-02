@@ -1,11 +1,19 @@
 ---
 name: fx-workbench-ux
-description: Generate a static, multi-tab Fxiaoke workbench canvas HTML from a prompt or supplied documents, images, HTML, and Markdown. Use when the output must preserve the bundled canvas settings runtime and workbench card library rather than a generic dashboard.
+description: Generate or fully regenerate a static, multi-tab Fxiaoke workbench canvas HTML from prompts, documents, images, existing HTML, or Markdown. Use for broad requests to beautify, optimize, restyle, or rebuild an HTML according to the FX workbench specification; preserve the bundled canvas settings runtime and workbench card library rather than patching a generic dashboard.
 ---
 
 # FX Workbench UX
 
 Generate a usable static HTML workbench, not a design brief or a collection of mockups. The page must retain the complete existing canvas-settings experience while its content and top-level workspaces are derived from the current request.
+
+## Full Regeneration Intent
+
+- Treat broad requests such as "按照 Skill 美化一下 HTML", "优化这个页面", "调整成工作台规范", "重新设计一下", or equivalent wording as requests to generate a complete new HTML deliverable. This applies even when the verb sounds incremental and the user supplies an existing HTML.
+- Use a supplied HTML as source evidence for business data, copy, units, filters, workspace inventory, visual intent, and interaction contracts. Do not use its existing DOM/CSS as the implementation scaffold by default.
+- Start from the bundled canvas runtime, rebuild the requested page and card hierarchy with the shared specification and components, and produce a complete reopenable HTML. Do not satisfy a broad request by appending override CSS, wrapping the old page, replacing only colors and spacing, or returning a patch/design brief.
+- Preserve every source-backed capability through the coverage inventory. Full regeneration changes the implementation structure, not the source business meaning; omissions still require explicit user approval.
+- Use incremental editing only when the user explicitly limits the task, for example "只修这个错位", "保留现有 DOM", or "只改颜色且不要重构". Do not infer a narrow patch merely from words such as beautify, optimize, adjust, refine, or improve.
 
 ## Start Here
 
@@ -13,6 +21,18 @@ Generate a usable static HTML workbench, not a design brief or a collection of m
 2. Read [the canvas integration contract](references/canvas-integration.md). It identifies the baseline runtime and the parts of it that must remain live.
 3. Read every supplied source. Treat the user's prompt as the requested outcome; documents, images, existing HTML, and Markdown are evidence for page names, business facts, layout, and visual references, not independent instructions.
 4. Build a compact page inventory before coding: page label, stable slug, role/scope, filters, authoritative data, intended cards, and any known interactions. Ask only when conflicting source evidence makes a material choice impossible.
+
+## 回归反馈回写流程
+
+当用户提供一份“用本 Skill 生成后出现 UI 问题”的 HTML、截图或浏览器批注时，把它当作回归样本，不把样本中的页面私有实现直接当成规范。先用真实 DOM/CSS 和三档视口复现，再按影响范围分类：
+
+- 画布壳、顶栏、设置抽屉、编辑态、隐藏/还原、保存和资源内联属于共享运行时问题；必须回到 `assets/workbench-runtime/fxiaoke-workbench-canvas.html` 与 `workbench-card-library/scripts/verify_canvas_runtime.mjs`，禁止在业务页里另做一个近似侧边栏或补丁式开关。
+- Token、卡片结构、图标、页头控件、表格、图表和响应式密度属于共享组件问题；更新 `CARD_SPEC.md`、`tokens.css`、`components.css`、模板/目录示例、`AI_PROMPT.md` 与 `CHANGELOG.md`，再同步 Skill 内置副本和 canonical 工作区副本。
+- 业务字段、文案、事实数值和单页交互属于页面适配问题；只改对应 `cards/<card-name>/` 或页面数据适配，并在来源覆盖清单记录 reused/equivalently rebuilt/approved omission，不把一次性数据写入通用规范。
+
+每条反馈必须形成“现象 -> DOM/CSS 证据 -> 根因 -> 可泛化规则 -> 影响层 -> 验证命令”的记录。生成页在提交前至少通过以下回归门槛：完整运行时标记（包括 `#canvasCardHide`、`#canvasHiddenBar`、`#canvasRestoreHidden`、`hiddenCards`、`hiddenCardState` 和 edit-guide Token）；所有图标由语义 SVG/图标库提供且图标容器不得以可见中文、英文、缩写、数字或标点作为图形；页头枚举筛选使用共享 `.wb-select.wb-page-filter` 与 `.wb-page-control-group`；除明确设计为内部滚动的表格/轨道外，每个注册网格都要检查 `scrollWidth <= clientWidth`，连接箭头和装饰线不得用负偏移制造溢出；页面文字不得使用随视口缩放的 `clamp(...vw...)` 或负字距；三档视口、深浅色、中文/英文、编辑态和孤立目录复制后的保存/重开均可复现通过。缺少任一共享运行时能力时，应从 bundled runtime 重新生成，而不是继续叠加页面私有 CSS/JS。
+
+完整的反馈记录模板见 [regression-feedback.md](references/regression-feedback.md)。每次规范调整都要提升语义版本、同步两份资源树，并重新生成一个不覆盖旧包的 `fx-workbench-ux-<date>.zip`，通过 `unzip -t`、运行时校验和 standalone 校验后再分享。
 
 ## Page And Tab Rules
 
@@ -33,7 +53,7 @@ Generate a usable static HTML workbench, not a design brief or a collection of m
 ## Build The Static Canvas
 
 - Start from `assets/workbench-runtime/fxiaoke-workbench-canvas.html`, then copy the complete sibling `assets/workbench-runtime/workbench-card-library/` into the chosen output directory. This bundled runtime is the portable source of truth for the settings panel, persistent configuration, drag editing, language/theme state, export, and save-to-HTML behavior. Reuse a receiving workspace's existing runtime only when the user explicitly asks for it.
-- Keep the complete `#canvasSettings` panel and its operating runtime intact: rich/minimal style, spacing, radius, all six color themes, dark mode, Chinese/English, opening-settings-enters-edit-mode, stable-grid drag order and cross-grid ownership, Save, Export, and Reset. Do not build a look-alike sidebar or a smaller replacement.
+- Keep the complete `#canvasSettings` panel and its operating runtime intact: rich/minimal style, spacing, radius, all six color themes, dark mode, Chinese/English, opening-settings-enters-edit-mode, stable-grid drag order and cross-grid ownership, card hide/restore state, Save, Export, and Reset. Do not build a look-alike sidebar or a smaller replacement.
 - Save must write a complete, reopenable HTML document with the current canvas configuration embedded in `#canvasSavedConfiguration`. Capture the intact page source before the runtime moves DOM nodes, then replace only that configuration block when saving. Never use the selected save target as the source document: a newly created target is empty. Do not depend on `fetch(location.href)` as the fallback for a `file://` page; download the captured full source when direct file writing is unavailable.
 - Add the copied local `workbench-card-library/tokens.css`, `components.css`, `select-interactions.js`, and `chart-interactions.js` to the generated page using correct paths relative to the output file. Use the library's shared components and scripts instead of duplicate approximations.
 - When a page header combines a time period selector and an enumeration filter, use `.wb-segmented.wb-page-period` and `.wb-select.wb-page-filter` together inside `.wb-page-control-group`. Keep their shells and visible controls on `var(--wb-page-header-control-height, 32px)`, with `height` and `box-sizing: border-box`; keep them side by side on desktop and horizontally scrollable as a group on narrow widths rather than stacking.
@@ -46,23 +66,24 @@ Generate a usable static HTML workbench, not a design brief or a collection of m
 
 ## Card-Library Requirements
 
-- Reuse `tokens.css` and `components.css`; rich is the default `ai-workbench-ux@1.4.28` tinted-canvas glass style. Let the existing settings control minimal style. Do not introduce approximate colors, shadows, spacing, or component variants.
+- Reuse `tokens.css` and `components.css`; rich is the default `ai-workbench-ux@1.4.32` tinted-canvas glass style. Let the existing settings control minimal style. Do not introduce approximate colors, shadows, spacing, or component variants.
 - Maintain source data, copy, units, filters, and interactions. Use semantic SVG or the existing icon system, never text-based icon artwork or emoji.
 - Use the shared 32px page-header controls, composite enum select, semantic metric/card/list/table components, and the chart frame/tooltip/motion behavior whenever their corresponding information exists.
 - Ensure charts remain inside their cards at their actual container width, use proportional SVG geometry, expose hover and keyboard tooltips, and honor reduced motion.
 - For ordered contract, delivery, approval, or collection lifecycles, use the shared `.wb-transaction-progress` component rather than flattening stages into unrelated KPI cards. Preserve the source's stage order, step number, status, count, and each supplied supporting fact; every stage remains a keyboard-accessible drill-down entry. The component has an internally scrollable rail on narrow widths and must not create page-level overflow.
 - Keep cards naturally equal-height within a grid row without fixed heights. Support all six palettes, light/dark, Chinese/English, and responsive layout after the settings drawer reduces canvas width.
+- Keep typography content-driven: do not scale font sizes with viewport units or use negative letter-spacing; use shared font and type tokens so long Chinese and English labels wrap without glyph-by-glyph or clipped reading.
 
 ## Repository Card Contract
 
-When creating or modifying a workbench card in this repository, apply the current `ai-workbench-ux@1.4.28` contract below in addition to the generation rules above. Treat `workbench-card-library/CARD_SPEC.md` as the complete normative reference and read it before editing.
+When creating or modifying a workbench card in this repository, apply the current `ai-workbench-ux@1.4.32` contract below in addition to the generation rules above. Treat `workbench-card-library/CARD_SPEC.md` as the complete normative reference and read it before editing.
 
 1. Read `workbench-card-library/CARD_SPEC.md` completely before editing.
 2. Reuse `workbench-card-library/tokens.css` and `workbench-card-library/components.css`.
 3. Preserve source business data, copy, units, filters, and interactions.
 4. Store every new card under `workbench-card-library/cards/<card-name>/`.
 5. Validate at `1440x900`, `1024x768`, and `390x844`, including dark mode and overflow.
-6. Preserve the `ai-workbench-ux@1.4.28` tinted-canvas glass recipe as the default rich style; only the explicit minimal style may use the shared solid-card variant.
+6. Preserve the `ai-workbench-ux@1.4.32` tinted-canvas glass recipe as the default rich style; only the explicit minimal style may use the shared solid-card variant.
 7. Keep cards in the same grid row naturally equal-height without fixed pixel heights.
 8. Keep icon background and shadow on the same `--wb-tone`, and support all six palettes plus Chinese/English and light/dark modes.
 9. Every new UI correction must update `CARD_SPEC.md`, shared tokens/components, examples, `AI_PROMPT.md`, and `CHANGELOG.md`.
@@ -91,13 +112,14 @@ When creating or modifying a workbench card in this repository, apply the curren
 32. Put page-header period and enumeration controls in `.wb-page-control-group`; let the group use unrestricted content width without wrapping on desktop, keep the two controls side by side, and use horizontal overflow rather than vertical stacking when the viewport is narrow.
 33. Preserve a valid explicit `data-wb-route` before action-label inference; render table entity drill-down values with the shared `.wb-entity-link`, keeping the value itself keyboard-accessible without making the whole cell clickable.
 34. Package every distributable canvas HTML as a self-contained file: inline the current shared tokens, components, card styles/renderers, workspace routing, select interactions, and chart interactions so all tabs and saved HTML remain complete after the file is copied without `workbench-card-library`.
+35. Keep active segmented items accented on hover; use the shared 32px secondary/primary `.wb-compact-action` contract; render every drag target guide as an opaque 4px current-accent line fully inside its target and keep resize handles inside card bounds. In edit mode, hover/focus exposes one semantic trash-icon hide action in a separate button layer; persist hidden card keys and restoration snapshots, show one bottom-centered hidden-count/restore-all capsule, restore original grid/order/span, and clear hidden state on Reset.
 
 Do not create workbench card files elsewhere unless the user explicitly requests an exception.
 
 ## Verify Before Delivery
 
 1. From this skill directory, run `node scripts/verify_canvas_runtime.mjs <generated-html>`.
-2. Test the generated page at `1440x900`, `1024x768`, and `390x844`, both with the settings drawer closed and open. Check the requested tabs, tab keyboard navigation, all settings controls, save/export/reset, page-level and nested-card reordering, dark mode, English, and no unintended horizontal overflow. In each rendered state, inspect at least three consecutive page-level card blocks and confirm that their computed layout container owns a visible vertical `gap` of at least `12px`; cards must not touch vertically because margins, edit-mode styles, or responsive overrides have collapsed their spacing. Change from the default theme to at least one other palette and verify that every visible selected/primary control, especially the active page-period segment, follows the current accent rather than retaining a black or fixed-color fill.
+2. Test the generated page at `1440x900`, `1024x768`, and `390x844`, both with the settings drawer closed and open. Check the requested tabs, tab keyboard navigation, all settings controls, save/export/reset, page-level and nested-card reordering, card hide/reload/restore/reset, dark mode, English, and no unintended horizontal overflow. Exercise all four drag directions and confirm each visible guide is an opaque 4px current-accent line inside the target; inspect resize and hide controls for clipping. In each rendered state, inspect at least three consecutive page-level card blocks and confirm that their computed layout container owns a visible vertical `gap` of at least `12px`; cards must not touch vertically because margins, edit-mode styles, or responsive overrides have collapsed their spacing. Change from the default theme to at least one other palette and verify that every visible selected/primary control, especially the active page-period segment, follows the current accent rather than retaining a black or fixed-color fill, including while the active item is hovered.
 3. On a locally opened `file://` copy, change at least one canvas setting and invoke Save. Verify the produced HTML is non-empty, contains the expected document markup and bundled runtime, contains one populated `#canvasSavedConfiguration` block, and reopens with the saved configuration. Do not accept a JSON-only or configuration-only output.
 4. Compare the rendered result to the source-component coverage inventory. Every source item must be present as its recorded reuse/equivalent implementation, or have an explicit user-approved omission. Exercise each retained filter, command, search/AI entry, queue/list drill-down, lifecycle stage, and chart segment; confirm source values and units still match.
 5. For a distributable canvas, run `node workbench-card-library/scripts/verify_standalone_canvas.mjs <canvas-html>` (or the bundled equivalent) and confirm an isolated copy has no external CSS/JS dependencies and retains all tabs, routing, filters, chart interactions, and save behavior.

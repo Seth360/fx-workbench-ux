@@ -52,12 +52,10 @@ function panelActions(panelKey) {
   return [...panel.matchAll(/data-workbench-action="([^"]+)"/g)].map((match) => match[1]);
 }
 
-for (const panelKey of ["company", "management-scope", "sales-business"]) {
-  const targets = new Set(panelActions(panelKey).map(resolveAction).filter(Boolean));
-  assert.ok(targets.has("customer-insight"), `${panelKey} customer route`);
-  assert.ok(targets.has("opportunity-insight"), `${panelKey} opportunity route`);
-  if (panelKey !== "company") assert.ok(targets.has("list"), `${panelKey} list route`);
-}
+const homeTargets = new Set(panelActions("home").map(resolveAction).filter(Boolean));
+assert.ok(homeTargets.has("customer-insight"), "home customer route");
+assert.ok(homeTargets.has("opportunity-insight"), "home opportunity route");
+assert.ok(homeTargets.has("list"), "home list route");
 
 const explicitRouteCounts = [...canvas.matchAll(/data-wb-route="([^"]+)"/g)]
   .reduce((counts, match) => counts.set(match[1], (counts.get(match[1]) || 0) + 1), new Map());
@@ -85,4 +83,4 @@ assert.match(canvas, /openListCanvasDetail\(listOpen\)/);
 assert.doesNotMatch(canvas, /showToast\(`打开「\$\{listOpen\.dataset\.listOpen\}」详情`\)/);
 assert.equal((canvas.match(/data-list-detail-value=/g) || []).length, 7, "seven source fields in lead detail");
 
-console.log(`workspace routing verified: ${expectedRoutes.size} routes, explicit-route precedence, 5 command exclusions, 3 workspace panels, 7 detail fields`);
+console.log(`workspace routing verified: ${expectedRoutes.size} routes, explicit-route precedence, 5 command exclusions, merged home/detail panels, 7 detail fields`);

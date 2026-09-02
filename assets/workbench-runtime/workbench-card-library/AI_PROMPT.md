@@ -7,8 +7,9 @@
 
 强制执行：
 1. 完整读取 workbench-card-library/CARD_SPEC.md、tokens.css、components.css 和 templates/card-template.html。
-2. 主题固定为 ai-workbench-ux@1.4.28，不自行创造新的视觉风格。
+2. 主题固定为 ai-workbench-ux@1.4.32，不自行创造新的视觉风格。
 3. 保留来源中的全部业务数据结构、数字、单位、标题、说明、筛选条件和交互；不得编造、删列、改名或改变含义。
+3.1 当用户以“按 Skill 美化 HTML”“优化页面”“调整风格”“重新设计”等宽泛措辞提供现有 HTML 时，一律把该 HTML 作为业务与交互证据，从 bundled canvas 按规范结构重新生成完整可运行 HTML；不得只追加覆盖 CSS、替换颜色间距、包裹旧 DOM 或保留不完整运行时。只有用户明确要求保留现有 DOM、只修指定问题或最小改动时，才进行增量编辑。
 4. 优先复用现有类和 SVG 图标。图标容器 34x34px、图标 21x21px；所有图标必须按标题、操作或状态语义选择现有 SVG/统一图标库图标，禁止用中文、英文、字母缩写、数字或标点等可见文字生成或代替图标，禁止 emoji。把元、¥、$、货币代码或其他可见字符转成 SVG path 仍是文字式图标；金额指标必须使用钱包、钱币或钞票等纯图形图标，报价申请使用文档或剪贴板图标。没有完全匹配项时选择语义最接近的库内图标，不得退回文字图标。
 5. 主卡片必须复用弱色画布玻璃配方：当前色系页面底、74% 半透明白 Surface、半透明白边框、22px/140% 背景模糊和当前强调色轻阴影。确需内部模块时使用无背景模糊的 wb-subpanel 与 wb-inner-tile，分别读取共享实底 Surface 和浅层级 Shadow；禁止复用主卡阴影或形成玻璃套玻璃。
 6. 新文件只能保存到 workbench-card-library/cards/<card-name>/，并在 index.html 中登记入口或示例。
@@ -26,6 +27,9 @@
 16. 在 1440x900、1024x768、390x844 检查：无文本/组件重叠，无逐字竖排，无非预期页面横向滚动；抽屉或侧栏压缩实际内容宽度后，所有图表仍无卡片内越界且 SVG 文字、圆点、图标和描边不发生非等比变形。重点指标的长英文单位/标签在移动宽度可整组换到数值下一行，不得强制同排溢出。宽表格保留所有列并在表格容器内横向滚动。
 17. 任何新的视觉修正必须同步更新 CARD_SPEC.md、Token/组件、AI_PROMPT.md、示例和 CHANGELOG.md，不能只修实施实例。
 18. 完成后报告：生成文件、复用组件、保留的数据/交互、三个视口检查结果、任何规范偏差及原因。
+19. 模板页签精简时，使用稳定的 `home`、`detail`、`list` 工作区键合并来源页签；列表页保持独立。若来源有 CRM 顶栏和左侧导航，设置按钮左侧必须提供可持久化的“显示CRM导航”开关，开启后把完整画布嵌入原有导航框架，关闭后恢复独立画布，不得另做近似外框。
+20. CRM 导航开启后，画布内容必须保持自然高度并由页面滚动；不得使用固定视口高度或 `overflow:hidden` 截断长内容。设置抽屉打开时为工作台内容预留右侧空间，使正文右边界与抽屉左边界对齐；窄屏按共享抽屉规则全屏。
+21. 合并 `home`/`detail` 页签时直接承载来源卡片，不再渲染来源页内子页签、页头和额外分组表面；同一业务队列、摘要事实和身份记录只保留一个权威卡片，来源卡片按稳定键平铺到当前工作区，列表页继续独立保留。
 19. 枚举筛选不得把系统原生选项面板作为最终视觉；使用共享 wb-select 复合结构与 select-interactions.js，保留原生 select 的值和 change 事件，弹层读取 Popover Surface/Border/Shadow 与圆角 Token，并完整支持方向键、Home/End、Enter/Space、Esc 回焦、Tab、点击外部关闭、aria-expanded/aria-selected、深色模式、中英文和 reduced-motion。工作台页头枚举筛选必须增加 wb-page-filter，周期使用 wb-page-period，二者统一读取 32px 的 --wb-page-header-control-height，禁止业务页局部覆盖。
 20. 同一业务链路的紧凑分析用一个主卡 + wb-analysis-group/wb-subpanel 组织，子面板读取 wb-subpanel Surface/Shadow，内部事实块读取 wb-inner-tile Surface/Shadow，二者均不得启用第二层模糊；子标题必须有语义 SVG，四项紧凑指标保持两列。审批/通知数量使用标题同行的纯数字胶囊且说明独占下一行；多操作行使用 wb-action-row 放在第三行。快捷新建使用 wb-hover-action 在 hover/focus 时覆盖数值且不占文字宽度；柱图图例用 wb-chart-legend 居中放在绘图区上方；宽表快捷处理列用 wb-action-column 固定最右，使用完全不透明的 action-column Surface 遮住滚动文字，并使用高度 32px 的 wb-primary-action。
 21. 同类快捷入口统一使用 wb-quick-grid/wb-quick-card 的 64px 高度、16px 网格间距和 10px 图标文案间距，任何页签或模板库不得局部覆盖。紧凑阶段/进度行使用 wb-compact-row-list/wb-compact-row 的 32px 行高和 4px 间距。标题与说明保持上下结构；当列表只保留一个统一入口时使用 wb-inline-action-list/wb-inline-action-item，把单一“处理”按钮放在正文右侧同一行。
@@ -42,6 +46,10 @@
 32. 三个工作台的跨页签入口统一接入 workspace-routing.js：销售线索进入列表页，客户进入客户经营洞察，商机与明确的查看商机/查看洞察动作进入商机项目经营洞察。优先使用 data-wb-route 显式声明目标；列表返回来源工作台；新建、处理、维护、填写等命令不得被路由器拦截。详情型动作必须实际切换到对应详情页签，禁止只显示占位 Toast。列表实体详情只复用当前行已有字段，保留搜索/分页状态，进入详情后聚焦返回按钮，返回后聚焦列表搜索入口。
 33. 合法的显式 `data-wb-route` 必须优先于动作文案推断；表格项目名、客户名、公司名等跨页签实体值使用共享 `.wb-entity-link` 按钮，只让值本身可点击，并保留 hover、focus-visible、active、键盘激活和主题色状态。
 34. 可单独分发的画布 HTML 必须通过共享打包脚本内联 tokens.css、components.css、页面卡片 CSS/渲染器、workspace-routing.js、select-interactions.js 与 chart-interactions.js；复制到没有 workbench-card-library 的目录后，所有页签内容、路由、筛选和图表交互仍须完整，保存生成的 HTML 也必须继续保持单文件完整性。交付前运行 verify_standalone_canvas.mjs。
+35. 编辑态四方向拖拽目标线统一读取不透明主题强调色和共享 edit-guide Token，并完整绘制在目标卡片内部；左右缩放控件同样内收，禁止被 overflow 裁切。卡片 hover/focus 时右上角显示语义垃圾桶隐藏按钮，隐藏键随配置持久化；底部居中只显示一个“已隐藏 + 数量 + 还原全部”胶囊，恢复全部卡片，重置清空隐藏状态。激活分段项 hover 必须保持强调色；紧凑文字按钮统一使用共享 32px 次要/主要样式。
+36. 生成页回归时把附件 HTML 当证据而非规范：若设置抽屉存在但缺少隐藏按钮、隐藏计数/还原胶囊、hiddenCards/hiddenCardState 或 edit-guide Token，必须回到 bundled canvas 重新生成；不得用页面私有补丁模拟。图标容器不得使用可见文字、缩写、数字或标点，工作台页头枚举筛选必须使用共享 `.wb-select.wb-page-filter` 与 `.wb-page-control-group`。
+37. 除明确设计为内部滚动的表格/轨道外，注册网格不得产生 `scrollWidth > clientWidth`；连接箭头/装饰线必须在卡片内。页面文字使用共享字号，不用 `clamp(...vw...)` 或负字距。
+36. 列表工具栏中的按等级/按状态/按负责人分组使用透明无投影的 wb-filter-segmented，选中与 hover 只使用强调色文字和弱强调 Surface，禁止页签底板、白底 hover 或白字反白。列表状态使用内容宽度、22px 高且双轴居中的 wb-status-tag；负责人使用 wb-person-label + 22px wb-avatar，14px currentColor SVG 必须以亮色前景居中。wb-flush-head 与 wb-flush-body 必须是 wb-flush-card 的直接子项，正文桌面使用 16px 20px 20px、手机使用 16px，禁止包装层导致 0 内边距。
 
 先检查现有组件是否足够，再实现。不要只给建议，直接产出可运行文件。
 ```
