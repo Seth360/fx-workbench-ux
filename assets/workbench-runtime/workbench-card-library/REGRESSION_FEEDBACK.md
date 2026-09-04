@@ -43,6 +43,8 @@ unzip -t /absolute/path/to/fx-workbench-ux-<date>.zip
 - `#canvasCardHide`、`#canvasHiddenBar`、`#canvasRestoreHidden`、`hiddenCards`、`hiddenCardState` 和 `--wb-edit-guide-*` 同时存在且可操作；
 - 图标容器由语义 SVG/图标库构成，不包含 `DX`、`人`、`日`、`AI`、`⌕` 等可见字符替代图形；
 - 页头枚举筛选使用 `.wb-select.wb-page-filter` 和 `.wb-page-control-group`，保留原生值/change 与键盘行为；
+- 一级工作区保留页面级 `.wb-rich-header-card`；客户/商机洞察详情、列表等二级下钻页必须使用 `.wb-secondary-page`，页面级 `wb-header` 数量为 0，首个可见区为记录、指标或列表卡；
+- 命中的周期、人员/部门、日期、AI、搜索、枚举、阶段、KPI、业务列表和表格同时存在合法 `data-wb-semantic`/`data-wb-component`、ARIA 与字段元数据；
 - 除明确设计为内部滚动的表格/轨道外，注册网格的 `scrollWidth` 不大于 `clientWidth`；连接箭头和装饰线没有负偏移到卡片外；页面文字不使用 `clamp(...vw...)` 或负字距；
 - 保存后的孤立 HTML 不依赖 `workbench-card-library` 相对资源，仍能显示所有页签并重新加载配置。
 

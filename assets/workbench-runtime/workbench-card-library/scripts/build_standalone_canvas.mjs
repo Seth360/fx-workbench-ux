@@ -22,6 +22,17 @@ const resources = [
   { type: "script", reference: "./workbench-card-library/chart-interactions.js" }
 ];
 
+const roleImageFilenames = [
+  "分析师-女.png",
+  "分析师-男.png",
+  "客服.png",
+  "总监.png",
+  "服务工程师.png",
+  "服务总监.png",
+  "用户.png",
+  "销售.png"
+];
+
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 function stripLocalImports(source) {
@@ -70,12 +81,28 @@ function moveRuntimeBeforeSavedConfiguration(html, reference) {
   return `${withoutBlock.slice(0, markerIndex)}${match[0]}\n  ${withoutBlock.slice(markerIndex)}`;
 }
 
+async function inlineRoleImages(html) {
+  const marker = '<script type="application/json" id="canvasRoleImageAssets">';
+  const endTag = "</" + "script>";
+  const start = html.indexOf(marker);
+  const end = start < 0 ? -1 : html.indexOf(endTag, start + marker.length);
+  if (start < 0 || end < 0) throw new Error("Missing canvasRoleImageAssets marker");
+
+  const entries = await Promise.all(roleImageFilenames.map(async (filename) => {
+    const bytes = await fs.readFile(path.join(libraryDir, "role-image", filename));
+    return [filename, `data:image/png;base64,${bytes.toString("base64")}`];
+  }));
+  const payload = JSON.stringify(Object.fromEntries(entries)).replace(/</g, "\\u003c");
+  return html.slice(0, start + marker.length) + payload + html.slice(end);
+}
+
 let html = await fs.readFile(inputPath, "utf8");
 for (const resource of resources) {
   const sourcePath = path.resolve(workspaceDir, resource.reference);
   const source = await fs.readFile(sourcePath, "utf8");
   html = replaceResource(html, resource, inlineBlock(resource, source));
 }
+html = await inlineRoleImages(html);
 for (const reference of [
   "./workbench-card-library/select-interactions.js",
   "./workbench-card-library/chart-interactions.js"

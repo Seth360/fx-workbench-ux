@@ -156,12 +156,7 @@
   ];
 
   const render = () => `
-    <div class="opportunity-insight-page wb-inner" data-language-fixed>
-      <header class="wb-header opp-page-header">
-        <div class="wb-title-group"><h1>${T("商机项目经营洞察", "Opportunity Project Operating Insight")}</h1><p>${T("扫地机耐划伤结构件 · 基于 CRM 可核验事实", "Scratch-resistant robot vacuum structural part · Based on verifiable CRM facts")}</p></div>
-        <div class="opp-header-actions wb-compact-action-group">${action("刷新洞察", "Refresh insight", "已按当前商机刷新经营洞察", "Operating insight refreshed for this opportunity")}${action("打开 CRM", "Open CRM", "打开CRM原生商机项目详情", "Open the native CRM opportunity project detail", "opp-action-primary")}</div>
-      </header>
-
+    <div class="opportunity-insight-page wb-inner wb-secondary-page" data-language-fixed>
       <section class="wb-card wb-flush-card opportunity-record-card" data-od-id="opportunity-insight-record">
         <div class="opp-breadcrumb"><b>CRM</b><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"></path></svg><span>${T("商机项目列表", "Opportunity project list")}</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"></path></svg><strong>${T("扫地机耐划伤结构件", "Scratch-resistant robot vacuum structural part")}</strong></div>
         <div class="opp-record-main">
@@ -171,13 +166,13 @@
         <nav class="opp-record-tabs" data-opp-aria-zh="CRM记录视图" data-opp-aria-en="CRM record views" aria-label="CRM记录视图"><button type="button" data-opp-action data-message-zh="切换到基本信息" data-message-en="Switch to basic information">${T("基本信息", "Basic information")}</button><button type="button" data-opp-action data-message-zh="切换到销售记录" data-message-en="Switch to sales records">${T("销售记录", "Sales records")}</button><button type="button" data-opp-action data-message-zh="切换到相关信息" data-message-en="Switch to related information">${T("相关信息", "Related information")}</button><button class="active" type="button" aria-current="page">${T("商机项目经营洞察", "Opportunity project operating insight")}</button></nav>
       </section>
 
-      <section class="wb-card wb-compact-baseline-card opportunity-status-card" data-od-id="opportunity-insight-status">
+      <section class="wb-card wb-compact-baseline-card opportunity-status-card" data-od-id="opportunity-insight-status" data-wb-semantic="kpi-card" data-wb-component="metric-card" aria-label="${T("当前阶段经营指标", "Current-stage operating metrics")}">
         <header class="wb-card-head"><div class="wb-baseline-head-copy"><h2>${T("当前阶段", "Current stage")}</h2><p>${T("商机项目需求 · 商机阶段", "Opportunity project requirement · Stage")}</p></div><span class="wb-baseline-meta">${T("试样阶段", "Trial stage")}</span></header>
         <div class="wb-summary-metric-grid wb-metric-grid" data-opp-aria-zh="当前阶段经营指标" data-opp-aria-en="Current-stage operating metrics" aria-label="当前阶段经营指标">
-          <article class="wb-metric is-cyan"><span class="wb-metric-label"><span>${T("阶段已停留", "Stage duration")}</span>${icon("gauge")}</span><strong>12${T("天", " days")}</strong><small>${T("按阶段变更时间计算", "Calculated from stage change")}</small></article>
-          <article class="wb-metric is-orange"><span class="wb-metric-label"><span>${T("最后跟进", "Last follow-up")}</span>${icon("heartbeat")}</span><strong>8${T("天前", " days ago")}</strong><small>${T("来自商机项目需求", "From opportunity project requirement")}</small></article>
-          <article class="wb-metric is-blue"><span class="wb-metric-label"><span>${T("预计项目金额", "Expected amount")}</span>${icon("wallet")}</span><strong>${T("420万元", "CNY 4.2m")}</strong><small>${T("商机项目需求 · 预计项目金额", "Opportunity project requirement")}</small></article>
-          <article class="wb-metric is-red"><span class="wb-metric-label"><span>${T("规则状态", "Rule status")}</span>${icon("shield-warning")}</span><strong>${T("已超过7天阈值", "7-day threshold exceeded")}</strong><small>${T("且最近7天无销售推进", "No sales progress in the last 7 days")}</small></article>
+          <article class="wb-metric is-cyan" data-wb-field-key="stage-duration" data-wb-field-label="阶段已停留" data-wb-field-type="duration" data-wb-unit="天" data-wb-value="12"><span class="wb-metric-label"><span>${T("阶段已停留", "Stage duration")}</span>${icon("gauge")}</span><strong>12${T("天", " days")}</strong><small>${T("按阶段变更时间计算", "Calculated from stage change")}</small></article>
+          <article class="wb-metric is-orange" data-wb-field-key="last-follow-up" data-wb-field-label="最后跟进" data-wb-field-type="duration" data-wb-unit="天前" data-wb-value="8"><span class="wb-metric-label"><span>${T("最后跟进", "Last follow-up")}</span>${icon("heartbeat")}</span><strong>8${T("天前", " days ago")}</strong><small>${T("来自商机项目需求", "From opportunity project requirement")}</small></article>
+          <article class="wb-metric is-blue" data-wb-field-key="expected-amount" data-wb-field-label="预计项目金额" data-wb-field-type="amount" data-wb-unit="万元" data-wb-value="420"><span class="wb-metric-label"><span>${T("预计项目金额", "Expected amount")}</span>${icon("wallet")}</span><strong>${T("420万元", "CNY 4.2m")}</strong><small>${T("商机项目需求 · 预计项目金额", "Opportunity project requirement")}</small></article>
+          <article class="wb-metric is-red" data-wb-field-key="rule-status" data-wb-field-label="规则状态" data-wb-field-type="status" data-wb-value="threshold-exceeded"><span class="wb-metric-label"><span>${T("规则状态", "Rule status")}</span>${icon("shield-warning")}</span><strong>${T("已超过7天阈值", "7-day threshold exceeded")}</strong><small>${T("且最近7天无销售推进", "No sales progress in the last 7 days")}</small></article>
         </div>
       </section>
 

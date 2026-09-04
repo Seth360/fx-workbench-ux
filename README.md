@@ -2,9 +2,9 @@
 
 一键将来源需求转为符合 UI 规范、可直接打开和继续配置的纷享工作台。
 
-`fx-workbench-ux` 是一个面向 Codex 的工作台生成 Skill。它可以读取文字描述、需求文档、图片、现有 HTML 或多种素材的组合，提取其中的页面结构、业务数据、筛选条件和交互入口，生成符合 `ai-workbench-ux@1.4.32` 规范的静态多页签工作台 HTML。
+`fx-workbench-ux` 是一个面向 Codex 的工作台生成 Skill。它可以读取文字描述、需求文档、图片、现有 HTML 或多种素材的组合，提取其中的页面结构、业务数据、筛选条件和交互入口，生成符合 `ai-workbench-ux@1.5.7` 规范的静态多页签工作台 HTML。
 
-生成结果不是设计稿或静态截图，而是一个可使用、可配置、可保存、可导出，并能独立分发的完整工作台。
+生成结果不是设计稿或静态截图，而是一个可使用、可配置、可按页签导出独立页面，并能独立分发的完整工作台。
 
 ## 核心能力
 
@@ -49,9 +49,9 @@ Skill 会保留来源中的业务事实，不会为了填满卡片而编造数�
 - **语言**：内置中文和 English，并通过统一多语字典支持继续扩展
 - **布局编辑**：打开设置后即可调整已注册区块和卡片的顺序、跨度与归属；四方向拖放使用清晰的主题强调色引导线
 - **卡片显隐**：编辑态悬停或聚焦卡片可隐藏；底部胶囊显示隐藏数量并支持一键还原全部卡片
-- **配置操作**：保存配置、导出配置、恢复默认
+- **配置操作**：按顶层页签导出独立页面、恢复默认
 
-保存操作会把当前画布状态写回 HTML 内嵌配置。重新打开保存后的文件，间距、圆角、主题、语言、明暗模式、布局和卡片隐藏状态仍会保持。
+点击“导出页面”会为每个顶层页签生成一份以当前页签文案命名的自包含 HTML。每份文件只保留该页签的主画板，不包含页签顶栏、设置抽屉、CRM 导航、其他页签、编辑辅助层或隐藏卡片；当前间距、圆角、主题、语言、明暗模式、布局和可见内容会固化到输出。多页签时优先只选择一次目标文件夹，不支持文件系统 API 的浏览器会逐份下载。
 
 ### 桌面端与移动端适配
 
@@ -77,7 +77,7 @@ Skill 会保留来源中的业务事实，不会为了填满卡片而编造数�
 
 生成的可分发画布会内联当前共享 Token、组件、卡片样式与渲染器、工作区路由、下拉交互和图表交互。
 
-HTML 即使被复制到没有 `workbench-card-library` 的其他目录，也能继续显示全部页签内容并保留筛选、图表、路由、保存和配置能力，无需部署后端服务。
+编辑器 HTML 即使被复制到没有 `workbench-card-library` 的其他目录，也能继续显示全部页签内容；导出的每个工作区 HTML 同样内联 CSS、SVG 图标、相关页面渲染器、复合下拉和图表交互，无需部署后端服务。
 
 ## 安装
 
@@ -115,7 +115,7 @@ git -C ~/.codex/skills/fx-workbench-ux pull --ff-only
 ```text
 使用 $fx-workbench-ux 美化这个 HTML。
 把现有 HTML 作为业务数据、页签、筛选值和交互事件的来源，从 bundled canvas 按 ai-workbench-ux
-规范完整重新生成工作台 HTML，并保留间距、圆角、六种颜色主题、深色模式、中英文、保存、导出、
+规范完整重新生成工作台 HTML，并保留间距、圆角、六种颜色主题、深色模式、中英文、按页签导出页面、
 卡片隐藏/还原和移动端适配能力。
 ```
 
@@ -142,13 +142,20 @@ node assets/workbench-runtime/workbench-card-library/scripts/verify_standalone_c
 node assets/workbench-runtime/workbench-card-library/scripts/verify_workspace_routing.mjs
 ```
 
+实际点击“导出页面”后，验证所有独立工作区 HTML：
+
+```bash
+node assets/workbench-runtime/workbench-card-library/scripts/verify_exported_workspace_pages.mjs \
+  /absolute/path/to/page-1.html /absolute/path/to/page-2.html
+```
+
 更完整的安装与使用说明见 [SHARE_GUIDE.md](./SHARE_GUIDE.md)，完整生成契约见 [SKILL.md](./SKILL.md)。
 
 ## 内置内容
 
 - 完整纷享工作台画布运行时
-- `ai-workbench-ux@1.4.32` 设计 Token、公共组件和卡片规范
+- `ai-workbench-ux@1.5.7` 设计 Token、公共组件和卡片规范
 - 商机项目经营洞察与客户经营洞察卡片
 - 复合下拉与图表交互
 - 跨工作区路由
-- 单文件画布构建与验证脚本
+- 单文件画布构建、逐页导出与验证脚本

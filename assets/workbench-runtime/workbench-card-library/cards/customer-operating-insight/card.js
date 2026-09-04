@@ -8,12 +8,7 @@
     `<button class="wb-compact-action ${className}" type="button" data-customer-action data-message-zh="${messageZh}" data-message-en="${messageEn}">${T(labelZh, labelEn)}</button>`;
 
   const render = () => `
-    <div class="customer-insight-page wb-inner" data-language-fixed>
-      <header class="wb-header customer-page-header">
-        <div class="wb-title-group"><h1>${T("客户经营洞察", "Customer Operating Insight")}</h1><p>${T("苏州精密注塑有限公司 · 基于 CRM 可核验事实", "Suzhou Precision Injection Molding Co., Ltd. · Based on verifiable CRM facts")}</p></div>
-        <div class="customer-header-actions wb-compact-action-group">${action("刷新洞察", "Refresh insight", "已按当前客户刷新经营洞察", "Operating insight refreshed for this customer")}${action("打开 CRM", "Open CRM", "打开CRM原生客户详情", "Open the native CRM customer detail", "is-primary")}</div>
-      </header>
-
+    <div class="customer-insight-page wb-inner wb-secondary-page" data-language-fixed>
       <section class="wb-card wb-flush-card customer-record-card" data-od-id="customer-insight-record">
         <div class="customer-breadcrumb"><b>CRM</b>${chevron()}<span>${T("客户列表", "Customer list")}</span>${chevron()}<strong>${T("苏州精密注塑有限公司", "Suzhou Precision Injection Molding Co., Ltd.")}</strong></div>
         <div class="customer-record-main">

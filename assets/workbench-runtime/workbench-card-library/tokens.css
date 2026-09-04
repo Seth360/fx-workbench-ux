@@ -1,4 +1,4 @@
-/* ai-workbench-ux@1.4.32: portable canvases embed these shared tokens verbatim. */
+/* ai-workbench-ux@1.5.7: portable canvases embed these shared tokens verbatim. */
 :root {
   color-scheme: light;
   --wb-bg: #eef4fb;
@@ -54,6 +54,7 @@
   --wb-module-head-padding: 10px 16px;
   --wb-flush-body-padding: 16px 20px 20px;
   --wb-page-title-copy-gap: 4px;
+  --wb-secondary-page-header-display: none;
   --wb-radius-sm: 8px;
   --wb-radius-md: 16px;
   --wb-radius-lg: 24px;
@@ -77,6 +78,7 @@
   --wb-edit-guide-size: 4px;
   --wb-edit-guide-inset: 2px;
   --wb-edit-guide-shadow: 0 0 0 2px var(--wb-card-surface), 0 0 0 4px color-mix(in srgb, var(--wb-accent) 24%, transparent);
+  --wb-edit-hide-z-index: 900;
   --wb-card-hide-action-size: 32px;
   --wb-hidden-bar-height: 40px;
   --wb-control-height: 34px;
@@ -93,6 +95,18 @@
   --wb-avatar-foreground: #ffffff;
   --wb-page-filter-height: 32px;
   --wb-page-header-control-height: var(--wb-page-filter-height, 32px);
+  --wb-rich-header-min-height: 220px;
+  --wb-rich-header-padding: 28px 24px 24px;
+  --wb-rich-header-role-size: 220px;
+  --wb-rich-header-role-render-size: calc(var(--wb-rich-header-role-size) + var(--wb-rich-header-role-overhang) + 4px);
+  --wb-rich-header-role-overhang: 36px;
+  --wb-rich-header-top-gap: 42px;
+  --wb-rich-header-role-inset: 24px;
+  --wb-rich-header-role-gradient-from: rgba(229, 238, 255, 0.20);
+  --wb-rich-header-role-gradient-to: rgba(144, 181, 255, 0.20);
+  --wb-rich-header-surface: rgba(255, 255, 255, 0.74);
+  --wb-rich-header-border: var(--wb-card-border);
+  --wb-rich-header-shadow: var(--wb-card-shadow);
   --wb-workspace-tab-list-max-width: 100%;
   --wb-workspace-tab-height: 34px;
   --wb-workspace-tab-gap: 2px;
@@ -108,6 +122,11 @@
   --wb-action-column-min: 88px;
   --wb-primary-action-height: 32px;
   --wb-compact-action-height: 32px;
+  --wb-search-control-height: 32px;
+  --wb-ai-composer-min-height: 104px;
+  --wb-stage-step-min-width: 148px;
+  --wb-stage-step-head-height: 42px;
+  --wb-stage-step-body-min-height: 92px;
   --wb-summary-metric-min-height: 112px;
   --wb-compact-baseline-card-padding: 14px 16px;
   --wb-compact-baseline-head-gap: 12px;
@@ -183,6 +202,9 @@
   --wb-card-surface: var(--wb-surface);
   --wb-card-border: var(--wb-border);
   --wb-card-shadow: var(--wb-shadow);
+  --wb-rich-header-surface: color-mix(in srgb, var(--wb-accent) 10%, var(--wb-surface));
+  --wb-rich-header-border: var(--wb-border);
+  --wb-rich-header-shadow: var(--wb-shadow);
   --wb-range-track: #3a4554;
 }
 

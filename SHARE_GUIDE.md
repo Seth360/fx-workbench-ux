@@ -1,8 +1,12 @@
 # FX Workbench UX 分享指南
 
-`fx-workbench-ux` 用于将提示词、文档、图片、现有 HTML 或 Markdown 转成可直接打开的多页签工作台 HTML。输出会保留右侧画布设置：丰富/简约、间距、圆角、六套色彩主题、深色模式、中英文、布局拖拽、卡片隐藏/全部还原、保存、导出和重置。
+`fx-workbench-ux` 用于将提示词、文档、图片、现有 HTML 或 Markdown 转成可直接打开的多页签工作台 HTML。页面只通过左侧顶栏页签切换；右侧画布设置保留丰富/简约、间距、圆角、六套色彩主题、深色模式、中英文、布局拖拽、按当前页隐藏/还原、“导出页面”和重置。
 
-当前规范版本为 `ai-workbench-ux@1.4.32`。分享时必须发送完整 ZIP（包含 `assets/workbench-runtime/`、`references/regression-feedback.md` 和验证脚本），不能只发送 `SKILL.md`；设置抽屉的顶栏、隐藏/还原和保存能力都来自 bundled runtime。
+当前规范版本以 bundled `CARD_SPEC.md` 为准。分享时必须发送完整 ZIP（包含 `assets/workbench-runtime/`、`assets/workbench-runtime/workbench-card-library/role-image/`、`references/semantic-components.md`、`references/regression-feedback.md` 和验证脚本），不能只发送 `SKILL.md`；顶部页签、头部卡片角色形象、按当前页隐藏/还原和逐页导出能力都来自 bundled runtime。分享前确认 standalone 画布的 `#canvasRoleImageAssets` 已内联八张 PNG，使复制后的 HTML 仍能切换形象。
+
+Rich Header 的人物可见头部需在桌面高出卡片 26px，并随角色切换七套服装色浅渐变；页头复合下拉菜单必须能越过横向控制组显示，不能只改变 `aria-expanded` 而被 overflow 裁掉。
+
+富页头只用于一级工作区页面；客户/商机洞察详情页、列表页等二级下钻页面使用 `.wb-secondary-page`，不渲染页面级 `wb-header`，直接从记录卡、首个业务指标卡或列表卡开始。
 
 ## 安装
 
@@ -29,7 +33,7 @@
 
 ## 输出与检查
 
-技能会把内置画布运行时与卡片库复制到输出目录，并在根目录生成 HTML，因此结果无需服务器即可打开。生成完成后，打开右上角设置图标，检查主题、语言、保存、导出、重置、四方向布局拖拽，以及卡片隐藏计数和全部还原。
+技能会把内置画布运行时与卡片库复制到输出目录，并在根目录生成 HTML，因此结果无需服务器即可打开。生成完成后，打开右上角设置图标，检查主题、语言、导出页面、重置、四方向布局拖拽，以及卡片隐藏计数和全部还原。点击“导出页面”会按照顶部页签分别生成独立 HTML，文件名使用当前页签文案；每份文件只有对应主画板，不包含页签顶栏、配置栏、CRM 导航或其他页签。多页签浏览器优先只选择一次目标文件夹，不支持时逐份下载。
 
 可在技能目录执行以下命令检查生成页面的关键运行时能力和资源路径：
 
@@ -40,3 +44,5 @@ node scripts/verify_canvas_runtime.mjs /absolute/path/to/generated-workbench/ope
 默认应额外检查 `1440x900`、`1024x768`、`390x844`，并分别验证设置抽屉关闭和打开时的布局。
 
 收到“生成后 UI 有问题”的 HTML 或截图时，按 [regression-feedback.md](references/regression-feedback.md) 记录 DOM/CSS 证据并区分 runtime、共享组件、页面适配和数据问题；不要把单页私有修补直接当作 Skill 规范。
+
+生成内容命中统计周期、人员/部门、日期、枚举筛选、AI 入口/简报、全局/列表搜索、阶段推进、KPI、业务列表或表格时，必须按 [semantic-components.md](references/semantic-components.md) 复用指定组件并保留字段级元数据。

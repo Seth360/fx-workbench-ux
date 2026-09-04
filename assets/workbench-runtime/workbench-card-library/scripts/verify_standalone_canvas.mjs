@@ -28,8 +28,20 @@ try {
   const localCssUrls = cssUrls.filter((value) => !/^(?:data:|https?:|#)/i.test(value));
   if (localCssUrls.length) throw new Error(`standalone canvas contains local CSS URLs: ${localCssUrls.join(", ")}`);
 
+  const roleImageMatch = html.match(/<script type="application\/json" id="canvasRoleImageAssets">([\s\S]*?)<\/script>/i);
+  assert.ok(roleImageMatch, "canvas role-image asset payload is missing");
+  const roleImageAssets = JSON.parse(roleImageMatch[1]);
+  for (const filename of ["分析师-女.png", "分析师-男.png", "客服.png", "总监.png", "服务工程师.png", "服务总监.png", "用户.png", "销售.png"]) {
+    assert.match(roleImageAssets[filename] || "", /^data:image\/png;base64,/, `${filename} must be embedded as a PNG data URL`);
+  }
+
   const canvasRenderer = html.indexOf("canvasApp.innerHTML =");
   assert.ok(canvasRenderer > 0, "canvas renderer is missing");
+  assert.match(html, /id="canvasExportPage"/, "canvas must expose the page-export control");
+  assert.doesNotMatch(html, /id="canvasSave"|id="canvasExport"/, "legacy save/config-export controls must be removed");
+  assert.match(html, /window\.WorkbenchCanvasExport\s*=\s*\{\s*buildWorkspaceExports,\s*exportWorkspacePages\s*\}/, "workspace page-export API is missing");
+  assert.match(html, /showDirectoryPicker/, "multi-page export must support one-folder writing");
+  assert.match(html, /safeExportFilename/, "export filenames must derive safely from tab labels");
   assert.match(html, /id="canvasCrmNavigation"/);
   assert.match(html, /crm-navigation-mode/);
   assert.match(html, /canvas-root\.crm-navigation-enabled\.settings-open\s*\{\s*padding-right:\s*360px/);
@@ -49,8 +61,7 @@ try {
   assert.ok(html.indexOf("WorkbenchOpportunityInsight.render()", detailPanel) > detailPanel, "opportunity insight must render inside detail panel");
   assert.ok(html.indexOf("WorkbenchCustomerInsight.render()", detailPanel) > detailPanel, "customer insight must render inside detail panel");
 
-  const sourceCapture = html.indexOf("const sourceHtmlAtLoad =");
-  assert.ok(sourceCapture > 0 && sourceCapture < canvasRenderer, "saved-source capture must precede canvas rendering");
+  assert.ok(html.indexOf('id="canvasRoleImageAssets"') < canvasRenderer, "role-image assets must load before canvas rendering");
   for (const markerPath of [
     "workbench-card-library/tokens.css",
     "workbench-card-library/components.css",
@@ -63,7 +74,7 @@ try {
     "workbench-card-library/chart-interactions.js"
   ]) {
     const marker = html.indexOf(`WB_INLINE_START ${markerPath}`);
-    assert.ok(marker >= 0 && marker < sourceCapture, `${markerPath} must load before saved-source capture`);
+    assert.ok(marker >= 0 && marker < canvasRenderer, `${markerPath} must load before canvas rendering`);
   }
 
   const scripts = [...html.matchAll(/<script(?![^>]*type=["']application\/json["'])[^>]*>([\s\S]*?)<\/script>/gi)];
@@ -72,7 +83,9 @@ try {
   console.log(`standalone canvas verified after isolated copy: ${copiedPath}`);
   console.log(`- ${scripts.length} inline script(s) parsed`);
   console.log("- opportunity and customer insight renderers load before canvas initialization");
-  console.log("- every shared runtime block loads before saved-source capture");
+  console.log("- every shared runtime block loads before canvas rendering");
+  console.log("- every top-level tab can be exported as a separately named main-board HTML");
+  console.log("- all eight selectable role images are embedded as PNG data URLs");
   console.log("- no external stylesheet, script, or local CSS URL dependency remains");
 } finally {
   await fs.rm(temporaryDir, { recursive: true, force: true });

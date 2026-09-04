@@ -17,6 +17,13 @@
     var menu = root.querySelector("[data-wb-select-menu]");
     var options = Array.from(root.querySelectorAll("[data-wb-select-option]"));
     if (!nativeSelect || !trigger || !value || !menu || !options.length) return null;
+    var nativeOptions = Array.from(nativeSelect.options);
+    options.forEach(function (option, index) {
+      var nativeOption = nativeOptions[index];
+      if (nativeOption && !nativeOption.hasAttribute("value")) nativeOption.value = option.dataset.value;
+    });
+    var overflowOwner = root.closest(".wb-page-control-group");
+    var stackingOwner = root.closest(".wb-rich-header-card");
 
     function selectedOption() {
       return options.find(function (option) { return option.dataset.value === nativeSelect.value; }) || options[0];
@@ -33,6 +40,9 @@
     function close(restoreFocus) {
       menu.hidden = true;
       trigger.setAttribute("aria-expanded", "false");
+      root.classList.remove("is-open");
+      if (overflowOwner) overflowOwner.classList.remove("has-open-select");
+      if (stackingOwner) stackingOwner.classList.remove("has-open-select");
       if (activeInstance === instance) activeInstance = null;
       if (restoreFocus) trigger.focus();
     }
@@ -42,6 +52,9 @@
       if (activeInstance && activeInstance !== instance) activeInstance.close(false);
       menu.hidden = false;
       trigger.setAttribute("aria-expanded", "true");
+      root.classList.add("is-open");
+      if (overflowOwner) overflowOwner.classList.add("has-open-select");
+      if (stackingOwner) stackingOwner.classList.add("has-open-select");
       activeInstance = instance;
       if (focusSelected) selectedOption().focus();
     }

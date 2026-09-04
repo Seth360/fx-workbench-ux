@@ -18,6 +18,8 @@
     <!-- Build page-header controls in one non-wrapping .wb-page-control-group. Use .wb-page-period and the shared .wb-select.wb-page-filter composite at the shared 32px height; keep the native select as the value/change source and include select-interactions.js. -->
     <!-- Use .wb-workspace-tab-bar > .wb-workspace-tab-list for top-level workbench tabs; the tinted list Surface must shrink to its tab content while a trailing tool stays independently aligned. -->
     <!-- Use .wb-header > .wb-title-group for page headers: keep h1 above p in one content column; reserve the two-column icon layout for card headings. -->
+    <!-- In rich canvas style, page headers use .wb-header.wb-rich-header-card with title/description at top-left, 32px controls at bottom-left, and a decorative .wb-rich-header-role image at right. The runtime calibrates each PNG so its visible head overhangs the desktop card by 36px, keeps 42px above the card to the toolbar, and switches the clothing-color gradient with the selected role. On narrow screens the filter group and menu sit above the role image and are never clipped. The canvas runtime owns the selected role-image data URL; minimal style hides the image and restores the compact header without a blank media slot or special top gap. -->
+    <!-- Rich page headers belong to top-level workspaces only. Mark detail/list drill-down wrappers with .wb-secondary-page so the shared component hides any direct page-level header and the first visible block remains the record, metric, or list card. -->
     <!-- Use .wb-quick-grid/.wb-quick-card for 64px quick entries, .wb-compact-row-list/.wb-compact-row for 32px analysis rows, and .wb-inline-action-list for a single trailing action. Composite quick entries use .is-composite + .wb-quick-card-main + .wb-hover-action; its visible Surface must stay opaque in both themes. -->
     <!-- Keep rich as the default style; set data-wb-style="minimal" only through the shared canvas setting. Minimal also flattens title, metric, and quick-entry icons. Mark an intentionally dark feature card with .wb-special-dark-card so its Surface stays dark. Numeric sliders use .wb-range and update --wb-range-progress. -->
     <!-- Use .wb-subpanel for composite-card modules and .wb-inner-tile for their compact facts; both use solid shared Surfaces and bounded shallow shadows without a second backdrop blur. -->
@@ -26,6 +28,8 @@
     <!-- Compact text actions use the full shared secondary style; add .is-primary or .wb-primary-action for the accent-filled primary style. Active segmented options must keep their accent fill on hover. -->
     <!-- For list grouping filters use .wb-filter-segmented, not a tab-like .wb-segmented. Use .wb-status-tag for content-width 22px list states and .wb-person-label > .wb-avatar for bright centered reviewer icons. -->
     <!-- Edit-mode drop guides and resize handles stay fully inside card boundaries. The canvas runtime owns the hover hide button, persisted hidden keys, one bottom hidden-count capsule, Restore all, and reset behavior; card-local CSS must not clip or override these controls. -->
+    <!-- Keep page switching only in the top-level .wb-workspace-tab-list. The settings drawer must not duplicate workspace tabs; edit mode keeps every unselected data-canvas-panel hidden. -->
+    <!-- Rich Header regression: role imagery overhangs the card by 36px with a 42px card-to-toolbar gap; on narrow screens filters and open menus sit above the role image and are never clipped. Minimal style hides the image and keeps the normal compact gap. -->
     <!-- Amount metrics use a pictographic wallet/coins/banknote SVG; never use 元, ¥, $, currency codes, or other visible glyphs as icon artwork. Quote-request titles use a document/clipboard icon. -->
     <!-- Dark mode must use the shared Surface/Table tokens; never mix card, row, hover, or control backgrounds with white or add a top inset highlight. -->
     <!-- If an adjacent authoritative record already shows the same identity, omit the approved duplicate identity block and render only the remaining facts as .wb-summary-metric-grid.wb-metric-grid > .wb-metric. -->
@@ -34,7 +38,34 @@
     <!-- Cross-workspace drill-downs use data-wb-route and the shared workspace-routing.js contract. A valid explicit route wins over action-label inference. Use .wb-entity-link for table entity values and do not attach routes to create, edit, process, or maintenance commands. -->
     <!-- A list entity that promises details must open a real detail surface built only from existing row fields, preserve list state, and provide keyboard focus return. -->
     <!-- A distributable canvas must run build_standalone_canvas.mjs so shared CSS, card renderers, routing, select, and chart behavior survive an isolated file copy. -->
-    <article class="wb-card" data-wb-card-key="card-template" data-wb-default-grid="template-main" data-wb-card-grid="template-main" aria-labelledby="cardTitle">
+    <!-- Every recognized business control/card must follow SEMANTIC_COMPONENTS.md and include data-wb-semantic, data-wb-component, an accessible name, and field metadata. -->
+    <section class="wb-card" data-wb-card-key="semantic-controls" data-wb-default-grid="template-main" data-wb-card-grid="template-main" aria-label="页面筛选与搜索">
+      <div class="wb-page-control-group">
+        <div class="wb-segmented wb-page-period" role="group" aria-label="统计周期" data-wb-semantic="reporting-period" data-wb-component="segmented-control">
+          <button type="button" aria-pressed="true">本月</button><button type="button" aria-pressed="false">本季度</button><button type="button" aria-pressed="false">本年</button>
+        </div>
+        <div class="wb-select wb-page-filter" data-wb-select data-wb-semantic="people-scope" data-wb-component="composite-select" aria-label="人员与部门范围">
+          <select class="wb-select-native" aria-label="人员与部门范围" data-wb-select-native data-wb-field-key="people-scope" data-wb-field-label="人员与部门范围" data-wb-field-type="enum"><option value="team">我的团队</option><option value="self">仅本人</option></select>
+          <button class="wb-select-trigger" type="button" aria-label="人员与部门范围" aria-haspopup="listbox" aria-expanded="false" aria-controls="templatePeopleMenu" data-wb-select-trigger hidden><span class="wb-select-value" data-wb-select-value>我的团队</span><svg class="wb-select-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+          <div class="wb-select-menu" id="templatePeopleMenu" role="listbox" aria-label="人员与部门范围" data-wb-select-menu hidden><button class="wb-select-option" type="button" role="option" aria-selected="true" data-value="team" data-wb-select-option>我的团队</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="self" data-wb-select-option>仅本人</button></div>
+        </div>
+        <div class="wb-select wb-page-filter" data-wb-select data-wb-semantic="date-range" data-wb-component="composite-select" aria-label="日期范围">
+          <select class="wb-select-native" aria-label="日期范围" data-wb-select-native data-wb-field-key="date-range" data-wb-field-label="日期范围" data-wb-field-type="enum"><option value="month">本月</option><option value="quarter">本季度</option><option value="year">本年</option></select>
+          <button class="wb-select-trigger" type="button" aria-label="日期范围" aria-haspopup="listbox" aria-expanded="false" aria-controls="templateDateMenu" data-wb-select-trigger hidden><span class="wb-select-value" data-wb-select-value>本月</span><svg class="wb-select-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+          <div class="wb-select-menu" id="templateDateMenu" role="listbox" aria-label="日期范围" data-wb-select-menu hidden><button class="wb-select-option" type="button" role="option" aria-selected="true" data-value="month" data-wb-select-option>本月</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="quarter" data-wb-select-option>本季度</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="year" data-wb-select-option>本年</button></div>
+        </div>
+        <div class="wb-select wb-page-filter" data-wb-select data-wb-semantic="enum-filter" data-wb-component="composite-select" aria-label="商机类型">
+          <select class="wb-select-native" aria-label="商机类型" data-wb-select-native data-wb-field-key="opportunity-type" data-wb-field-label="商机类型" data-wb-field-type="enum"><option value="all">全部商机</option><option value="active">有效在途</option></select>
+          <button class="wb-select-trigger" type="button" aria-label="商机类型" aria-haspopup="listbox" aria-expanded="false" aria-controls="templateEnumMenu" data-wb-select-trigger hidden><span class="wb-select-value" data-wb-select-value>全部商机</span><svg class="wb-select-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+          <div class="wb-select-menu" id="templateEnumMenu" role="listbox" aria-label="商机类型" data-wb-select-menu hidden><button class="wb-select-option" type="button" role="option" aria-selected="true" data-value="all" data-wb-select-option>全部商机</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="active" data-wb-select-option>有效在途</button></div>
+        </div>
+      </div>
+      <div class="wb-analysis-group" style="margin-top:16px;">
+        <label class="wb-search-field" data-wb-semantic="global-search" data-wb-component="search-field" aria-label="全局搜索"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" fill="none" stroke="currentColor" stroke-width="2"/></svg><input type="search" aria-label="全局搜索" placeholder="客户 / 商机 / 产品" data-wb-field-key="query" data-wb-field-label="全局搜索关键词" data-wb-field-type="query"></label>
+        <label class="wb-search-field" data-wb-semantic="list-search" data-wb-component="search-field" aria-label="列表搜索"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" fill="none" stroke="currentColor" stroke-width="2"/></svg><input type="search" aria-label="列表搜索" placeholder="搜索当前列表" data-wb-field-key="query" data-wb-field-label="列表搜索关键词" data-wb-field-type="query"></label>
+      </div>
+    </section>
+    <article class="wb-card" data-wb-card-key="card-template" data-wb-default-grid="template-main" data-wb-card-grid="template-main" aria-labelledby="cardTitle" data-wb-semantic="kpi-card" data-wb-component="metric-card">
       <header class="wb-card-head">
         <div class="wb-title-group">
           <!-- Use a semantic SVG/icon-library icon for the title; never use visible text as icon artwork. -->
@@ -50,39 +81,58 @@
       </header>
 
       <section class="wb-summary-metric-grid wb-metric-grid" aria-label="核心指标">
-        <button class="wb-metric is-blue wb-route-target" type="button" data-wb-route="customer-insight">
+        <button class="wb-metric is-blue wb-route-target" type="button" data-wb-route="customer-insight" data-wb-field-key="active-customers" data-wb-field-label="指标一" data-wb-field-type="number" data-wb-unit="家" data-wb-value="36">
           <span class="wb-metric-label">指标一</span>
           <strong>36</strong>
           <small>指标口径或变化说明</small>
         </button>
-        <button class="wb-metric is-cyan" type="button">
+        <button class="wb-metric is-cyan" type="button" data-wb-field-key="open-opportunities" data-wb-field-label="指标二" data-wb-field-type="number" data-wb-unit="个" data-wb-value="13">
           <span class="wb-metric-label">指标二</span>
           <strong>13</strong>
           <small>指标口径或变化说明</small>
         </button>
-        <button class="wb-metric is-orange" type="button">
+        <button class="wb-metric is-orange" type="button" data-wb-field-key="risk-count" data-wb-field-label="指标三" data-wb-field-type="number" data-wb-unit="项" data-wb-value="3">
           <span class="wb-metric-label">指标三</span>
           <strong>3</strong>
           <small>指标口径或变化说明</small>
         </button>
-        <button class="wb-metric is-green" type="button">
+        <button class="wb-metric is-green" type="button" data-wb-field-key="closure-rate" data-wb-field-label="指标四" data-wb-field-type="rate" data-wb-unit="%" data-wb-value="76">
           <span class="wb-metric-label">指标四</span>
           <strong>76%</strong>
           <small>指标口径或变化说明</small>
         </button>
       </section>
 
-      <div class="wb-table-wrap" style="margin-top:16px;">
-        <table class="wb-table" aria-label="跨页签实体链接示例">
-          <tbody><tr><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="opportunity-insight">商机项目名称</button></td><td><button class="wb-entity-link wb-route-target" type="button" data-wb-route="customer-insight">客户名称</button></td></tr></tbody>
-        </table>
-      </div>
-
       <section class="wb-analysis-group" aria-label="组合分析示例" style="margin-top:16px;">
         <article class="wb-subpanel"><strong>分析模块一</strong><div class="wb-inner-tile" style="margin-top:12px;"><small>模块指标</small><strong class="wb-number" style="display:block;margin-top:6px;">68%</strong></div></article>
         <article class="wb-subpanel"><strong>分析模块二</strong><div class="wb-inner-tile" style="margin-top:12px;"><small>模块指标</small><strong class="wb-number" style="display:block;margin-top:6px;">72%</strong></div></article>
         <article class="wb-subpanel"><strong>分析模块三</strong><div class="wb-inner-tile" style="margin-top:12px;"><small>模块指标</small><strong class="wb-number" style="display:block;margin-top:6px;">59%</strong></div></article>
       </section>
+    </article>
+    <article class="wb-card wb-business-list" data-wb-card-key="business-list-template" data-wb-default-grid="template-main" data-wb-card-grid="template-main" data-wb-semantic="business-list" data-wb-component="business-list" aria-labelledby="templateBusinessListTitle">
+      <header class="wb-card-head"><div class="wb-baseline-head-copy"><h2 id="templateBusinessListTitle">业务列表</h2><p>保留完整字段、状态、实体下钻和动作</p></div></header>
+      <div class="wb-table-wrap">
+        <table class="wb-table" aria-label="跨页签实体链接示例" data-wb-semantic="business-table" data-wb-component="data-table">
+          <thead><tr><th id="template-opportunity" scope="col" data-wb-field-key="opportunity" data-wb-field-label="商机项目" data-wb-field-type="entity">商机项目</th><th id="template-customer" scope="col" data-wb-field-key="customer" data-wb-field-label="客户" data-wb-field-type="entity">客户</th></tr></thead>
+          <tbody><tr><td headers="template-opportunity" data-wb-field-key="opportunity"><button class="wb-entity-link wb-route-target" type="button" data-wb-route="opportunity-insight">商机项目名称</button></td><td headers="template-customer" data-wb-field-key="customer"><button class="wb-entity-link wb-route-target" type="button" data-wb-route="customer-insight">客户名称</button></td></tr></tbody>
+        </table>
+      </div>
+    </article>
+    <article class="wb-card wb-ai-summary" data-wb-card-key="ai-summary-template" data-wb-default-grid="template-main" data-wb-card-grid="template-main" data-wb-semantic="ai-summary" data-wb-component="ai-brief" aria-labelledby="templateAiSummaryTitle">
+      <div class="wb-ai-summary-copy"><span class="wb-icon is-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3V4Zm4 4v2h8V8H8Zm0 4v2h5v-2H8Z"/></svg></span><div><small>今日经营简报 · 基于 CRM 可核验事实</small><h2 id="templateAiSummaryTitle">项目储备保持稳定，当前应优先处理反馈逾期</h2><p>确定性规则识别异常，AI 只负责归纳结论。</p></div></div>
+      <button class="wb-compact-action is-primary" type="button">查看诊断</button>
+    </article>
+    <article class="wb-card wb-ai-entry" data-wb-card-key="ai-entry-template" data-wb-default-grid="template-main" data-wb-card-grid="template-main" data-wb-semantic="ai-entry" data-wb-component="ai-composer" aria-labelledby="templateAiEntryTitle">
+      <header class="wb-card-head"><div class="wb-title-group"><span class="wb-icon is-orange" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8v5a3 3 0 0 0 3 3h1v-7H6v-1a6 6 0 0 1 12 0v1h-2v7h1a3 3 0 0 0 3-3v-5a8 8 0 0 0-8-8Z"/></svg></span><div><h2 id="templateAiEntryTitle">Hi，我能为你做些什么</h2></div></div></header>
+      <form class="wb-ai-composer"><textarea aria-label="向经营助手提问" placeholder="发送消息" data-wb-field-key="query" data-wb-field-label="向经营助手提问" data-wb-field-type="query"></textarea><div class="wb-action-row"><button class="wb-compact-action is-primary" type="submit">发送</button></div></form>
+    </article>
+    <article class="wb-card" data-wb-card-key="stage-progressor-template" data-wb-default-grid="template-main" data-wb-card-grid="template-main" aria-labelledby="templateStageTitle">
+      <header class="wb-card-head"><div class="wb-baseline-head-copy"><h2 id="templateStageTitle">商机阶段推进</h2><p>保留来源阶段顺序、数量与金额</p></div></header>
+      <div class="wb-stage-progressor" role="list" aria-label="商机阶段推进器" data-wb-semantic="stage-progressor" data-wb-component="stage-progressor">
+        <button class="wb-stage-step" role="listitem" type="button" data-wb-stage-index="1" data-wb-field-key="demand" data-wb-field-label="需求立项" data-wb-field-type="enum"><span class="wb-stage-step-head">P1 需求立项</span><span class="wb-stage-step-body"><strong data-wb-field-key="count" data-wb-field-label="商机数量" data-wb-field-type="number" data-wb-unit="个" data-wb-value="8">8</strong><small data-wb-field-key="amount" data-wb-field-label="预计金额" data-wb-field-type="amount" data-wb-unit="万" data-wb-value="5200">5,200 万</small></span></button>
+        <button class="wb-stage-step" role="listitem" type="button" data-wb-stage-index="2" data-wb-field-key="quote" data-wb-field-label="方案报价" data-wb-field-type="enum"><span class="wb-stage-step-head">P2 方案报价</span><span class="wb-stage-step-body"><strong data-wb-field-key="count" data-wb-field-label="商机数量" data-wb-field-type="number" data-wb-unit="个" data-wb-value="7">7</strong><small data-wb-field-key="amount" data-wb-field-label="预计金额" data-wb-field-type="amount" data-wb-unit="万" data-wb-value="4360">4,360 万</small></span></button>
+        <button class="wb-stage-step" role="listitem" type="button" data-wb-stage-index="3" data-wb-field-key="trial" data-wb-field-label="样品验证" data-wb-field-type="enum"><span class="wb-stage-step-head">P3 样品验证</span><span class="wb-stage-step-body"><strong data-wb-field-key="count" data-wb-field-label="商机数量" data-wb-field-type="number" data-wb-unit="个" data-wb-value="6">6</strong><small data-wb-field-key="amount" data-wb-field-label="预计金额" data-wb-field-type="amount" data-wb-unit="万" data-wb-value="3780">3,780 万</small></span></button>
+      </div>
     </article>
   </main>
   <!-- Include this shared behavior when the card contains bar, pie, or donut segments. -->

@@ -1,4 +1,4 @@
 interface:
   display_name: "FX Workbench UX"
   short_description: "从素材生成或重生成带完整画布配置的工作台 HTML"
-  default_prompt: "使用 $fx-workbench-ux 根据我提供的需求和素材生成完整工作台 HTML；即使我只说美化或优化现有 HTML，也按规范结构重新生成。"
+  default_prompt: "使用 $fx-workbench-ux 根据我提供的需求和素材生成完整工作台 HTML；即使我只说美化或优化现有 HTML，也按规范结构重新生成，并严格复用命中的语义组件。一级工作区使用富页头，详情、列表等二级下钻页使用 wb-secondary-page 且不渲染页面级富页头。"
