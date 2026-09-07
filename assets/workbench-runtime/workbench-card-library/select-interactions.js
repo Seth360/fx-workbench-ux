@@ -25,6 +25,43 @@
     var overflowOwner = root.closest(".wb-page-control-group");
     var stackingOwner = root.closest(".wb-rich-header-card");
 
+    var portalAnchor = null;
+    var savedMenuStyle = null;
+
+    function positionPortal() {
+      if (!portalAnchor) return;
+      var rect = trigger.getBoundingClientRect();
+      var viewportWidth = document.documentElement.clientWidth;
+      var viewportHeight = window.innerHeight;
+      menu.style.maxWidth = Math.max(0, viewportWidth - 24) + "px";
+      menu.style.minWidth = Math.min(rect.width, viewportWidth - 24) + "px";
+      var width = menu.offsetWidth;
+      var below = viewportHeight - rect.bottom - 19;
+      var above = rect.top - 19;
+      var useAbove = below < Math.min(menu.scrollHeight, 180) && above > below;
+      menu.style.maxHeight = Math.max(60, useAbove ? above : below) + "px";
+      menu.style.left = Math.max(12, Math.min(rect.right - width, viewportWidth - width - 12)) + "px";
+      menu.style.top = Math.max(12, useAbove ? rect.top - menu.offsetHeight - 7 : rect.bottom + 7) + "px";
+    }
+
+    function mountPortal() {
+      savedMenuStyle = menu.getAttribute("style");
+      var computed = getComputedStyle(root);
+      for (var i = 0; i < computed.length; i++) {
+        var property = computed[i];
+        if (property.indexOf("--wb-") === 0 || property.indexOf("--canvas-") === 0) menu.style.setProperty(property, computed.getPropertyValue(property));
+      }
+      portalAnchor = document.createComment("wb-select-menu");
+      menu.replaceWith(portalAnchor);
+      document.body.appendChild(menu);
+      menu.classList.add("wb-select-portal");
+      menu.style.position = "fixed";
+      menu.style.right = "auto";
+      positionPortal();
+      window.addEventListener("resize", positionPortal);
+      window.addEventListener("scroll", positionPortal, true);
+    }
+
     function selectedOption() {
       return options.find(function (option) { return option.dataset.value === nativeSelect.value; }) || options[0];
     }
@@ -35,10 +72,20 @@
         option.setAttribute("aria-selected", String(option === selected));
       });
       value.textContent = selected.textContent.trim();
+      positionPortal();
     }
 
     function close(restoreFocus) {
       menu.hidden = true;
+      if (portalAnchor) {
+        portalAnchor.replaceWith(menu);
+        portalAnchor = null;
+        menu.classList.remove("wb-select-portal");
+        if (savedMenuStyle === null) menu.removeAttribute("style");
+        else menu.setAttribute("style", savedMenuStyle);
+        window.removeEventListener("resize", positionPortal);
+        window.removeEventListener("scroll", positionPortal, true);
+      }
       trigger.setAttribute("aria-expanded", "false");
       root.classList.remove("is-open");
       if (overflowOwner) overflowOwner.classList.remove("has-open-select");
@@ -53,7 +100,9 @@
       menu.hidden = false;
       trigger.setAttribute("aria-expanded", "true");
       root.classList.add("is-open");
-      if (overflowOwner) overflowOwner.classList.add("has-open-select");
+      if (overflowOwner && overflowOwner.scrollWidth > overflowOwner.clientWidth + 1) {
+        if (!portalAnchor) mountPortal();
+      } else if (overflowOwner) overflowOwner.classList.add("has-open-select");
       if (stackingOwner) stackingOwner.classList.add("has-open-select");
       activeInstance = instance;
       if (focusSelected) selectedOption().focus();
@@ -68,7 +117,7 @@
       if (changed) nativeSelect.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
-    var instance = { close: close, open: open, refresh: refresh };
+    var instance = { close: close, open: open, refresh: refresh, contains: function (target) { return root.contains(target) || menu.contains(target); } };
     instances.set(root, instance);
     nativeSelect.tabIndex = -1;
     nativeSelect.setAttribute("aria-hidden", "true");
@@ -103,7 +152,7 @@
         event.preventDefault();
         choose(options[index]);
       } else if (event.key === "Tab") {
-        close(false);
+        close(true);
       }
     });
     options.forEach(function (option) {
@@ -127,7 +176,7 @@
   }
 
   document.addEventListener("pointerdown", function (event) {
-    if (activeInstance && !event.target.closest("[data-wb-select]")) activeInstance.close(false);
+    if (activeInstance && !activeInstance.contains(event.target)) activeInstance.close(false);
   });
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape" && activeInstance) activeInstance.close(true);

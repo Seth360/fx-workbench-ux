@@ -1,83 +1,18 @@
 <!doctype html>
-<html lang="zh-CN" data-color-theme="classic" data-theme="light">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI工作台UX规范</title>
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./components.css">
-  <style>
-    .catalog { max-width: 1180px; margin: 0 auto; padding: 24px; }
-    .catalog-toolbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-    .catalog-toolbar h1 { margin: 0; font-size: 22px; line-height: 30px; letter-spacing: 0; }
-    .catalog-toolbar p { margin: 3px 0 0; color: var(--wb-text-muted); font-size: 12px; }
-    .catalog-actions { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; gap: 8px; }
-    .palette-picker { position: relative; }
-    .palette-trigger { display: flex; min-width: 112px; height: var(--wb-control-height); align-items: center; gap: 8px; padding: 0 10px; color: var(--wb-text-secondary); background: var(--wb-control-surface); border: 1px solid var(--wb-border); border-radius: var(--wb-radius-sm); box-shadow: var(--wb-shadow-control); font-size: 12px; font-weight: 650; backdrop-filter: blur(18px) saturate(var(--wb-glass-saturation)); -webkit-backdrop-filter: blur(18px) saturate(var(--wb-glass-saturation)); }
-    .palette-trigger > span:nth-child(2) { flex: 1; text-align: left; white-space: nowrap; }
-    .palette-current-swatch, .palette-swatch { display: grid; flex: 0 0 auto; grid-template-columns: repeat(3, 7px); gap: 2px; }
-    .palette-current-swatch i, .palette-swatch i { width: 7px; height: 18px; border: 1px solid color-mix(in srgb, var(--wb-text) 8%, transparent); border-radius: 3px; }
-    .palette-current-swatch i:nth-child(1) { background: var(--wb-bg); }
-    .palette-current-swatch i:nth-child(2) { background: var(--wb-surface-strong); }
-    .palette-current-swatch i:nth-child(3) { background: var(--wb-accent); }
-    .palette-menu { position: absolute; top: calc(100% + 7px); right: 0; z-index: 20; display: grid; width: 180px; gap: 3px; padding: 6px; background: var(--wb-surface-strong); border: 1px solid var(--wb-border); border-radius: 10px; box-shadow: var(--wb-shadow); backdrop-filter: blur(var(--wb-glass-blur)) saturate(var(--wb-glass-saturation)); -webkit-backdrop-filter: blur(var(--wb-glass-blur)) saturate(var(--wb-glass-saturation)); }
-    .palette-menu[hidden] { display: none; }
-    .palette-option { display: flex; width: 100%; min-height: 40px; align-items: center; gap: 10px; padding: 0 9px; color: var(--wb-text-secondary); background: transparent; border: 1px solid transparent; border-radius: 7px; font-size: 12px; text-align: left; }
-    .palette-option:hover { color: var(--wb-text); background: color-mix(in srgb, var(--wb-accent) 7%, transparent); }
-    .palette-option[aria-checked="true"] { color: var(--wb-text); background: color-mix(in srgb, var(--wb-accent) 10%, transparent); border-color: color-mix(in srgb, var(--wb-accent) 24%, transparent); font-weight: 700; }
-    .palette-option > span:last-child { flex: 1; }
-    .catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--wb-gap-md); }
-    .span-2 { grid-column: 1 / -1; }
-    .component-label { margin: 0 0 8px 2px; color: var(--wb-text-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; }
-    .demo-stack { display: grid; gap: 14px; }
-    .chart-row { display: grid; grid-template-columns: 76px minmax(0, 1fr) 48px; align-items: center; gap: 10px; min-height: 34px; }
-    .chart-row > span { color: var(--wb-text-secondary); font-size: 11px; font-weight: 650; }
-    .chart-row > b { font-family: var(--wb-font-number); font-size: 11px; text-align: right; }
-    .demo-chart-split { display: grid; grid-template-columns: minmax(132px, 1.2fr) minmax(118px, .8fr); align-items: center; gap: 16px; padding-top: 14px; border-top: 1px solid var(--wb-border-soft); }
-    .demo-donut { --wb-chart-size: 132px; --wb-chart-hover-stroke: 29; justify-self: center; }
-    .demo-donut > span { position: absolute; inset: 0; display: grid; align-content: center; place-items: center; color: var(--wb-text-muted); font-size: 9px; line-height: 14px; pointer-events: none; }
-    .demo-donut > span b { color: var(--wb-text); font-family: var(--wb-font-number); font-size: 24px; line-height: 28px; }
-    .demo-outcome-list { display: grid; gap: 9px; }
-    .demo-outcome-list div { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; align-items: center; gap: 7px; color: var(--wb-text-muted); font-size: 10px; }
-    .demo-outcome-list i { width: 7px; height: 7px; background: var(--wb-tone); border-radius: 50%; }
-    .demo-outcome-list b { color: var(--wb-text); font-family: var(--wb-font-number); font-size: 12px; }
-    .control-demo { display: flex; min-height: 96px; flex-wrap: wrap; align-items: flex-start; gap: 12px; padding-top: 4px; }
-    .catalog-filter-row { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-    .control-demo.wb-page-control-group { width: max-content; max-width: 100%; flex-wrap: nowrap; overflow-x: auto; }
-    .control-demo .wb-select { width: min(100%, 260px); }
-    .catalog-quick-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .catalog-density-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--wb-gap-md); }
-    .catalog-composite-demo { margin-top: 2px; }
-    .catalog-subpanel-head { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 10px; margin-bottom: 12px; }
-    .catalog-subpanel-head h3 { margin: 0; color: var(--wb-text); font-size: 13px; line-height: 18px; letter-spacing: 0; }
-    .catalog-subpanel-head p { margin: 2px 0 0; color: var(--wb-text-muted); font-size: 10px; line-height: 15px; }
-    .catalog-inner-tile-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--wb-gap-xs); }
-    .catalog-inner-tile-grid small, .catalog-inner-tile-grid strong { display: block; }
-    .catalog-inner-tile-grid small { color: var(--wb-text-muted); font-size: 10px; }
-    .catalog-inner-tile-grid strong { margin-top: 6px; color: var(--wb-text); font-family: var(--wb-font-number); font-size: 20px; line-height: 24px; }
-    .catalog-relation-demo { margin-top: 14px; }
-    .catalog-relation-demo > .wb-relation-tier:first-child { width: min(100%, 280px); justify-self: center; }
-    .catalog-relation-demo .wb-relation-node { padding: 10px; font-size: 10px; text-align: center; }
-    @media (max-width: 900px) { .catalog-toolbar { align-items: stretch; flex-direction: column; } .catalog-actions { justify-content: flex-start; } .palette-menu { right: auto; left: 0; } .catalog-grid, .catalog-density-grid { grid-template-columns: 1fr; } .span-2 { grid-column: auto; } }
-    @media (max-width: 760px) { .catalog { padding: 14px 12px 24px; } .catalog-grid, .catalog-quick-grid { grid-template-columns: 1fr; } .span-2 { grid-column: auto; } .catalog-actions, .catalog-filter-row { align-items: stretch; flex-wrap: wrap; } .palette-picker { flex: 1 1 100%; } .palette-trigger { width: 100%; } }
-  </style>
-</head>
-<body>
-  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+<html lang="zh-CN" data-color-theme="classic" data-theme="light" data-wb-style="rich">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>规范与语义模板库</title><link rel="icon" href="data:,"><link rel="stylesheet" href="./tokens.css"><link rel="stylesheet" href="./components.css"><link rel="stylesheet" href="./cards/catalog-examples/card.css"></head>
+<body class="wb-library-page">  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
     <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2v16Zm4-3H6v-5h2v5Zm4 0h-2V7h2v9Zm4 0h-2V9h2v7Zm4 0h-2V5h2v11Z"/></symbol>
     <symbol id="icon-risk" viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5.25 3.84 9.74 9 10.8 5.16-1.06 9-5.55 9-10.8V6l-9-4Zm0 2.18L19 7.3V12c0 4.12-2.91 7.83-7 8.74C7.91 19.83 5 16.12 5 12V7.3l7-3.12ZM11 7h2v7h-2V7Zm0 9h2v2h-2v-2Z"/></symbol>
     <symbol id="icon-users" viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5Z"/></symbol>
     <symbol id="icon-filter" viewBox="0 0 24 24"><path d="M3 5h18v2H3V5Zm3 6h12v2H6v-2Zm4 6h4v2h-4v-2Z"/></symbol>
     <symbol id="icon-wallet" viewBox="0 0 24 24"><path d="M20 7H6a1 1 0 0 1 0-2h11a1 1 0 0 0 0-2H6a4 4 0 0 0-4 4v12a4 4 0 0 0 4 4h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm0 14H6a2 2 0 0 1-2-2V8.46A3.97 3.97 0 0 0 6 9h14v3h-4a3 3 0 0 0 0 6h4v3Zm0-5h-4a1 1 0 0 1 0-2h4v2Z"/></symbol>
-  </svg>
-
-  <main class="catalog">
-    <header class="catalog-toolbar wb-header">
-      <div class="wb-title-group"><h1 data-i18n="pageTitle">AI工作台UX规范</h1><p data-i18n="pageSubtitle">ai-workbench-ux@1.5.7 · 组件与视觉回归目录</p></div>
-      <div class="catalog-actions">
+  <symbol id="icon-search" viewBox="0 0 24 24"><path d="M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm6 10 5 5-1 1-5-5 1-1Z"/></symbol></svg>
+<a class="wb-library-skip" href="#library-content">Skip to templates / 跳至模板</a>
+<header class="wb-library-topbar"><a href="./index.html" class="wb-library-brand"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><span data-i18n="libraryBrand">AI工作台UX规范</span><small>v1.5.8</small></a>      <div class="wb-library-actions">
         <div class="palette-picker">
           <button class="palette-trigger" type="button" aria-haspopup="menu" aria-expanded="false" data-palette-trigger data-i18n-aria="paletteControl">
-            <span class="palette-current-swatch" aria-hidden="true"><i></i><i></i><i></i></span><span data-palette-name>经典蓝</span><span aria-hidden="true">▾</span>
+            <span class="palette-current-swatch" aria-hidden="true"><i></i><i></i><i></i></span><span data-palette-name>经典蓝</span><svg class="wb-select-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
           </button>
           <div class="palette-menu" role="menu" data-palette-menu data-i18n-aria="paletteMenu" hidden>
             <button class="palette-option" type="button" role="menuitemradio" aria-checked="true" data-color-choice="classic"><span class="palette-swatch" aria-hidden="true"><i style="background:#eef4fb"></i><i style="background:#fff"></i><i style="background:#4f8cff"></i></span><span data-i18n="paletteClassic">经典蓝</span></button>
@@ -88,143 +23,43 @@
             <button class="palette-option" type="button" role="menuitemradio" aria-checked="false" data-color-choice="graphite"><span class="palette-swatch" aria-hidden="true"><i style="background:#f1f4f6"></i><i style="background:#fff"></i><i style="background:#425a70"></i></span><span data-i18n="paletteGraphite">中性灰</span></button>
           </div>
         </div>
-        <div class="wb-segmented" role="tablist" data-i18n-aria="languageControl">
+        <div class="wb-segmented" role="group" data-i18n-aria="languageControl">
           <button type="button" aria-selected="true" data-language-choice="zh">中文</button>
           <button type="button" aria-selected="false" data-language-choice="en">English</button>
         </div>
-        <div class="wb-segmented" role="tablist" data-i18n-aria="appearanceControl">
+        <div class="wb-segmented" role="group" data-i18n-aria="appearanceControl">
           <button type="button" aria-selected="true" data-theme-choice="light" data-i18n="light">浅色</button>
           <button type="button" aria-selected="false" data-theme-choice="dark" data-i18n="dark">深色</button>
         </div>
-        <div class="wb-segmented" role="tablist" data-i18n-aria="styleControl">
+        <div class="wb-segmented" role="group" data-i18n-aria="styleControl">
           <button type="button" aria-selected="false" data-style-choice="minimal" data-i18n="minimal">简约</button>
           <button type="button" aria-selected="true" data-style-choice="rich" data-i18n="rich">丰富</button>
         </div>
       </div>
-    </header>
-
-    <div class="catalog-grid wb-equal-grid wb-compact-tail-grid wb-card-composition" data-wb-editing="false" data-wb-grid-key="catalog-main" data-wb-edit-scope="catalog" data-wb-empty="false">
-      <section class="span-2" data-wb-card-key="rich-header-card-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main" data-wb-span="all">
-        <p class="component-label" data-i18n="richHeaderCard">丰富头部卡片</p>
-        <header class="wb-header wb-rich-header-card" aria-labelledby="catalogRichHeaderTitle" data-wb-role-image="总监.png">
+</header>
+<div class="wb-library-shell">
+<aside class="wb-library-sidebar"><p class="wb-library-eyebrow" data-i18n="libraryNav">模板分类</p><nav class="wb-library-nav" aria-label="模板分类" data-i18n-aria="libraryNav"><button type="button" data-library-filter="all" aria-pressed="true"><svg><use href="#icon-filter"/></svg><span data-i18n="allTemplates">全部模板</span><b>9</b></button><button type="button" data-library-filter="foundation" aria-pressed="false"><svg><use href="#icon-filter"/></svg><span data-i18n="group1">基础框架</span><b>3</b></button><button type="button" data-library-filter="insights" aria-pressed="false"><svg><use href="#icon-chart"/></svg><span data-i18n="group2">指标与分析</span><b>3</b></button><button type="button" data-library-filter="workflow" aria-pressed="false"><svg><use href="#icon-users"/></svg><span data-i18n="group3">业务协同</span><b>3</b></button></nav><div class="wb-library-resources"><p class="wb-library-eyebrow" data-i18n="resources">规范资源</p><a href="./CARD_SPEC.md" data-i18n="cardSpec">卡片布局规范</a><a href="./SEMANTIC_COMPONENTS.md" data-i18n="semanticSpec">语义组件合同</a><a href="./AI_PROMPT.md" data-i18n="promptSpec">AI 生成提示词</a><a href="../fxiaoke-workbench-canvas.html" data-i18n="openCanvas">打开完整工作台</a></div><div class="wb-library-sidebar-note"><span class="wb-library-dot"></span><span data-i18n="previewNote">预览与共享组件保持同步</span></div></aside>
+<main class="wb-library-main" id="library-content" tabindex="-1"><header class="wb-library-intro"><div class="wb-library-eyebrow">DESIGN SYSTEM / COMPONENTS</div><h1 data-i18n="pageTitle">规范与语义模板库</h1><p data-i18n="pageSubtitle">从业务语义到标准组件，在真实卡片中查看布局与交互</p><div class="wb-library-stats"><span><b>9</b><span data-i18n="catalogCount">个模板</span></span><span><b>12</b><span data-i18n="semanticCount">语义类型</span></span><span><b>6</b><span data-i18n="paletteCount">主题色系</span></span></div></header>
+<div class="wb-library-searchbar"><div><strong data-i18n="browseTemplates">模板预览</strong><span class="wb-library-count" id="library-result-count" role="status" aria-live="polite">9</span></div><label class="wb-search-field"><svg aria-hidden="true"><use href="#icon-search"/></svg><input id="library-search" type="search" data-i18n-aria="searchCatalog" data-i18n-placeholder="searchCatalog" aria-label="搜索模板、组件或语义键" placeholder="搜索模板、组件或语义键"><button type="button" id="library-clear" aria-label="清除筛选" data-i18n-aria="clearSearch" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></label></div>
+<div class="wb-library-empty" id="library-empty" hidden><h2 data-i18n="emptyTitle">没有匹配的模板</h2><p data-i18n="emptyDesc">试试“指标”“筛选”或 data-table</p><button class="wb-compact-action" id="library-reset" type="button" data-i18n="clearSearch">清除筛选</button></div>
+<section class="wb-library-group" data-library-section="foundation" aria-labelledby="foundation-title"><header class="wb-library-group-head"><div><div class="wb-library-eyebrow">01 / <span data-i18n="group1">基础框架</span></div><h2 id="foundation-title" data-i18n="group1">基础框架</h2><p data-i18n="groupDesc1">从页面导航到范围筛选，建立一致的工作台骨架</p></div><span class="wb-library-count" data-group-count>3</span></header><div class="wb-library-grid" data-wb-grid-key="catalog-foundation" data-wb-edit-scope="catalog"><section class="wb-library-item is-wide" id="rich-header-card-example" data-wb-card-key="rich-header-card-example" data-library-group="foundation" data-wb-default-grid="catalog-foundation" data-wb-card-grid="catalog-foundation">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">01.01</span><span data-i18n="richHeaderCard"></span></h3><a href="#rich-header-card-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <header class="wb-header wb-rich-header-card" aria-labelledby="catalogRichHeaderTitle" data-wb-role-image="总监.png">
           <div class="wb-title-group"><h1 id="catalogRichHeaderTitle" data-i18n="workbenchTitle">工作台标题</h1><p><strong data-i18n="roleDescription">角色描述</strong> · <span data-i18n="dataUpdated">数据更新于 2026年8月10日 09:30</span></p></div>
           <div class="wb-page-control-group">
             <div class="wb-segmented wb-page-period" role="group" data-i18n-aria="reportingPeriod" aria-label="统计周期" data-wb-semantic="reporting-period" data-wb-component="segmented-control"><button type="button" aria-pressed="false" data-i18n="month">本月</button><button type="button" aria-pressed="false" data-i18n="quarter">本季度</button><button type="button" aria-pressed="true" data-i18n="last90Days">近90天</button></div>
             <div class="wb-select wb-page-filter" data-wb-select data-wb-semantic="enum-filter" data-wb-component="composite-select" data-i18n-aria="regionFilter" aria-label="区域筛选">
-              <select class="wb-select-native" aria-label="区域筛选" data-i18n-aria="regionFilter" data-wb-select-native data-wb-field-key="region" data-wb-field-label="区域" data-wb-field-type="enum"><option value="all">全部区域</option><option value="east">华东</option></select>
+              <select class="wb-select-native" aria-label="区域筛选" data-i18n-aria="regionFilter" data-wb-select-native data-wb-field-key="region" data-wb-field-label="区域" data-wb-field-type="enum"><option value="all" data-i18n="allRegions">全部区域</option><option value="east" data-i18n="eastChina">华东</option></select>
               <button class="wb-select-trigger" type="button" aria-label="区域筛选" data-i18n-aria="regionFilter" aria-haspopup="listbox" aria-expanded="false" aria-controls="catalogRichHeaderRegionMenu" data-wb-select-trigger hidden><span class="wb-select-value" data-wb-select-value>全部区域</span><svg class="wb-select-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
               <div class="wb-select-menu" id="catalogRichHeaderRegionMenu" role="listbox" aria-label="区域筛选" data-i18n-aria="regionFilter" data-wb-select-menu hidden><button class="wb-select-option" type="button" role="option" aria-selected="true" data-value="all" data-wb-select-option data-i18n="allRegions">全部区域</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="east" data-wb-select-option data-i18n="eastChina">华东</button></div>
             </div>
           </div>
           <figure class="wb-rich-header-role" aria-hidden="true"><img src="role-image/总监.png" alt="" draggable="false"></figure>
-        </header>
-      </section>
-      <section data-wb-card-key="metric-card-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main">
-        <p class="component-label" data-i18n="metricCard">指标卡片</p>
-        <article class="wb-card wb-compact-baseline-card" data-wb-semantic="kpi-card" data-wb-component="metric-card" aria-labelledby="catalogBaselineTitle">
-          <header class="wb-card-head">
-            <div class="wb-baseline-head-copy"><h2 id="catalogBaselineTitle" data-i18n="baseTitle">经营基本盘</h2><p data-i18n="baseDesc">点击数字进入 CRM 原生筛选列表</p></div>
-            <span class="wb-baseline-meta" data-i18n="periodAll">本月 · 全部区域</span>
-          </header>
-          <div class="wb-summary-metric-grid wb-metric-grid">
-            <button class="wb-metric is-blue wb-route-target" type="button" data-wb-route="customer-insight" data-wb-field-key="active-customers" data-wb-field-label="活跃客户" data-wb-field-type="number" data-wb-unit="家" data-wb-value="36"><span class="wb-metric-label"><span data-i18n="activeCustomers">活跃客户</span><svg aria-hidden="true"><use href="#icon-users"/></svg></span><strong>36</strong><small data-i18n="activeDesc">近90天有商机或有效互动</small></button>
-            <button class="wb-metric is-cyan wb-route-target" type="button" data-wb-route="opportunity-insight" data-wb-field-key="expected-amount" data-wb-field-label="预计项目金额" data-wb-field-type="amount" data-wb-unit="万元" data-wb-value="6703.5"><span class="wb-metric-label"><span data-i18n="expectedAmount">预计项目金额</span><svg class="wb-semantic-icon" aria-hidden="true"><use href="#icon-wallet"/></svg></span><strong data-i18n="expectedAmountValue">6,703.5万元</strong><small data-i18n="pipelineCount">13 个在途商机</small></button>
-            <button class="wb-metric is-orange" type="button" data-wb-field-key="overdue-trials" data-wb-field-label="试料逾期" data-wb-field-type="number" data-wb-unit="项" data-wb-value="3"><span class="wb-metric-label"><span data-i18n="sampleOverdue">试料逾期</span><svg aria-hidden="true"><use href="#icon-risk"/></svg></span><strong>3</strong><small data-i18n="waitFeedback">等待客户反馈</small></button>
-            <button class="wb-metric is-green" type="button" data-wb-field-key="closure-rate" data-wb-field-label="闭环率" data-wb-field-type="rate" data-wb-unit="%" data-wb-value="76"><span class="wb-metric-label"><span data-i18n="closureRate">闭环率</span><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><strong>76%</strong><small data-i18n="feedbackClosure">客户反馈闭环率</small></button>
-          </div>
-        </article>
-      </section>
-
-      <section class="span-2" data-wb-card-key="ai-search-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main" data-wb-span="all">
-        <p class="component-label" data-i18n="semanticEntries">AI 与搜索入口</p>
-        <div class="catalog-density-grid">
-          <article class="wb-card wb-ai-summary" data-wb-semantic="ai-summary" data-wb-component="ai-brief" aria-labelledby="catalogAiSummaryTitle">
-            <div class="wb-ai-summary-copy"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><small data-i18n="aiBriefMeta">今日经营简报 · 基于 CRM 可核验事实</small><h2 id="catalogAiSummaryTitle" data-i18n="aiBriefTitle">项目储备稳定，优先处理反馈逾期</h2><p data-i18n="aiBriefDesc">确定性规则识别异常，AI 只负责归纳结论</p></div></div>
-            <button class="wb-compact-action is-primary" type="button" data-i18n="viewDiagnosis">查看诊断</button>
-          </article>
-          <article class="wb-card wb-ai-entry" data-wb-semantic="ai-entry" data-wb-component="ai-composer" aria-labelledby="catalogAiEntryTitle">
-            <header class="wb-card-head"><div class="wb-baseline-head-copy"><h2 id="catalogAiEntryTitle" data-i18n="aiEntryTitle">Hi，我能为你做些什么</h2></div></header>
-            <form class="wb-ai-composer"><textarea aria-label="向经营助手提问" data-i18n-aria="askAssistant" placeholder="发送消息" data-wb-field-key="query" data-wb-field-label="向经营助手提问" data-wb-field-type="query"></textarea><div class="wb-action-row"><button class="wb-compact-action is-primary" type="submit" data-i18n="send">发送</button></div></form>
-          </article>
-        </div>
-        <div class="catalog-density-grid" style="margin-top:12px;">
-          <label class="wb-search-field" data-wb-semantic="global-search" data-wb-component="search-field" aria-label="全局搜索"><svg aria-hidden="true"><use href="#icon-filter"/></svg><input type="search" aria-label="全局搜索" data-i18n-aria="globalSearch" data-i18n-placeholder="globalSearchPlaceholder" placeholder="客户 / 商机 / 产品" data-wb-field-key="query" data-wb-field-label="全局搜索关键词" data-wb-field-type="query"></label>
-          <label class="wb-search-field" data-wb-semantic="list-search" data-wb-component="search-field" aria-label="列表搜索"><svg aria-hidden="true"><use href="#icon-filter"/></svg><input type="search" aria-label="列表搜索" data-i18n-aria="listSearch" data-i18n-placeholder="listSearchPlaceholder" placeholder="搜索当前列表" data-wb-field-key="query" data-wb-field-label="列表搜索关键词" data-wb-field-type="query"></label>
-        </div>
-      </section>
-
-      <section data-wb-card-key="analysis-card-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main">
-        <p class="component-label" data-i18n="analysisCard">分析卡片</p>
-        <article class="wb-card wb-flush-card">
-          <header class="wb-card-head wb-flush-head">
-            <div class="wb-title-group"><span class="wb-icon is-cyan"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h2 data-i18n="industryTitle">行业项目储备与阶段结构</h2><p data-i18n="industryDesc">阶段金额按行业分布</p></div></div>
-            <span class="wb-title-meta" data-i18n="month">本月</span>
-          </header>
-          <div class="demo-stack wb-flush-body">
-            <div class="chart-row"><span data-i18n="lowAltitude">低空飞行</span><div class="wb-stack" data-i18n-aria="lowAltitudeAria" aria-label="低空飞行 680万"><i class="wb-chart-interactive" role="img" aria-label="商务接触 190万，占 27.9%" tabindex="0" style="--value:28%;--wb-tone:var(--wb-blue)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="商务接触：190 万（27.9%）" data-chart-detail-en="Business contact: CNY 1.9m (27.9%)"></i><i class="wb-chart-interactive" role="img" aria-label="试样阶段 170万，占 25%" tabindex="0" style="--value:25%;--wb-tone:var(--wb-purple)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="试样阶段：170 万（25.0%）" data-chart-detail-en="Trial stage: CNY 1.7m (25.0%)"></i><i class="wb-chart-interactive" role="img" aria-label="导入阶段 190万，占 27.9%" tabindex="0" style="--value:28%;--wb-tone:var(--wb-orange)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="导入阶段：190 万（27.9%）" data-chart-detail-en="Introduction stage: CNY 1.9m (27.9%)"></i><i class="wb-chart-interactive" role="img" aria-label="量产阶段 130万，占 19.2%" tabindex="0" style="--value:19%;--wb-tone:var(--wb-green)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="量产阶段：130 万（19.2%）" data-chart-detail-en="Mass production: CNY 1.3m (19.2%)"></i></div><b data-i18n="amount680">680万</b></div>
-            <div class="chart-row"><span data-i18n="cleaningAppliance">清洁家电</span><div class="wb-stack" data-i18n-aria="cleaningAria" aria-label="清洁家电 520万"><i class="wb-chart-interactive" role="img" aria-label="商务接触 130万，占 25%" tabindex="0" style="--value:25%;--wb-tone:var(--wb-blue)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="商务接触：130 万（25.0%）" data-chart-detail-en="Business contact: CNY 1.3m (25.0%)"></i><i class="wb-chart-interactive" role="img" aria-label="试样阶段 150万，占 28.8%" tabindex="0" style="--value:29%;--wb-tone:var(--wb-purple)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="试样阶段：150 万（28.8%）" data-chart-detail-en="Trial stage: CNY 1.5m (28.8%)"></i><i class="wb-chart-interactive" role="img" aria-label="导入阶段 160万，占 30.8%" tabindex="0" style="--value:31%;--wb-tone:var(--wb-orange)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="导入阶段：160 万（30.8%）" data-chart-detail-en="Introduction stage: CNY 1.6m (30.8%)"></i><i class="wb-chart-interactive" role="img" aria-label="量产阶段 80万，占 15.4%" tabindex="0" style="--value:15%;--wb-tone:var(--wb-green)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="量产阶段：80 万（15.4%）" data-chart-detail-en="Mass production: CNY 0.8m (15.4%)"></i></div><b data-i18n="amount520">520万</b></div>
-            <div class="demo-chart-split wb-chart-frame">
-              <div class="wb-donut-chart demo-donut"><svg viewBox="0 0 136 136" role="group" aria-label="商机结果与暂停分布"><circle class="wb-donut-track" cx="68" cy="68" r="54" pathLength="100" stroke-width="26"></circle><circle class="wb-donut-segment wb-chart-interactive" role="img" aria-label="赢单项目 6，占 66.7%" tabindex="0" cx="68" cy="68" r="54" pathLength="100" stroke-width="26" style="--wb-tone:var(--wb-green);--dash:65.5;--offset:0" data-chart-title-zh="商机结果与暂停" data-chart-title-en="Opportunity outcomes and pauses" data-chart-detail-zh="赢单项目：6 项（66.7%）" data-chart-detail-en="Won projects: 6 (66.7%)"></circle><circle class="wb-donut-segment wb-chart-interactive" role="img" aria-label="终止项目 2，占 22.2%" tabindex="0" cx="68" cy="68" r="54" pathLength="100" stroke-width="26" style="--wb-tone:var(--wb-red);--dash:21;--offset:-66.7" data-chart-title-zh="商机结果与暂停" data-chart-title-en="Opportunity outcomes and pauses" data-chart-detail-zh="终止项目：2 项（22.2%）" data-chart-detail-en="Terminated projects: 2 (22.2%)"></circle><circle class="wb-donut-segment wb-chart-interactive" role="img" aria-label="暂停项目 1，占 11.1%" tabindex="0" cx="68" cy="68" r="54" pathLength="100" stroke-width="26" style="--wb-tone:var(--wb-orange);--dash:9.9;--offset:-88.9" data-chart-title-zh="商机结果与暂停" data-chart-title-en="Opportunity outcomes and pauses" data-chart-detail-zh="暂停项目：1 项（11.1%）" data-chart-detail-en="Paused projects: 1 (11.1%)"></circle></svg><span><b>9</b><span data-i18n="outcomeTotal">结果与暂停</span></span></div>
-              <div class="demo-outcome-list"><div><i style="--wb-tone:var(--wb-green)"></i><span data-i18n="wonProjects">赢单项目</span><b>6</b></div><div><i style="--wb-tone:var(--wb-red)"></i><span data-i18n="terminatedProjects">终止项目</span><b>2</b></div><div><i style="--wb-tone:var(--wb-orange)"></i><span data-i18n="pausedProjects">暂停项目</span><b>1</b></div></div>
-            </div>
-            <div class="wb-fact-list wb-soft-metric-grid"><div class="wb-soft-metric is-blue"><span data-i18n="wonAmountShare">赢单项目预计金额占结果项目金额</span><b>78%</b></div><div class="wb-soft-metric is-orange"><span data-i18n="missingPauseReason">暂停原因缺失</span><b data-i18n="oneItem">1 项</b></div></div>
-          </div>
-        </article>
-      </section>
-
-      <section class="span-2" data-wb-card-key="composite-hierarchy-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main" data-wb-span="all">
-        <p class="component-label" data-i18n="compositeCard">组合卡内部层级</p>
-        <article class="wb-card">
-          <header class="wb-card-head">
-            <div class="wb-title-group"><span class="wb-icon is-cyan"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h2 data-i18n="compositeTitle">项目推进与业务闭环</h2><p data-i18n="compositeDesc">主卡、分析子面板与内部指标保持清晰层级</p></div></div>
-            <span class="wb-title-meta" data-i18n="month">本月</span>
-          </header>
-          <div class="wb-analysis-group catalog-composite-demo">
-            <section class="wb-subpanel"><div class="catalog-subpanel-head"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h3 data-i18n="stageStructure">商机阶段结构</h3><p data-i18n="validPipeline">有效在途</p></div></div><div class="catalog-inner-tile-grid"><div class="wb-inner-tile"><small data-i18n="businessContact">商务接触</small><strong data-i18n="fiveItems">5 项</strong></div><div class="wb-inner-tile"><small data-i18n="trialStage">试样阶段</small><strong data-i18n="threeItems">3 项</strong></div></div></section>
-            <section class="wb-subpanel"><div class="catalog-subpanel-head"><span class="wb-icon is-green"><svg aria-hidden="true"><use href="#icon-users"/></svg></span><div><h3 data-i18n="trialClosure">试料反馈闭环</h3><p data-i18n="approvedResults">审批通过后的客户结论</p></div></div><div class="catalog-inner-tile-grid"><div class="wb-inner-tile"><small data-i18n="trialPassRate">试料通过率</small><strong>68%</strong></div><div class="wb-inner-tile"><small data-i18n="feedbackClosure">客户反馈闭环率</small><strong>72%</strong></div></div></section>
-            <section class="wb-subpanel"><div class="catalog-subpanel-head"><span class="wb-icon is-orange"><svg aria-hidden="true"><use href="#icon-risk"/></svg></span><div><h3 data-i18n="quoteFeedback">材料报价反馈</h3><p data-i18n="approvedQuotes">审批通过后的逐材料反馈</p></div></div><div class="catalog-inner-tile-grid"><div class="wb-inner-tile"><small data-i18n="priceFeedbackRate">价格反馈填写率</small><strong>67%</strong></div><div class="wb-inner-tile"><small data-i18n="descriptionRate">反馈说明填写率</small><strong>59%</strong></div></div></section>
-          </div>
-          <div class="wb-relation-flow is-three-way catalog-relation-demo" data-i18n-aria="relationDemoAria" aria-label="三分支客户关系">
-            <div class="wb-relation-tier" data-i18n-aria="currentTierAria" aria-label="当前客户"><article class="wb-relation-node" data-i18n="currentCustomer">当前客户</article></div>
-            <div class="wb-relation-branch" aria-hidden="true"></div>
-            <div class="wb-relation-tier" data-i18n-aria="downstreamTierAria" aria-label="三个下游客户"><div class="wb-relation-children"><article class="wb-relation-node" data-i18n="downstreamCustomer">注塑厂</article><article class="wb-relation-node" data-i18n="downstreamMold">模具厂</article><article class="wb-relation-node" data-i18n="downstreamAgent">经销商</article></div></div>
-          </div>
-        </article>
-      </section>
-
-      <section class="span-2" data-wb-card-key="density-components-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main" data-wb-span="all">
-        <p class="component-label" data-i18n="densityComponents">快捷入口与紧凑列表</p>
-        <article class="wb-card">
-          <header class="wb-card-head">
-            <div class="wb-title-group"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h2 data-i18n="densityTitle">统一卡片密度</h2><p data-i18n="densityDesc">快捷入口、阶段行与右侧单一处理动作</p></div></div>
-            <div class="wb-compact-action-group"><button class="wb-inline-action wb-compact-action" type="button" data-i18n="refreshInsight">刷新洞察</button><button class="wb-primary-action wb-compact-action" type="button" data-i18n="openCrm">打开 CRM</button></div>
-          </header>
-          <div class="demo-stack">
-            <div class="wb-quick-grid catalog-quick-grid">
-              <article class="wb-quick-card is-composite"><button class="wb-quick-card-main" type="button"><span class="wb-quick-icon is-green"><svg aria-hidden="true"><use href="#icon-users"/></svg></span><span class="wb-quick-copy"><b data-i18n="salesLeads">销售线索</b><small data-i18n="validReserve">有效储备</small></span><strong>21</strong></button><button class="wb-hover-action" type="button" data-i18n-aria="createSalesLead" aria-label="新建销售线索"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6v-2Z"/></svg></button></article>
-              <button class="wb-quick-card" type="button"><span class="wb-quick-icon is-orange"><svg aria-hidden="true"><use href="#icon-users"/></svg></span><span class="wb-quick-copy"><b data-i18n="teamCustomers">团队客户</b><small data-i18n="active90">近90天活跃</small></span><strong>18</strong></button>
-              <button class="wb-quick-card" type="button"><span class="wb-quick-icon is-purple"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><span class="wb-quick-copy"><b data-i18n="opportunityProjects">商机项目</b><small data-i18n="validPipeline">有效在途</small></span><strong>9</strong></button>
-            </div>
-            <div class="catalog-density-grid">
-              <div class="wb-stage-progressor" role="list" aria-label="商机阶段推进器" data-wb-semantic="stage-progressor" data-wb-component="stage-progressor">
-                <button class="wb-stage-step" role="listitem" type="button" data-wb-stage-index="1" data-wb-field-key="business-contact" data-wb-field-label="商务接触" data-wb-field-type="enum"><span class="wb-stage-step-head" data-i18n="businessContact">商务接触</span><span class="wb-stage-step-body"><strong data-wb-field-key="count" data-wb-field-label="数量" data-wb-field-type="number" data-wb-unit="项" data-wb-value="5">5</strong><small data-wb-field-key="amount" data-wb-field-label="预计金额" data-wb-field-type="amount" data-wb-unit="万" data-wb-value="520">520 万</small></span></button>
-                <button class="wb-stage-step" role="listitem" type="button" data-wb-stage-index="2" data-wb-field-key="trial-stage" data-wb-field-label="试样阶段" data-wb-field-type="enum"><span class="wb-stage-step-head" data-i18n="trialStage">试样阶段</span><span class="wb-stage-step-body"><strong data-wb-field-key="count" data-wb-field-label="数量" data-wb-field-type="number" data-wb-unit="项" data-wb-value="3">3</strong><small data-wb-field-key="amount" data-wb-field-label="预计金额" data-wb-field-type="amount" data-wb-unit="万" data-wb-value="380">380 万</small></span></button>
-              </div>
-              <div class="wb-compact-row-list">
-                <button class="wb-compact-row" type="button"><span data-i18n="businessContact">商务接触</span><span class="wb-progress-track"><span class="wb-progress-fill" style="--value:68%;--wb-tone:var(--wb-blue)"></span></span><b data-i18n="fiveItems">5 项</b></button>
-                <button class="wb-compact-row" type="button"><span data-i18n="trialStage">试样阶段</span><span class="wb-progress-track"><span class="wb-progress-fill" style="--value:52%;--wb-tone:var(--wb-cyan)"></span></span><b data-i18n="threeItems">3 项</b></button>
-              </div>
-              <div class="wb-inline-action-list">
-                <article class="wb-inline-action-item"><span class="wb-stage is-risk">P1</span><span class="wb-inline-action-copy"><b data-i18n="feedbackPending">客户测试反馈未闭环</b><small data-i18n="overdueSeven">试样阶段 · 逾期7天</small></span><button class="wb-inline-action wb-compact-action" type="button" data-i18n="handle">处理</button></article>
-              </div>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="span-2" data-wb-card-key="workspace-tabs-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main" data-wb-span="all">
-        <p class="component-label" data-i18n="workspaceTabs">工作台页签导航</p>
-        <article class="wb-card">
+        </header></div>
+          <details class="wb-library-contract"><summary><code>.wb-rich-header-card</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section><section class="wb-library-item" id="workspace-tabs-example" data-wb-card-key="workspace-tabs-example" data-library-group="foundation" data-wb-default-grid="catalog-foundation" data-wb-card-grid="catalog-foundation">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">01.02</span><span data-i18n="workspaceTabs"></span></h3><a href="#workspace-tabs-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <article class="wb-card">
           <header class="wb-card-head">
             <div class="wb-title-group"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-filter"/></svg></span><div><h2 data-i18n="workspaceTabsTitle">内容宽度页签组</h2><p data-i18n="workspaceTabsDesc">底色包裹页签，工具动作独立靠右</p></div></div>
           </header>
@@ -237,17 +72,15 @@
             </div>
             <button class="wb-icon-button" type="button" data-i18n-aria="canvasSettings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="fill:none" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43.25a2 2 0 0 1-1 1.73V20a2 2 0 0 0 2 2z"/><circle cx="12" cy="12" r="3"/></svg></button>
           </div>
-        </article>
-      </section>
-
-      <section class="span-2" data-wb-card-key="select-control-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main" data-wb-span="all">
-        <p class="component-label" data-i18n="selectControl">枚举筛选控件</p>
-        <article class="wb-card">
+        </article></div>
+          <details class="wb-library-contract"><summary><code>.wb-workspace-tab-list</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section><section class="wb-library-item" id="select-control-example" data-wb-card-key="select-control-example" data-library-group="foundation" data-wb-default-grid="catalog-foundation" data-wb-card-grid="catalog-foundation">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">01.03</span><span data-i18n="selectControl"></span></h3><a href="#select-control-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <article class="wb-card">
           <header class="wb-card-head">
             <div class="wb-title-group"><span class="wb-icon is-purple"><svg aria-hidden="true"><use href="#icon-filter"/></svg></span><div><h2 data-i18n="selectTitle">管理单元筛选</h2><p data-i18n="selectDesc">圆角弹层、轻投影与完整键盘操作</p></div></div>
           </header>
-          <div class="control-demo wb-page-control-group">
-            <div class="wb-segmented wb-page-period" role="group" aria-label="统计周期" data-i18n-aria="reportingPeriod" data-wb-semantic="reporting-period" data-wb-component="segmented-control">
+          <div class="catalog-filter-demo"><div><label data-i18n="scopeRow">统计周期与管理范围</label><div class="wb-page-control-group">            <div class="wb-segmented wb-page-period" role="group" aria-label="统计周期" data-i18n-aria="reportingPeriod" data-wb-semantic="reporting-period" data-wb-component="segmented-control">
               <button type="button" aria-pressed="false" data-i18n="month">本月</button>
               <button type="button" aria-pressed="false" data-i18n="quarter">本季度</button>
               <button type="button" aria-pressed="true" data-i18n="last90Days">近90天</button>
@@ -263,7 +96,7 @@
                 <button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="pcr" data-i18n="pcrUnit" data-wb-select-option>PCR与共聚酯事业部</button>
               </div>
             </div>
-            <div class="wb-select wb-page-filter" data-wb-select data-wb-semantic="date-range" data-wb-component="composite-select" aria-label="日期范围">
+</div></div><div><label data-i18n="dateRow">日期范围与商机类型</label><div class="wb-page-control-group">            <div class="wb-select wb-page-filter" data-wb-select data-wb-semantic="date-range" data-wb-component="composite-select" aria-label="日期范围">
               <select class="wb-select-native" aria-label="日期范围" data-i18n-aria="dateRange" data-wb-select-native data-wb-field-key="date-range" data-wb-field-label="日期范围" data-wb-field-type="enum"><option value="month" data-i18n="month">本月</option><option value="quarter" data-i18n="quarter">本季度</option><option value="last90" data-i18n="last90Days">近90天</option></select>
               <button class="wb-select-trigger" type="button" aria-label="日期范围" data-i18n-aria="dateRange" aria-haspopup="listbox" aria-expanded="false" aria-controls="catalogDateRangeMenu" data-wb-select-trigger hidden><span class="wb-select-value" data-wb-select-value data-i18n="month">本月</span><svg class="wb-select-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"></path></svg></button>
               <div class="wb-select-menu" id="catalogDateRangeMenu" role="listbox" aria-label="日期范围" data-i18n-aria="dateRange" data-wb-select-menu hidden><button class="wb-select-option" type="button" role="option" aria-selected="true" data-value="month" data-i18n="month" data-wb-select-option>本月</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="quarter" data-i18n="quarter" data-wb-select-option>本季度</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="last90" data-i18n="last90Days" data-wb-select-option>近90天</button></div>
@@ -273,18 +106,115 @@
               <button class="wb-select-trigger" type="button" aria-label="商机类型" data-i18n-aria="opportunityType" aria-haspopup="listbox" aria-expanded="false" aria-controls="catalogOpportunityTypeMenu" data-wb-select-trigger hidden><span class="wb-select-value" data-wb-select-value data-i18n="allOpportunities">全部商机</span><svg class="wb-select-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"></path></svg></button>
               <div class="wb-select-menu" id="catalogOpportunityTypeMenu" role="listbox" aria-label="商机类型" data-i18n-aria="opportunityType" data-wb-select-menu hidden><button class="wb-select-option" type="button" role="option" aria-selected="true" data-value="all" data-i18n="allOpportunities" data-wb-select-option>全部商机</button><button class="wb-select-option" type="button" role="option" aria-selected="false" data-value="active" data-i18n="validPipeline" data-wb-select-option>有效在途</button></div>
             </div>
-          </div>
+</div></div></div>
           <div class="wb-compact-action-group" style="margin-top:12px;">
             <button class="wb-compact-action" type="button" data-i18n="secondaryCommand">次要命令</button>
             <button class="wb-compact-action is-primary" type="button" data-i18n="primaryCommand">主要命令</button>
           </div>
           <p class="wb-boundary-note" style="margin-top:12px;" data-i18n="editAffordanceNote">编辑态引导线与缩放控件完全内收；卡片隐藏由右上角图标与底部唯一恢复胶囊管理</p>
-        </article>
-      </section>
-
-      <section class="span-2" data-wb-card-key="risk-table-example" data-wb-default-grid="catalog-main" data-wb-card-grid="catalog-main" data-wb-span="all">
-        <p class="component-label" data-i18n="riskTableCard">风险表格卡片</p>
-        <article class="wb-card wb-business-list" data-wb-semantic="business-list" data-wb-component="business-list" aria-labelledby="catalogRiskTitle">
+        </article></div>
+          <details class="wb-library-contract"><summary><code>.wb-select.wb-page-filter</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section></div></section><section class="wb-library-group" data-library-section="insights" aria-labelledby="insights-title"><header class="wb-library-group-head"><div><div class="wb-library-eyebrow">02 / <span data-i18n="group2">指标与分析</span></div><h2 id="insights-title" data-i18n="group2">指标与分析</h2><p data-i18n="groupDesc2">让经营事实、分布与业务关系保持清晰层级</p></div><span class="wb-library-count" data-group-count>3</span></header><div class="wb-library-grid" data-wb-grid-key="catalog-insights" data-wb-edit-scope="catalog"><section class="wb-library-item" id="metric-card-example" data-wb-card-key="metric-card-example" data-library-group="insights" data-wb-default-grid="catalog-insights" data-wb-card-grid="catalog-insights">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">02.01</span><span data-i18n="metricCard"></span></h3><a href="#metric-card-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <article class="wb-card wb-compact-baseline-card" data-wb-semantic="kpi-card" data-wb-component="metric-card" aria-labelledby="catalogBaselineTitle">
+          <header class="wb-card-head">
+            <div class="wb-baseline-head-copy"><h2 id="catalogBaselineTitle" data-i18n="baseTitle">经营基本盘</h2><p data-i18n="baseDesc">点击数字进入 CRM 原生筛选列表</p></div>
+            <span class="wb-baseline-meta" data-i18n="periodAll">本月 · 全部区域</span>
+          </header>
+          <div class="wb-summary-metric-grid wb-metric-grid">
+            <button class="wb-metric is-blue wb-route-target" type="button" data-wb-route="customer-insight" data-wb-field-key="active-customers" data-wb-field-label="活跃客户" data-wb-field-type="number" data-wb-unit="家" data-wb-value="36"><span class="wb-metric-label"><span data-i18n="activeCustomers">活跃客户</span><svg aria-hidden="true"><use href="#icon-users"/></svg></span><strong>36</strong><small data-i18n="activeDesc">近90天有商机或有效互动</small></button>
+            <button class="wb-metric is-cyan wb-route-target" type="button" data-wb-route="opportunity-insight" data-wb-field-key="expected-amount" data-wb-field-label="预计项目金额" data-wb-field-type="amount" data-wb-unit="万元" data-wb-value="6703.5"><span class="wb-metric-label"><span data-i18n="expectedAmount">预计项目金额</span><svg class="wb-semantic-icon" aria-hidden="true"><use href="#icon-wallet"/></svg></span><strong data-i18n="expectedAmountValue">6,703.5万元</strong><small data-i18n="pipelineCount">13 个在途商机</small></button>
+            <button class="wb-metric is-orange" type="button" data-wb-field-key="overdue-trials" data-wb-field-label="试料逾期" data-wb-field-type="number" data-wb-unit="项" data-wb-value="3"><span class="wb-metric-label"><span data-i18n="sampleOverdue">试料逾期</span><svg aria-hidden="true"><use href="#icon-risk"/></svg></span><strong>3</strong><small data-i18n="waitFeedback">等待客户反馈</small></button>
+            <button class="wb-metric is-green" type="button" data-wb-field-key="closure-rate" data-wb-field-label="闭环率" data-wb-field-type="rate" data-wb-unit="%" data-wb-value="76"><span class="wb-metric-label"><span data-i18n="closureRate">闭环率</span><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><strong>76%</strong><small data-i18n="feedbackClosure">客户反馈闭环率</small></button>
+          </div>
+        </article></div>
+          <details class="wb-library-contract"><summary><code>kpi-card → metric-card</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section><section class="wb-library-item" id="analysis-card-example" data-wb-card-key="analysis-card-example" data-library-group="insights" data-wb-default-grid="catalog-insights" data-wb-card-grid="catalog-insights">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">02.02</span><span data-i18n="analysisCard"></span></h3><a href="#analysis-card-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <article class="wb-card wb-flush-card">
+          <header class="wb-card-head wb-flush-head">
+            <div class="wb-title-group"><span class="wb-icon is-cyan"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h2 data-i18n="industryTitle">行业项目储备与阶段结构</h2><p data-i18n="industryDesc">阶段金额按行业分布</p></div></div>
+            <span class="wb-title-meta" data-i18n="month">本月</span>
+          </header>
+          <div class="demo-stack wb-flush-body"><div class="wb-chart-legend"><span><i style="--wb-tone:var(--wb-blue)"></i><span data-i18n="businessContact"></span></span><span><i style="--wb-tone:var(--wb-purple)"></i><span data-i18n="trialStage"></span></span><span><i style="--wb-tone:var(--wb-orange)"></i><span data-i18n="importStage"></span></span><span><i style="--wb-tone:var(--wb-green)"></i><span data-i18n="massProduction"></span></span></div>
+            <div class="chart-row"><span data-i18n="lowAltitude">低空飞行</span><div class="wb-stack" data-i18n-aria="lowAltitudeAria" aria-label="低空飞行 680万"><i class="wb-chart-interactive" role="img" aria-label="商务接触 190万，占 27.9%" tabindex="0" style="--value:28%;--wb-tone:var(--wb-blue)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="商务接触：190 万（27.9%）" data-chart-detail-en="Business contact: CNY 1.9m (27.9%)"></i><i class="wb-chart-interactive" role="img" aria-label="试样阶段 170万，占 25%" tabindex="0" style="--value:25%;--wb-tone:var(--wb-purple)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="试样阶段：170 万（25.0%）" data-chart-detail-en="Trial stage: CNY 1.7m (25.0%)"></i><i class="wb-chart-interactive" role="img" aria-label="导入阶段 190万，占 27.9%" tabindex="0" style="--value:28%;--wb-tone:var(--wb-orange)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="导入阶段：190 万（27.9%）" data-chart-detail-en="Introduction stage: CNY 1.9m (27.9%)"></i><i class="wb-chart-interactive" role="img" aria-label="量产阶段 130万，占 19.2%" tabindex="0" style="--value:19%;--wb-tone:var(--wb-green)" data-chart-title-zh="低空飞行" data-chart-title-en="Low-altitude aviation" data-chart-detail-zh="量产阶段：130 万（19.2%）" data-chart-detail-en="Mass production: CNY 1.3m (19.2%)"></i></div><b data-i18n="amount680">680万</b></div>
+            <div class="chart-row"><span data-i18n="cleaningAppliance">清洁家电</span><div class="wb-stack" data-i18n-aria="cleaningAria" aria-label="清洁家电 520万"><i class="wb-chart-interactive" role="img" aria-label="商务接触 130万，占 25%" tabindex="0" style="--value:25%;--wb-tone:var(--wb-blue)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="商务接触：130 万（25.0%）" data-chart-detail-en="Business contact: CNY 1.3m (25.0%)"></i><i class="wb-chart-interactive" role="img" aria-label="试样阶段 150万，占 28.8%" tabindex="0" style="--value:29%;--wb-tone:var(--wb-purple)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="试样阶段：150 万（28.8%）" data-chart-detail-en="Trial stage: CNY 1.5m (28.8%)"></i><i class="wb-chart-interactive" role="img" aria-label="导入阶段 160万，占 30.8%" tabindex="0" style="--value:31%;--wb-tone:var(--wb-orange)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="导入阶段：160 万（30.8%）" data-chart-detail-en="Introduction stage: CNY 1.6m (30.8%)"></i><i class="wb-chart-interactive" role="img" aria-label="量产阶段 80万，占 15.4%" tabindex="0" style="--value:15%;--wb-tone:var(--wb-green)" data-chart-title-zh="清洁家电" data-chart-title-en="Cleaning appliances" data-chart-detail-zh="量产阶段：80 万（15.4%）" data-chart-detail-en="Mass production: CNY 0.8m (15.4%)"></i></div><b data-i18n="amount520">520万</b></div>
+            <div class="demo-chart-split wb-chart-frame">
+              <div class="wb-donut-chart demo-donut"><svg viewBox="0 0 136 136" role="group" aria-label="商机结果与暂停分布"><circle class="wb-donut-track" cx="68" cy="68" r="54" pathLength="100" stroke-width="26"></circle><circle class="wb-donut-segment wb-chart-interactive" role="img" aria-label="赢单项目 6，占 66.7%" tabindex="0" cx="68" cy="68" r="54" pathLength="100" stroke-width="26" style="--wb-tone:var(--wb-green);--dash:65.5;--offset:0" data-chart-title-zh="商机结果与暂停" data-chart-title-en="Opportunity outcomes and pauses" data-chart-detail-zh="赢单项目：6 项（66.7%）" data-chart-detail-en="Won projects: 6 (66.7%)"></circle><circle class="wb-donut-segment wb-chart-interactive" role="img" aria-label="终止项目 2，占 22.2%" tabindex="0" cx="68" cy="68" r="54" pathLength="100" stroke-width="26" style="--wb-tone:var(--wb-red);--dash:21;--offset:-66.7" data-chart-title-zh="商机结果与暂停" data-chart-title-en="Opportunity outcomes and pauses" data-chart-detail-zh="终止项目：2 项（22.2%）" data-chart-detail-en="Terminated projects: 2 (22.2%)"></circle><circle class="wb-donut-segment wb-chart-interactive" role="img" aria-label="暂停项目 1，占 11.1%" tabindex="0" cx="68" cy="68" r="54" pathLength="100" stroke-width="26" style="--wb-tone:var(--wb-orange);--dash:9.9;--offset:-88.9" data-chart-title-zh="商机结果与暂停" data-chart-title-en="Opportunity outcomes and pauses" data-chart-detail-zh="暂停项目：1 项（11.1%）" data-chart-detail-en="Paused projects: 1 (11.1%)"></circle></svg><span><b>9</b><span data-i18n="outcomeTotal">结果与暂停</span></span></div>
+              <div class="demo-outcome-list"><div><i style="--wb-tone:var(--wb-green)"></i><span data-i18n="wonProjects">赢单项目</span><b>6</b></div><div><i style="--wb-tone:var(--wb-red)"></i><span data-i18n="terminatedProjects">终止项目</span><b>2</b></div><div><i style="--wb-tone:var(--wb-orange)"></i><span data-i18n="pausedProjects">暂停项目</span><b>1</b></div></div>
+            </div>
+            <div class="wb-fact-list wb-soft-metric-grid"><div class="wb-soft-metric is-blue"><span data-i18n="wonAmountShare">赢单项目预计金额占结果项目金额</span><b>78%</b></div><div class="wb-soft-metric is-orange"><span data-i18n="missingPauseReason">暂停原因缺失</span><b data-i18n="oneItem">1 项</b></div></div>
+          </div>
+        </article></div>
+          <details class="wb-library-contract"><summary><code>.wb-chart-frame</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section><section class="wb-library-item is-wide" id="composite-hierarchy-example" data-wb-card-key="composite-hierarchy-example" data-library-group="insights" data-wb-default-grid="catalog-insights" data-wb-card-grid="catalog-insights">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">02.03</span><span data-i18n="compositeCard"></span></h3><a href="#composite-hierarchy-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <article class="wb-card">
+          <header class="wb-card-head">
+            <div class="wb-title-group"><span class="wb-icon is-cyan"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h2 data-i18n="compositeTitle">项目推进与业务闭环</h2><p data-i18n="compositeDesc">主卡、分析子面板与内部指标保持清晰层级</p></div></div>
+            <span class="wb-title-meta" data-i18n="month">本月</span>
+          </header>
+          <div class="wb-analysis-group catalog-composite-demo">
+            <section class="wb-subpanel"><div class="catalog-subpanel-head"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h3 data-i18n="stageStructure">商机阶段结构</h3><p data-i18n="validPipeline">有效在途</p></div></div><div class="catalog-inner-tile-grid"><div class="wb-inner-tile"><small data-i18n="businessContact">商务接触</small><strong data-i18n="fiveItems">5 项</strong></div><div class="wb-inner-tile"><small data-i18n="trialStage">试样阶段</small><strong data-i18n="threeItems">3 项</strong></div></div></section>
+            <section class="wb-subpanel"><div class="catalog-subpanel-head"><span class="wb-icon is-green"><svg aria-hidden="true"><use href="#icon-users"/></svg></span><div><h3 data-i18n="trialClosure">试料反馈闭环</h3><p data-i18n="approvedResults">审批通过后的客户结论</p></div></div><div class="catalog-inner-tile-grid"><div class="wb-inner-tile"><small data-i18n="trialPassRate">试料通过率</small><strong>68%</strong></div><div class="wb-inner-tile"><small data-i18n="feedbackClosure">客户反馈闭环率</small><strong>72%</strong></div></div></section>
+            <section class="wb-subpanel"><div class="catalog-subpanel-head"><span class="wb-icon is-orange"><svg aria-hidden="true"><use href="#icon-risk"/></svg></span><div><h3 data-i18n="quoteFeedback">材料报价反馈</h3><p data-i18n="approvedQuotes">审批通过后的逐材料反馈</p></div></div><div class="catalog-inner-tile-grid"><div class="wb-inner-tile"><small data-i18n="priceFeedbackRate">价格反馈填写率</small><strong>67%</strong></div><div class="wb-inner-tile"><small data-i18n="descriptionRate">反馈说明填写率</small><strong>59%</strong></div></div></section>
+          </div>
+          <div class="wb-relation-flow is-three-way catalog-relation-demo" data-i18n-aria="relationDemoAria" aria-label="三分支客户关系">
+            <div class="wb-relation-tier" data-i18n-aria="currentTierAria" aria-label="当前客户"><article class="wb-relation-node" data-i18n="currentCustomer">当前客户</article></div>
+            <div class="wb-relation-branch" aria-hidden="true"></div>
+            <div class="wb-relation-tier" data-i18n-aria="downstreamTierAria" aria-label="三个下游客户"><div class="wb-relation-children"><article class="wb-relation-node" data-i18n="downstreamCustomer">注塑厂</article><article class="wb-relation-node" data-i18n="downstreamMold">模具厂</article><article class="wb-relation-node" data-i18n="downstreamAgent">经销商</article></div></div>
+          </div>
+        </article></div>
+          <details class="wb-library-contract"><summary><code>.wb-analysis-group</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section></div></section><section class="wb-library-group" data-library-section="workflow" aria-labelledby="workflow-title"><header class="wb-library-group-head"><div><div class="wb-library-eyebrow">03 / <span data-i18n="group3">业务协同</span></div><h2 id="workflow-title" data-i18n="group3">业务协同</h2><p data-i18n="groupDesc3">组合 AI、快捷入口与业务列表，保留完整操作</p></div><span class="wb-library-count" data-group-count>3</span></header><div class="wb-library-grid" data-wb-grid-key="catalog-workflow" data-wb-edit-scope="catalog"><section class="wb-library-item is-wide" id="ai-search-example" data-wb-card-key="ai-search-example" data-library-group="workflow" data-wb-default-grid="catalog-workflow" data-wb-card-grid="catalog-workflow">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">03.01</span><span data-i18n="semanticEntries"></span></h3><a href="#ai-search-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <div class="catalog-density-grid">
+          <article class="wb-card wb-ai-summary" data-wb-semantic="ai-summary" data-wb-component="ai-brief" aria-labelledby="catalogAiSummaryTitle">
+            <div class="wb-ai-summary-copy"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><small data-i18n="aiBriefMeta">今日经营简报 · 基于 CRM 可核验事实</small><h2 id="catalogAiSummaryTitle" data-i18n="aiBriefTitle">项目储备稳定，优先处理反馈逾期</h2><p data-i18n="aiBriefDesc">确定性规则识别异常，AI 只负责归纳结论</p></div></div>
+            <button class="wb-compact-action is-primary" type="button" data-i18n="viewDiagnosis">查看诊断</button>
+          </article>
+          <article class="wb-card wb-ai-entry" data-wb-semantic="ai-entry" data-wb-component="ai-composer" aria-labelledby="catalogAiEntryTitle">
+            <header class="wb-card-head"><div class="wb-baseline-head-copy"><h2 id="catalogAiEntryTitle" data-i18n="aiEntryTitle">Hi，我能为你做些什么</h2></div></header>
+            <form class="wb-ai-composer"><textarea aria-label="向经营助手提问" data-i18n-aria="askAssistant" placeholder="发送消息" data-wb-field-key="query" data-wb-field-label="向经营助手提问" data-wb-field-type="query"></textarea><div class="wb-action-row"><button class="wb-compact-action is-primary" type="submit" data-i18n="send">发送</button></div></form>
+          </article>
+        </div>
+        <div class="catalog-density-grid" style="margin-top:12px;">
+          <label class="wb-search-field" data-wb-semantic="global-search" data-wb-component="search-field" aria-label="全局搜索"><svg aria-hidden="true"><use href="#icon-filter"/></svg><input type="search" aria-label="全局搜索" data-i18n-aria="globalSearch" data-i18n-placeholder="globalSearchPlaceholder" placeholder="客户 / 商机 / 产品" data-wb-field-key="query" data-wb-field-label="全局搜索关键词" data-wb-field-type="query"></label>
+          <label class="wb-search-field" data-wb-semantic="list-search" data-wb-component="search-field" aria-label="列表搜索"><svg aria-hidden="true"><use href="#icon-filter"/></svg><input type="search" aria-label="列表搜索" data-i18n-aria="listSearch" data-i18n-placeholder="listSearchPlaceholder" placeholder="搜索当前列表" data-wb-field-key="query" data-wb-field-label="列表搜索关键词" data-wb-field-type="query"></label>
+        </div></div>
+          <details class="wb-library-contract"><summary><code>ai-entry → ai-composer</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section><section class="wb-library-item is-wide" id="density-components-example" data-wb-card-key="density-components-example" data-library-group="workflow" data-wb-default-grid="catalog-workflow" data-wb-card-grid="catalog-workflow">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">03.02</span><span data-i18n="densityComponents"></span></h3><a href="#density-components-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <article class="wb-card">
+          <header class="wb-card-head">
+            <div class="wb-title-group"><span class="wb-icon is-blue"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><div><h2 data-i18n="densityTitle">统一卡片密度</h2><p data-i18n="densityDesc">快捷入口、阶段行与右侧单一处理动作</p></div></div>
+            <div class="wb-compact-action-group"><button class="wb-inline-action wb-compact-action" type="button" data-i18n="refreshInsight">刷新洞察</button><button class="wb-primary-action wb-compact-action" type="button" data-i18n="openCrm">打开 CRM</button></div>
+          </header>
+          <div class="demo-stack">
+            <div class="wb-quick-grid catalog-quick-grid">
+              <article class="wb-quick-card is-composite"><button class="wb-quick-card-main" type="button"><span class="wb-quick-icon is-green"><svg aria-hidden="true"><use href="#icon-users"/></svg></span><span class="wb-quick-copy"><b data-i18n="salesLeads">销售线索</b><small data-i18n="validReserve">有效储备</small></span><strong>21</strong></button><button class="wb-hover-action" type="button" data-i18n-aria="createSalesLead" aria-label="新建销售线索"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6v-2Z"/></svg></button></article>
+              <button class="wb-quick-card" type="button"><span class="wb-quick-icon is-orange"><svg aria-hidden="true"><use href="#icon-users"/></svg></span><span class="wb-quick-copy"><b data-i18n="teamCustomers">团队客户</b><small data-i18n="active90">近90天活跃</small></span><strong>18</strong></button>
+              <button class="wb-quick-card" type="button"><span class="wb-quick-icon is-purple"><svg aria-hidden="true"><use href="#icon-chart"/></svg></span><span class="wb-quick-copy"><b data-i18n="opportunityProjects">商机项目</b><small data-i18n="validPipeline">有效在途</small></span><strong>9</strong></button>
+            </div>
+            <div class="catalog-density-grid">
+              <div class="wb-stage-progressor" role="list" aria-label="商机阶段推进器" data-wb-semantic="stage-progressor" data-wb-component="stage-progressor">
+                <button class="wb-stage-step" role="listitem" type="button" data-wb-stage-index="1" data-wb-field-key="business-contact" data-wb-field-label="商务接触" data-wb-field-type="enum"><span class="wb-stage-step-head" data-i18n="businessContact">商务接触</span><span class="wb-stage-step-body"><strong data-wb-field-key="count" data-wb-field-label="数量" data-wb-field-type="number" data-wb-unit="项" data-wb-value="5">5</strong><small data-wb-field-key="amount" data-wb-field-label="预计金额" data-wb-field-type="amount" data-wb-unit="万" data-wb-value="520" data-i18n="amount520">520 万</small></span></button>
+                <button class="wb-stage-step" role="listitem" type="button" data-wb-stage-index="2" data-wb-field-key="trial-stage" data-wb-field-label="试样阶段" data-wb-field-type="enum"><span class="wb-stage-step-head" data-i18n="trialStage">试样阶段</span><span class="wb-stage-step-body"><strong data-wb-field-key="count" data-wb-field-label="数量" data-wb-field-type="number" data-wb-unit="项" data-wb-value="3">3</strong><small data-wb-field-key="amount" data-wb-field-label="预计金额" data-wb-field-type="amount" data-wb-unit="万" data-wb-value="380" data-i18n="amount380">380 万</small></span></button>
+              </div>
+              <div class="wb-compact-row-list">
+                <button class="wb-compact-row" type="button"><span data-i18n="businessContact">商务接触</span><span class="wb-progress-track"><span class="wb-progress-fill" style="--value:68%;--wb-tone:var(--wb-blue)"></span></span><b data-i18n="fiveItems">5 项</b></button>
+                <button class="wb-compact-row" type="button"><span data-i18n="trialStage">试样阶段</span><span class="wb-progress-track"><span class="wb-progress-fill" style="--value:52%;--wb-tone:var(--wb-cyan)"></span></span><b data-i18n="threeItems">3 项</b></button>
+              </div>
+              <div class="wb-inline-action-list">
+                <article class="wb-inline-action-item"><span class="wb-stage is-risk">P1</span><span class="wb-inline-action-copy"><b data-i18n="feedbackPending">客户测试反馈未闭环</b><small data-i18n="overdueSeven">试样阶段 · 逾期7天</small></span><button class="wb-inline-action wb-compact-action" type="button" data-i18n="handle">处理</button></article>
+              </div>
+            </div>
+          </div>
+        </article></div>
+          <details class="wb-library-contract"><summary><code>stage-progressor</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section><section class="wb-library-item is-wide" id="risk-table-example" data-wb-card-key="risk-table-example" data-library-group="workflow" data-wb-default-grid="catalog-workflow" data-wb-card-grid="catalog-workflow">
+          <div class="wb-library-item-head"><h3><span class="wb-library-index">03.03</span><span data-i18n="riskTableCard"></span></h3><a href="#risk-table-example" class="wb-library-permalink" aria-label="定位此模板" data-i18n-aria="permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg></a></div>
+          <div class="wb-library-preview">        <article class="wb-card wb-business-list" data-wb-semantic="business-list" data-wb-component="business-list" aria-labelledby="catalogRiskTitle">
           <header class="wb-card-head">
             <div class="wb-title-group"><span class="wb-icon is-red"><svg aria-hidden="true"><use href="#icon-risk"/></svg></span><div><h2 id="catalogRiskTitle" data-i18n="riskTitle">需要关注的重大项目风险</h2><p data-i18n="riskDesc">存在明确项目风险</p></div></div>
             <span class="wb-title-meta" data-i18n="viewAll">3 项 · 查看全部 ›</span>
@@ -307,155 +237,10 @@
             </table>
           </div>
           <div class="wb-table-foot"><span data-i18n="pageSize">每页10条 · 共3条</span><span data-i18n="pageNumber">第1 / 1页</span></div>
-        </article>
-      </section>
-    </div>
-  </main>
-
-  <script>
-    (function () {
-      var messages = {
-        zh: {
-          pageTitle: "AI工作台UX规范", pageSubtitle: "ai-workbench-ux@1.5.7 · 组件与视觉回归目录",
-          paletteControl: "选择色系", paletteMenu: "色系列表", languageControl: "语言切换", appearanceControl: "明暗模式切换", styleControl: "主题风格",
-          workspaceTabs: "工作台页签导航", workspaceTabsTitle: "内容宽度页签组", workspaceTabsDesc: "底色包裹页签，工具动作独立靠右", workspaceTabsAria: "工作台切换", templateLibrary: "模板库", companyOperation: "公司经营", managementScope: "我的管理范围", salesBusiness: "我的销售业务", canvasSettings: "画布设置",
-          paletteClassic: "经典蓝", paletteSpruce: "云杉绿", paletteCoral: "珊瑚橙", paletteIndigo: "靛青", paletteRose: "石墨红", paletteGraphite: "中性灰",
-          richHeaderCard: "丰富头部卡片", workbenchTitle: "工作台标题", roleDescription: "角色描述", dataUpdated: "数据更新于 2026年8月10日 09:30", regionFilter: "区域筛选", allRegions: "全部区域", eastChina: "华东",
-          light: "浅色", dark: "深色", minimal: "简约", rich: "丰富", metricCard: "指标卡片", analysisCard: "分析卡片", riskTableCard: "风险表格卡片", selectControl: "枚举筛选控件", densityComponents: "快捷入口与紧凑列表", compositeCard: "组合卡内部层级", riskGrouping: "风险结果分组", groupByLevel: "按等级", groupByStatus: "按状态", groupByOwner: "按负责人", ownerRisk: "张风控", ownerLegal: "李法务", highRisk: "高风险", mediumRisk: "中风险", reviewing: "复核中", handled: "已处理",
-          compositeTitle: "项目推进与业务闭环", compositeDesc: "主卡、分析子面板与内部指标保持清晰层级", stageStructure: "商机阶段结构", trialClosure: "试料反馈闭环", approvedResults: "审批通过后的客户结论", quoteFeedback: "材料报价反馈", approvedQuotes: "审批通过后的逐材料反馈", trialPassRate: "试料通过率", priceFeedbackRate: "价格反馈填写率", descriptionRate: "反馈说明填写率", relationDemoAria: "三分支客户关系", currentTierAria: "当前客户层级", downstreamTierAria: "三个下游客户层级", currentCustomer: "当前客户", downstreamCustomer: "注塑厂", downstreamMold: "模具厂", downstreamAgent: "经销商",
-          densityTitle: "统一卡片密度", densityDesc: "快捷入口、阶段行与右侧单一处理动作", refreshInsight: "刷新洞察", openCrm: "打开 CRM", secondaryCommand: "次要命令", primaryCommand: "主要命令", editAffordanceNote: "编辑态引导线与缩放控件完全内收；卡片隐藏由右上角图标与底部唯一恢复胶囊管理", salesLeads: "销售线索", validReserve: "有效储备", createSalesLead: "新建销售线索", teamCustomers: "团队客户", active90: "近90天活跃", opportunityProjects: "商机项目", validPipeline: "有效在途", businessContact: "商务接触", trialStage: "试样阶段", fiveItems: "5 项", threeItems: "3 项", feedbackPending: "客户测试反馈未闭环", overdueSeven: "试样阶段 · 逾期7天",
-          selectTitle: "管理单元筛选", selectDesc: "圆角弹层、轻投影与完整键盘操作", reportingPeriod: "统计周期", quarter: "本季度", last90Days: "近90天", managementUnit: "管理单元", allUnits: "全部管理单元", aviationUnit: "低空飞行事业部", cleaningUnit: "清洁家电事业部", energyUnit: "新能源事业部", pcrUnit: "PCR与共聚酯事业部", dateRange: "日期范围", opportunityType: "商机类型", allOpportunities: "全部商机",
-          semanticEntries: "AI 与搜索入口", aiBriefMeta: "今日经营简报 · 基于 CRM 可核验事实", aiBriefTitle: "项目储备稳定，优先处理反馈逾期", aiBriefDesc: "确定性规则识别异常，AI 只负责归纳结论", viewDiagnosis: "查看诊断", aiEntryTitle: "Hi，我能为你做些什么", askAssistant: "向经营助手提问", send: "发送", globalSearch: "全局搜索", globalSearchPlaceholder: "客户 / 商机 / 产品", listSearch: "列表搜索", listSearchPlaceholder: "搜索当前列表",
-          baseTitle: "经营基本盘", baseDesc: "点击数字进入 CRM 原生筛选列表", periodAll: "本月 · 全部区域",
-          activeCustomers: "活跃客户", activeDesc: "近90天有商机或有效互动", expectedAmount: "预计项目金额", expectedAmountValue: "6,703.5万元", pipelineCount: "13 个在途商机", activeOpp: "在途商机", opportunityDesc: "预计金额 6,703.5 万元",
-          sampleOverdue: "试料逾期", waitFeedback: "等待客户反馈", closureRate: "闭环率", feedbackClosure: "客户反馈闭环率",
-          industryTitle: "行业项目储备与阶段结构", industryDesc: "阶段金额按行业分布", month: "本月", lowAltitude: "低空飞行", cleaningAppliance: "清洁家电",
-          lowAltitudeAria: "低空飞行 680万", cleaningAria: "清洁家电 520万", amount680: "680万", amount520: "520万", outcomeTotal: "结果与暂停", wonProjects: "赢单项目", terminatedProjects: "终止项目", pausedProjects: "暂停项目", wonAmountShare: "赢单项目预计金额占结果项目金额", missingPauseReason: "暂停原因缺失", oneItem: "1 项",
-          riskTitle: "需要关注的重大项目风险", riskDesc: "存在明确项目风险", viewAll: "3 项 · 查看全部 ›",
-          opportunityName: "商机项目名称", tradingCustomer: "交易客户", level: "级别", stage: "阶段", waitTime: "等待时间", quickAction: "快捷处理", handle: "处理",
-          project1: "扫地机耐划伤结构件", company1: "苏州精密注塑有限公司", sampleStage: "试样阶段", days12: "12天",
-          project2: "高压连接器材料替换", company2: "华东汽车连接器有限公司", importStage: "导入阶段", days18: "18天",
-          pageSize: "每页10条 · 共3条", pageNumber: "第1 / 1页"
-        },
-        en: {
-          pageTitle: "AI Workbench UX Guidelines", pageSubtitle: "ai-workbench-ux@1.5.7 · Component and visual regression catalog",
-          paletteControl: "Choose color palette", paletteMenu: "Color palettes", languageControl: "Language", appearanceControl: "Appearance", styleControl: "Theme style",
-          workspaceTabs: "Workbench Tab Navigation", workspaceTabsTitle: "Content-width Tab Group", workspaceTabsDesc: "The Surface wraps the tabs while tools remain independently aligned", workspaceTabsAria: "Switch workbench", templateLibrary: "Template Library", companyOperation: "Company Operations", managementScope: "My Management Scope", salesBusiness: "My Sales Business", canvasSettings: "Canvas settings",
-          paletteClassic: "Classic Blue", paletteSpruce: "Spruce Green", paletteCoral: "Coral Orange", paletteIndigo: "Indigo", paletteRose: "Graphite Red", paletteGraphite: "Neutral Gray",
-          richHeaderCard: "Rich Header Card", workbenchTitle: "Workbench title", roleDescription: "Role description", dataUpdated: "Updated August 10, 2026 at 09:30", regionFilter: "Region filter", allRegions: "All regions", eastChina: "East China",
-          light: "Light", dark: "Dark", minimal: "Minimal", rich: "Rich", metricCard: "Metric Card", analysisCard: "Analysis Card", riskTableCard: "Risk Table Card", selectControl: "Enumeration Filter", densityComponents: "Quick Entries and Compact Lists", compositeCard: "Composite Card Hierarchy", riskGrouping: "Risk result grouping", groupByLevel: "By level", groupByStatus: "By status", groupByOwner: "By owner", ownerRisk: "Zhang · Risk", ownerLegal: "Li · Legal", highRisk: "High risk", mediumRisk: "Medium risk", reviewing: "In review", handled: "Handled",
-          compositeTitle: "Project Progress and Business Closure", compositeDesc: "Keep the parent card, analysis subpanels, and inner metrics visually distinct", stageStructure: "Opportunity Stage Mix", trialClosure: "Trial Feedback Closure", approvedResults: "Customer results after approval", quoteFeedback: "Material Quote Feedback", approvedQuotes: "Per-material feedback after approval", trialPassRate: "Trial pass rate", priceFeedbackRate: "Price feedback completion", descriptionRate: "Feedback note completion", relationDemoAria: "Three-branch customer relationship", currentTierAria: "Current customer tier", downstreamTierAria: "Three downstream customer tier", currentCustomer: "Current customer", downstreamCustomer: "Injection molding plant", downstreamMold: "Mold factory", downstreamAgent: "Distributor",
-          densityTitle: "Unified Card Density", densityDesc: "Quick entries, stage rows, and one trailing action", refreshInsight: "Refresh insight", openCrm: "Open CRM", secondaryCommand: "Secondary command", primaryCommand: "Primary command", editAffordanceNote: "Edit guides and resize affordances stay inside card bounds; a top-right icon and one bottom restore capsule manage hidden cards", salesLeads: "Sales leads", validReserve: "Valid reserve", createSalesLead: "Create sales lead", teamCustomers: "Team customers", active90: "Active in 90 days", opportunityProjects: "Opportunities", validPipeline: "Active pipeline", businessContact: "Business contact", trialStage: "Trial stage", fiveItems: "5 items", threeItems: "3 items", feedbackPending: "Customer test feedback pending", overdueSeven: "Trial stage · 7 days overdue",
-          selectTitle: "Management Unit Filter", selectDesc: "Rounded popover, soft shadow, and complete keyboard operation", reportingPeriod: "Reporting period", quarter: "This quarter", last90Days: "Last 90 days", managementUnit: "Management unit", allUnits: "All management units", aviationUnit: "Low-altitude aviation BU", cleaningUnit: "Cleaning appliances BU", energyUnit: "New energy BU", pcrUnit: "PCR and copolyester BU", dateRange: "Date range", opportunityType: "Opportunity type", allOpportunities: "All opportunities",
-          semanticEntries: "AI and Search Entries", aiBriefMeta: "Daily brief · Based on verifiable CRM facts", aiBriefTitle: "Pipeline is stable; resolve overdue feedback first", aiBriefDesc: "Rules identify exceptions; AI only summarizes the conclusion", viewDiagnosis: "View diagnosis", aiEntryTitle: "Hi, what can I help you with?", askAssistant: "Ask the operating assistant", send: "Send", globalSearch: "Global search", globalSearchPlaceholder: "Customers / opportunities / products", listSearch: "List search", listSearchPlaceholder: "Search this list",
-          baseTitle: "Operating Baseline", baseDesc: "Select a number to open the native CRM filtered list", periodAll: "This month · All regions",
-          activeCustomers: "Active customers", activeDesc: "Opportunity or valid interaction in the last 90 days", expectedAmount: "Expected project amount", expectedAmountValue: "CNY 67.035m", pipelineCount: "13 open opportunities", activeOpp: "Open opportunities", opportunityDesc: "Est. amount CNY 67.035m",
-          sampleOverdue: "Overdue trials", waitFeedback: "Awaiting customer feedback", closureRate: "Closure rate", feedbackClosure: "Customer feedback closure rate",
-          industryTitle: "Industry Pipeline and Stage Mix", industryDesc: "Stage amount by industry", month: "This month", lowAltitude: "Low-altitude aviation", cleaningAppliance: "Cleaning appliances",
-          lowAltitudeAria: "Low-altitude aviation, CNY 6.8m", cleaningAria: "Cleaning appliances, CNY 5.2m", amount680: "CNY 6.8m", amount520: "CNY 5.2m", outcomeTotal: "Outcomes and pauses", wonProjects: "Won projects", terminatedProjects: "Terminated projects", pausedProjects: "Paused projects", wonAmountShare: "Won-project amount as a share of outcome amount", missingPauseReason: "Missing pause reason", oneItem: "1 item",
-          riskTitle: "Major Project Risks Requiring Attention", riskDesc: "Projects with identified risks", viewAll: "3 items · View all ›",
-          opportunityName: "Opportunity", tradingCustomer: "Trading customer", level: "Level", stage: "Stage", waitTime: "Waiting time", quickAction: "Quick action", handle: "Handle",
-          project1: "Scratch-resistant robot vacuum component", company1: "Suzhou Precision Injection Molding Co., Ltd.", sampleStage: "Trial stage", days12: "12 days",
-          project2: "High-voltage connector material replacement", company2: "East China Auto Connector Co., Ltd.", importStage: "Introduction stage", days18: "18 days",
-          pageSize: "10 per page · 3 total", pageNumber: "Page 1 / 1"
-        }
-      };
-      var palettes = ["classic", "spruce", "coral", "indigo", "rose", "graphite"];
-      var storageKey = "ai-workbench-ux-catalog";
-      var state = { palette: "classic", theme: "light", style: "rich", language: "zh" };
-      try { Object.assign(state, JSON.parse(localStorage.getItem(storageKey) || "{}")); } catch (error) {}
-      if (!palettes.includes(state.palette)) state.palette = "classic";
-      if (!/^(light|dark)$/.test(state.theme)) state.theme = "light";
-      if (!/^(minimal|rich)$/.test(state.style)) state.style = "rich";
-      if (!/^(zh|en)$/.test(state.language)) state.language = "zh";
-
-      var paletteTrigger = document.querySelector("[data-palette-trigger]");
-      var paletteMenu = document.querySelector("[data-palette-menu]");
-      function saveState() { try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch (error) {} }
-      function closePalette() { paletteMenu.hidden = true; paletteTrigger.setAttribute("aria-expanded", "false"); }
-      function applyPalette() {
-        document.documentElement.dataset.colorTheme = state.palette;
-        document.querySelectorAll("[data-color-choice]").forEach(function (button) {
-          button.setAttribute("aria-checked", String(button.dataset.colorChoice === state.palette));
-        });
-        var paletteKey = "palette" + state.palette.charAt(0).toUpperCase() + state.palette.slice(1);
-        document.querySelector("[data-palette-name]").textContent = messages[state.language][paletteKey];
-      }
-      function applyTheme() {
-        document.documentElement.dataset.theme = state.theme;
-        document.querySelectorAll("[data-theme-choice]").forEach(function (button) {
-          button.setAttribute("aria-selected", String(button.dataset.themeChoice === state.theme));
-        });
-      }
-      function applyStyle() {
-        document.documentElement.dataset.wbStyle = state.style;
-        document.querySelectorAll("[data-style-choice]").forEach(function (button) {
-          button.setAttribute("aria-selected", String(button.dataset.styleChoice === state.style));
-        });
-      }
-      function applyLanguage() {
-        var dictionary = messages[state.language];
-        document.documentElement.lang = state.language === "zh" ? "zh-CN" : "en";
-        document.title = dictionary.pageTitle;
-        document.querySelectorAll("[data-i18n]").forEach(function (element) { element.textContent = dictionary[element.dataset.i18n]; });
-        document.querySelectorAll("[data-i18n-aria]").forEach(function (element) { element.setAttribute("aria-label", dictionary[element.dataset.i18nAria]); });
-        document.querySelectorAll("[data-i18n-placeholder]").forEach(function (element) { element.setAttribute("placeholder", dictionary[element.dataset.i18nPlaceholder]); });
-        document.querySelectorAll("[data-language-choice]").forEach(function (button) {
-          button.setAttribute("aria-selected", String(button.dataset.languageChoice === state.language));
-        });
-        applyPalette();
-        if (window.WorkbenchSelect) window.WorkbenchSelect.refresh(document);
-      }
-
-      paletteTrigger.addEventListener("click", function () {
-        paletteMenu.hidden = !paletteMenu.hidden;
-        paletteTrigger.setAttribute("aria-expanded", String(!paletteMenu.hidden));
-      });
-      document.querySelectorAll("[data-color-choice]").forEach(function (button) {
-        button.addEventListener("click", function () { state.palette = button.dataset.colorChoice; applyPalette(); closePalette(); saveState(); });
-      });
-      document.querySelectorAll("[data-language-choice]").forEach(function (button) {
-        button.addEventListener("click", function () { state.language = button.dataset.languageChoice; applyLanguage(); saveState(); });
-      });
-      document.querySelectorAll("[data-theme-choice]").forEach(function (button) {
-        button.addEventListener("click", function () { state.theme = button.dataset.themeChoice; applyTheme(); saveState(); });
-      });
-      document.querySelectorAll("[data-style-choice]").forEach(function (button) {
-        button.addEventListener("click", function () { state.style = button.dataset.styleChoice; applyStyle(); saveState(); });
-      });
-      document.querySelectorAll(".wb-workspace-tab-list").forEach(function (tabList) {
-        function selectWorkspaceTab(tab, focus) {
-          tabList.querySelectorAll(".wb-workspace-tab").forEach(function (item) {
-            var selected = item === tab;
-            item.setAttribute("aria-selected", String(selected));
-            item.tabIndex = selected ? 0 : -1;
-          });
-          if (focus) tab.focus();
-        }
-        tabList.addEventListener("click", function (event) {
-          var tab = event.target.closest(".wb-workspace-tab");
-          if (!tab || !tabList.contains(tab)) return;
-          selectWorkspaceTab(tab, false);
-        });
-        tabList.addEventListener("keydown", function (event) {
-          if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-          event.preventDefault();
-          var tabs = Array.from(tabList.querySelectorAll(".wb-workspace-tab"));
-          var index = Math.max(0, tabs.indexOf(document.activeElement));
-          var nextIndex = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : event.key === "ArrowRight" ? (index + 1) % tabs.length : (index - 1 + tabs.length) % tabs.length;
-          selectWorkspaceTab(tabs[nextIndex], true);
-        });
-      });
-      document.addEventListener("click", function (event) { if (!event.target.closest(".palette-picker")) closePalette(); });
-      document.addEventListener("keydown", function (event) { if (event.key === "Escape") { closePalette(); paletteTrigger.focus(); } });
-
-      applyPalette();
-      applyTheme();
-      applyStyle();
-      applyLanguage();
-    }());
-  </script>
-  <script src="./select-interactions.js"></script>
-  <script src="./chart-interactions.js"></script>
-</body>
-</html>
+        </article></div>
+          <details class="wb-library-contract"><summary><code>business-table → data-table</code><span data-i18n="semanticDetails">语义说明</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="wb-library-contract-body" data-contract-body><a href="./SEMANTIC_COMPONENTS.md" data-i18n="readSemantic">阅读语义合同</a></div></details>
+        </section></div></section>
+<footer class="wb-library-footer"><span data-i18n="sampleNote">交互样例 · 业务动作需接入来源系统</span><span>ai-workbench-ux@1.5.8</span></footer>
+</main></div><div class="wb-library-toast" id="library-toast" role="status" hidden></div>
+<script src="./select-interactions.js"></script><script src="./chart-interactions.js"></script><script src="./cards/catalog-examples/preferences.js"></script><script src="./cards/catalog-examples/catalog.js"></script>
+</body></html>

@@ -1,6 +1,6 @@
 # 工作台语义组件合同
 
-版本：`ai-workbench-ux@1.5.7`
+版本：`ai-workbench-ux@1.5.8`
 
 本文件定义业务含义与共享 UI 组件之间的稳定映射。生成器先识别业务语义，再复用指定组件；不得根据页面私有类名、文案片段或截图近似重画。
 
@@ -64,3 +64,11 @@
 3. 检查 KPI、阶段和表格的字段级元数据完整，值、单位、顺序、筛选和事件与来源一致。
 4. 在六套色系、浅色/深色、中文/英文及三档视口验证计算样式；页面不得产生非预期横向滚动。
 5. 运行 Skill 的 `scripts/verify_canvas_runtime.mjs` 和共享 `scripts/verify_standalone_canvas.mjs`。
+
+## 5. 语义模板目录展示
+
+`index.html` 的目录结构是文档导航，不属于业务 `global-search`、业务 KPI 或画布工作区。分类与搜索仅作用于模板可见性，稳定 `data-wb-card-key` 保留为模板锚点。九个来源示例按基础框架、指标与分析、业务协同分组，十二种语义映射不变。
+
+每个 `.wb-library-item` 按“模板名 → `.wb-library-preview` 真实共享组件 → `.wb-library-contract` 折叠语义说明”组织。映射、字段数量和复制结构从预览 DOM 获取；文档外框不写入复制片段。复制后需保持 tokens/components 及对应 select/chart 运行时引用。
+
+横向滚动的范围筛选保留 native select 的值/change；需要逃离裁切时菜单临时进入共享 portal，关闭后恢复到语义根中。临时挂载期间通过触发器的 `aria-controls` 继续关联原 listbox id，键盘和语言切换仍使用同一组选项对象。

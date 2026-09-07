@@ -7,6 +7,12 @@ description: Generate or fully regenerate a static, multi-tab Fxiaoke workbench 
 
 Generate a usable static HTML workbench, not a design brief or a collection of mockups. The page must retain the complete existing canvas-settings experience while its content and top-level workspaces are derived from the current request.
 
+## Maintaining The Component Catalog
+
+When the requested file is the library's own `workbench-card-library/index.html`, maintain it as a documentation and semantic template catalog. Rebuild the catalog hierarchy through shared `wb-library-*` components, preserve its source examples, and keep taxonomy, search, preview, and DOM-derived contract descriptions separate from business card markup. Do not replace this documentation surface with an editable business canvas. See bundled `CARD_SPEC.md` section 2.3 and `templates/catalog-item.html`.
+
+Catalog/shared-component revision `ai-workbench-ux@1.5.8` keeps the established tinted-glass recipe. Validate the catalog with `node assets/workbench-runtime/workbench-card-library/scripts/verify_catalog_layout.mjs` (requires Playwright; `WB_PLAYWRIGHT_MODULE` may point to an installed module). Horizontal overflow groups use the shared select portal so opening a menu does not reset their scroll position; menus retain native values/change events and return to their original DOM on close.
+
 ## Full Regeneration Intent
 
 - Treat broad requests such as "按照 Skill 美化一下 HTML", "优化这个页面", "调整成工作台规范", "重新设计一下", or equivalent wording as requests to generate a complete new HTML deliverable. This applies even when the verb sounds incremental and the user supplies an existing HTML.

@@ -1,4 +1,4 @@
-/* ai-workbench-ux@1.5.7: portable canvases embed these shared tokens verbatim. */
+/* ai-workbench-ux@1.5.8: portable canvases embed these shared tokens verbatim. */
 :root {
   color-scheme: light;
   --wb-bg: #eef4fb;
@@ -227,4 +227,15 @@
   --wb-minimal-icon-border-strength: 28%;
   --wb-special-dark-surface: #151b25;
   --wb-special-dark-border: #354052;
+}
+
+/* Library documentation layout: independent from the editable canvas. */
+:root {
+  --wb-library-max-width: 1440px;
+  --wb-library-sidebar-width: 208px;
+  --wb-library-section-gap: 32px;
+  --wb-library-preview-gap: 16px;
+  --wb-library-label-size: 12px;
+  --wb-library-muted-surface: color-mix(in srgb, var(--wb-bg) 55%, var(--wb-surface-strong));
+  --wb-library-divider: color-mix(in srgb, var(--wb-text-muted) 18%, transparent);
 }

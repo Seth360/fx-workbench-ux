@@ -1,6 +1,6 @@
 # 新卡片交付区
 
-规范版本：`ai-workbench-ux@1.5.7`。
+规范版本：`ai-workbench-ux@1.5.8`。
 
 每张新卡片建立独立目录：`cards/<lowercase-kebab-case>/`。
 
@@ -56,3 +56,5 @@ CRM 外框启用时不得锁死画布高度或由 `overflow:hidden` 裁切内容
 可单独分发的画布必须通过 `scripts/build_standalone_canvas.mjs` 内联当前共享 CSS、卡片渲染器、路由、复合下拉与图表交互，并通过 `scripts/verify_standalone_canvas.mjs` 的孤立复制回归；禁止交付只能依赖原目录结构才能显示完整页签的 HTML。
 
 禁止直接在 `cards/` 根目录放散落的 HTML/CSS/JS 文件。
+
+目录布局采用 `wb-library-*`：独立用途分组、自然等高预览、容器响应式指标、可搜索语义合同。维护目录时同步 `cards/catalog-examples/` 和 `templates/catalog-item.html`，业务示例不得删减字段。

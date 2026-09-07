@@ -76,3 +76,5 @@ workbench-card-library/
 ## 规范维护
 
 本目录是持续维护的唯一规范源。所有视觉反馈先提炼成可复用规则，再修正 Token、组件和示例；新规则必须记录版本、问题、解决方式、影响范围与验证结果。若实例实现和规范冲突，以最新 `CARD_SPEC.md` 与 `CHANGELOG.md` 为准，并补齐缺失的回归规则。
+
+目录布局采用 `wb-library-*`：独立用途分组、自然等高预览、容器响应式指标、可搜索语义合同。维护目录时同步 `cards/catalog-examples/` 和 `templates/catalog-item.html`，业务示例不得删减字段。
