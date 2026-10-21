@@ -2,16 +2,20 @@
 
 一键将来源需求转为符合 UI 规范、可直接打开和继续配置的纷享工作台。
 
-`fx-workbench-ux` 是一个面向 Codex 的工作台生成 Skill。它可以读取文字描述、需求文档、图片、现有 HTML 或多种素材的组合，提取其中的页面结构、业务数据、筛选条件和交互入口，生成符合 `ai-workbench-ux@1.5.8` 规范的静态多页签工作台 HTML。
+`fx-workbench-ux` 是一个面向 Codex 的工作台生成 Skill。它可以读取文字描述、需求文档、图片、现有 HTML 或多种素材的组合，提取其中的页面结构、业务数据、筛选条件和交互入口，生成符合 `ai-workbench-ux@1.6.38` 规范的静态多页签工作台 HTML。
 
 生成结果不是设计稿或静态截图，而是一个可使用、可配置、可按页签导出独立页面，并能独立分发的完整工作台。
 
-## v1.5.8 更新
+## v1.6.38 更新
 
-- 重组规范与语义模板库：9 个模板按基础框架、指标与分析、业务协同分组，支持分类导航、双语搜索、语义键搜索、模板定位和结构复制。
-- 每组使用独立网格与自然等高预览，指标按实际容器宽度降列；语义说明从真实预览 DOM 提取，保留35个字段定义和11个图表交互区。
-- 修复手机端英文筛选菜单越界及滚动位置丢失，修正简约模式窄屏页头、指标语义色、64px快捷入口和32px紧凑行。
-- 三档视口 × 双语 × 深浅色 × 两种风格 × 六色系，共144种组合检查通过。
+- 同步本机 `ai-workbench-ux@1.6.38` 的 Skill、共享规范、Token、组件、目录示例、语义契约和画布运行时。
+- AIPaaS 目录包含欢迎卡片、AI 洞察、对象入口、信息列表卡片、对象列表、文本、按钮、图片、AI Agent，以及复合卡片示例。
+- 信息列表保留待办、提醒、关注三个独立示例，并增加仅未处理的 AI 待协助通知和空数据状态；保留来源数量、文案、字段及服务未接入边界。
+- 对象入口保留三种样式和独立移动展示；横向网格按实际容器宽度自适应一至五列，语义图标使用纯色前景和浅色底，不使用图标渐变、描边或投影。
+- AI 洞察使用统一时间戳与刷新动作；AI Agent 提供桌面、移动及仅移动输入框示例，保留键盘、IME 和空白输入处理。
+- 包含 2026-10-20 的对象入口前端规则文档修订；该修订没有实施 FDS 页面迁移，UI 版本仍为 1.6.38。
+
+完整变更及历史验证记录见 [CHANGELOG.md](./assets/workbench-runtime/workbench-card-library/CHANGELOG.md)。本仓库保留文本 QA 记录；历史回归截图不随 Skill 源码分发，历史记录不代表本次重新完成全部浏览器验证。
 
 下载仓库后，在浏览器打开 `assets/workbench-runtime/workbench-card-library/index.html` 查看模板库。该页面是规范目录；AI/CRM 业务命令仅作组件示例，需在业务页面接入来源服务。
 
@@ -53,7 +57,7 @@ Skill 会保留来源中的业务事实，不会为了填满卡片而编造数�
 - **主题风格**：丰富、简约
 - **页面间距**：通过滑杆调整工作台内容密度
 - **卡片圆角**：通过滑杆调整卡片圆角大小
-- **六种颜色主题**：经典蓝、云杉绿、珊瑚橙、靛青、石墨红、中性灰
+- **六种颜色主题**：经典蓝、云杉绿、珊瑚橙、鸢尾紫、石墨红、中性灰
 - **明暗模式**：浅色、深色
 - **语言**：内置中文和 English，并通过统一多语字典支持继续扩展
 - **布局编辑**：打开设置后即可调整已注册区块和卡片的顺序、跨度与归属；四方向拖放使用清晰的主题强调色引导线
@@ -164,14 +168,14 @@ node assets/workbench-runtime/workbench-card-library/scripts/verify_exported_wor
 node assets/workbench-runtime/workbench-card-library/scripts/verify_catalog_layout.mjs
 ```
 
-目录回归记录见 [来源覆盖清单](./assets/workbench-runtime/workbench-card-library/qa/catalog-layout-20260907/source-component-coverage.md) 和 [144种状态验证结果](./assets/workbench-runtime/workbench-card-library/qa/catalog-layout-20260907/verification.json)。
+目录历史回归记录保存在 `assets/workbench-runtime/workbench-card-library/qa/`。运行上述命令可生成当前环境的验证结果；请将历史验证与本次执行结果分开记录。
 
 更完整的安装与使用说明见 [SHARE_GUIDE.md](./SHARE_GUIDE.md)，完整生成契约见 [SKILL.md](./SKILL.md)。
 
 ## 内置内容
 
 - 完整纷享工作台画布运行时
-- `ai-workbench-ux@1.5.8` 设计 Token、公共组件和卡片规范
+- `ai-workbench-ux@1.6.38` 设计 Token、公共组件和卡片规范
 - 商机项目经营洞察与客户经营洞察卡片
 - 复合下拉与图表交互
 - 跨工作区路由

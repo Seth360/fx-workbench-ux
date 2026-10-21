@@ -1,0 +1,20 @@
+{
+  "states": [],
+  "compositeCardStates": [],
+  "themeConfigStates": [],
+  "aipaasStates": [],
+  "interactions": [
+    "0 composite-card states keep one view, three complete examples, 64px quick cards, 32px compact rows, and no overflow",
+    "0 theme-configuration states keep one theme view, hide homepage industry links, and have no overflow",
+    "0 AIPaaS page states: eight complete pages, six palettes, bilingual light/dark rich/minimal modes, 32px controls, and no page/component overflow",
+    "AIPaaS standard welcome-card composite select is clickable on mobile and preserves native value/change",
+    "Eight AIPaaS foundation links open one stable component page each and expose the active page",
+    "Five 64px object entries, four source-faithful list structures, working segmented dimension, eight loaded role images, industry workbench links, Iris theme application, visible typography icon, 20px Agent spacing, 200px fx-avatar asset, 18px Agent greeting, and AI Agent submit feedback",
+    "Eight Rich Header role tabs switch the role asset, exact clothing-color gradient and render calibration by click and keyboard without page overflow",
+    "0 viewport/language/theme/style/palette states: no page, card or registered-grid overflow; 32px controls and semantic metadata valid",
+    "Introduction, component-example and metrics filters expose the approved inventory without a search bar; semantic mapping and copy/source fallback remain available",
+    "Mobile English composite navigation exposes three complete examples without overflow; reporting-period selection and chart focus tooltip remain functional",
+    "Palette, appearance, style and language preferences survive a physical file reload"
+  ],
+  "errors": []
+}

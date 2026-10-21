@@ -52,7 +52,7 @@ const requireAnyText = (needles, label) => {
   ["data-canvas-theme=\"classic\"", "classic theme"],
   ["data-canvas-theme=\"spruce\"", "spruce theme"],
   ["data-canvas-theme=\"coral\"", "coral theme"],
-  ["data-canvas-theme=\"indigo\"", "indigo theme"],
+  ["data-canvas-theme=\"iris\"", "iris theme"],
   ["data-canvas-theme=\"rose\"", "rose theme"],
   ["data-canvas-theme=\"graphite\"", "graphite theme"],
   ["id=\"canvasHeaderCardSettings\"", "Header card settings section"],

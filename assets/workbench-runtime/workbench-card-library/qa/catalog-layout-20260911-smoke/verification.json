@@ -1,0 +1,13 @@
+{
+  "states": [],
+  "aipaasStates": [],
+  "interactions": [
+    "0 AIPaaS welcome-card states: four-style spectrum, 32px controls, and no page/component overflow",
+    "Nine AIPaaS foundation links open one stable component page each and expose the active page",
+    "0 viewport/language/theme/style/palette states: no page, card or registered-grid overflow; 32px controls and semantic metadata valid",
+    "Category counts, bilingual search, no-results/reset, natural equal heights, semantic mapping and copy/source fallback",
+    "Mobile English portal bounds, native change event, Arrow/End/Enter/Escape/Tab, outside close, reporting-period selection, chart focus tooltip and AI sample boundary",
+    "Palette, appearance, style and language preferences survive a physical file reload"
+  ],
+  "errors": []
+}

@@ -1,2 +1,7 @@
 .DS_Store
 **/.DS_Store
+
+# Keep textual QA evidence; omit generated screenshots from Skill source.
+/assets/workbench-runtime/workbench-card-library/qa/**/*.png
+/assets/workbench-runtime/workbench-card-library/qa/**/*.jpg
+/assets/workbench-runtime/workbench-card-library/qa/**/*.webp

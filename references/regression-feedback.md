@@ -44,7 +44,13 @@ unzip -t /absolute/path/to/fx-workbench-ux-<date>.zip
 - 设置抽屉不得重复渲染顶层工作区页签；设置打开时仍只通过顶栏 `.wb-workspace-tab-list` 切页，编辑态的未选 `[data-canvas-panel][hidden]` 不得被 `[data-edit-grid]` 强制显示，隐藏计数和还原仅作用于当前顶栏选中页；
 - 图标容器由语义 SVG/图标库构成，不包含 `DX`、`人`、`日`、`AI`、`⌕` 等可见字符替代图形；
 - 页头枚举筛选使用 `.wb-select.wb-page-filter` 和 `.wb-page-control-group`，保留原生值/change 与键盘行为；
-- 页头复合下拉打开时，菜单不得被 32px 横向控制组裁切；Rich Header 人物可见头部在桌面端高出卡片 26px，角色切换同步更新服装色渐变；
+- 页头复合下拉打开时，菜单不得被 32px 横向控制组裁切；Rich Header 人物可见头部在桌面端高出卡片 36px，角色切换同步更新服装色渐变；
+- 规范目录的 Rich Header 使用八个 `.wb-role-switcher` Tab，点击与键盘切换同步替换真实 PNG、渐变、校准尺寸与 ARIA 选中态；AIPaaS AI Agent 头像为 `fx-avatar.png`，欢迎语计算字号为 18px；
+- 规范目录的模板导航为“介绍 / 主题色配置 / 指标与分析”；介绍页不重复指标分组，指标卡与复合分析卡均使用通栏目录项；主题色配置位于 AIPaaS 之外，行业配色建议使用六行“行业 / 推荐配色 / 推荐理由”，每个色名带共享 Token 色块；首页以 `_blank`/`noopener` 链接打开两个行业工作台 HTML；模板视图根使用 `section[data-library-catalog-view]`，不得保留无职责 `div` 包装；
+- AI 识别诊断卡的建议摘要使用 `rgba(79, 104, 255, 0.20)` 的 1px 描边和共享 `--wb-ai-insight-surface` 的 `linear-gradient(96deg, #FFFFFF 0.58%, #EBF2FF 102.07%)`；不得复用黄色警告背景；
+- AIPaaS 对象入口只保留左右完整、左右名称型、上下名称型三种共享变体，必须删除上下完整型；名称型无场景和数字节点，左右卡为 64px，上下名称型在桌面及 1024px 目录视口一行五个，窄容器响应式降列；
+- 复合卡片与对象列表卡片的一级标题使用 `.wb-title-group.is-iconless`，不得保留装饰图标或空的 34px 图标列；复合卡片内部子面板仍保留语义 SVG；
+- 对象入口在三种正式变体之外提供一个标注为 390px 的移动端适配展示；完整模式保持一列五项，精简模式固定一行五项，每项图标在上、名称在下、gap 为 0，入口和图标无背景、描边、圆角、阴影或身份色，DOM 只含语义图标和对象名称，同时保留原按钮、合法路由、ARIA、至少 44px 点击高度与焦点行为；报价管理入口使用实际可见的文档/剪贴板 SVG；
 - 一级工作区保留页面级 `.wb-rich-header-card`；客户/商机洞察详情、列表等二级下钻页必须使用 `.wb-secondary-page`，页面级 `wb-header` 数量为 0，首个可见区为记录、指标或列表卡；
 - 周期、人员/部门、日期、AI、全局/列表搜索、枚举、阶段、KPI、业务列表和表格按 `SEMANTIC_COMPONENTS.md` 命中固定共享组件，并同时具备合法 `data-wb-semantic`、`data-wb-component`、ARIA 与字段级元数据；
 - 画布根用 `data-color-theme` 保存色系、用 `data-theme="light|dark"` 保存明暗状态；深色模式下卡片、指标、控件、表头、表行和 hover 全部读取共享暗色 Token；

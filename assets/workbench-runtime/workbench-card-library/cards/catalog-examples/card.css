@@ -14,6 +14,7 @@
     .catalog-filter-row { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
     .catalog-quick-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .catalog-density-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--wb-gap-md); }
+    .catalog-density-modules { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); }
     .catalog-composite-demo { margin-top: 2px; }
     .catalog-subpanel-head { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 10px; margin-bottom: 12px; }
     .catalog-subpanel-head h3 { margin: 0; color: var(--wb-text); font-size: 13px; line-height: 18px; letter-spacing: 0; }
@@ -23,6 +24,7 @@
     .catalog-inner-tile-grid small { color: var(--wb-text-muted); font-size: 10px; }
     .catalog-inner-tile-grid strong { margin-top: 6px; color: var(--wb-text); font-family: var(--wb-font-number); font-size: 20px; line-height: 24px; }
     .catalog-relation-demo { margin-top: 14px; }
+    .catalog-relation-panel .catalog-relation-demo { margin-top: 0; }
     .catalog-relation-demo > .wb-relation-tier:first-child { width: min(100%, 280px); justify-self: center; }
     .catalog-relation-demo .wb-relation-node { padding: 10px; font-size: 10px; text-align: center; }
 .catalog-density-grid { align-items: stretch; }

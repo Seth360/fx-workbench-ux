@@ -1,0 +1,15 @@
+{
+  "states": [],
+  "aipaasStates": [],
+  "interactions": [
+    "0 AIPaaS page states: nine complete pages, six palettes, bilingual light/dark rich/minimal modes, 32px controls, and no page/component overflow",
+    "AIPaaS standard welcome-card composite select is clickable on mobile and preserves native value/change",
+    "Nine AIPaaS foundation links open one stable component page each and expose the active page",
+    "Five 64px object entries, four source-faithful list structures, working segmented dimension, eight loaded role images, Iris theme application, and AI Agent submit feedback",
+    "0 viewport/language/theme/style/palette states: no page, card or registered-grid overflow; 32px controls and semantic metadata valid",
+    "Category counts, bilingual search, no-results/reset, natural equal heights, semantic mapping and copy/source fallback",
+    "Mobile English portal bounds, native change event, Arrow/End/Enter/Escape/Tab, outside close, reporting-period selection, chart focus tooltip and AI sample boundary",
+    "Palette, appearance, style and language preferences survive a physical file reload"
+  ],
+  "errors": []
+}

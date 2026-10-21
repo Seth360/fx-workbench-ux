@@ -1,13 +1,27 @@
-/* ai-workbench-ux@1.5.8: portable canvases embed these shared tokens verbatim. */
+/* ai-workbench-ux@1.6.38: portable canvases embed these shared tokens verbatim. */
 :root {
   color-scheme: light;
   --wb-bg: #eef4fb;
   --wb-accent: #4f8cff;
+  --wb-on-accent: #ffffff;
+  --wb-palette-classic-accent: #4f8cff;
+  --wb-palette-spruce-accent: #168b68;
+  --wb-palette-coral-accent: #e66a35;
+  --wb-palette-iris-accent: #7856d8;
+  --wb-palette-rose-accent: #c3475c;
+  --wb-palette-graphite-accent: #425a70;
   --wb-surface: rgba(255, 255, 255, 0.74);
   --wb-surface-strong: rgba(255, 255, 255, 0.9);
   --wb-surface-subtle: rgba(238, 246, 255, 0.72);
   --wb-subpanel-surface: rgba(255, 255, 255, 0.78);
   --wb-inner-tile-surface: rgba(255, 255, 255, 0.66);
+  --wb-ai-insight-border: rgba(79, 104, 255, 0.2);
+  --wb-ai-insight-surface: linear-gradient(96deg, #ffffff 0.58%, #ebf2ff 102.07%);
+  --wb-ai-generation-gap: 8px;
+  --wb-ai-generation-row-gap: 16px;
+  --wb-ai-generation-action-size: 32px;
+  --color-neutrals11: #737c8c;
+  --wb-ai-regenerate-icon: #181c25;
   --wb-surface-hover: rgba(255, 255, 255, 0.82);
   --wb-card-surface: var(--wb-surface);
   --wb-card-border: rgba(255, 255, 255, 0.64);
@@ -26,6 +40,8 @@
   --wb-control-surface: rgba(255, 255, 255, 0.66);
   --wb-popover-surface: rgba(255, 255, 255, 0.94);
   --wb-table-surface: rgba(255, 255, 255, 0.58);
+  --wb-table-card-padding: 16px;
+  --wb-table-card-min-width: 860px;
   --wb-table-head-surface: rgba(238, 246, 255, 0.76);
   --wb-table-row-surface: rgba(255, 255, 255, 0.32);
   --wb-table-row-alt-surface: rgba(238, 246, 255, 0.28);
@@ -88,8 +104,25 @@
   --wb-filter-option-surface-strength: 7%;
   --wb-filter-option-selected-surface-strength: 13%;
   --wb-filter-option-border-strength: 24%;
+  --wb-ai-assistance-pending-dot-size: 6px;
+  --wb-ai-assistance-pending-dot-color: var(--wb-orange);
+  --wb-ai-assistance-row-padding: 16px;
+  --wb-ai-assistance-copy-gap: 4px;
+  --wb-info-list-row-padding: 12px;
+  --wb-info-list-copy-gap: 4px;
+  --wb-info-list-divider: var(--wb-library-divider);
+  --wb-info-list-empty-icon-size: 40px;
+  --wb-info-list-empty-padding: 32px 16px;
+  --wb-info-list-empty-gap: 12px;
+  --wb-info-list-empty-icon-color: var(--wb-text-muted);
   --wb-status-tag-height: 22px;
   --wb-status-tag-padding: 0 7px;
+  --wb-status-attention-tone: var(--wb-accent);
+  --wb-status-risk-tone: var(--wb-red);
+  --wb-status-neutral-tone: var(--wb-text-muted);
+  --wb-status-highlight-surface-strength: 16%;
+  --wb-status-highlight-border-strength: 36%;
+  --wb-status-tag-tone-mix: 55%;
   --wb-avatar-size: 22px;
   --wb-avatar-icon-size: 14px;
   --wb-avatar-foreground: #ffffff;
@@ -107,12 +140,25 @@
   --wb-rich-header-surface: rgba(255, 255, 255, 0.74);
   --wb-rich-header-border: var(--wb-card-border);
   --wb-rich-header-shadow: var(--wb-card-shadow);
+  --wb-role-switcher-gap: 8px;
+  --wb-role-switcher-height: 32px;
+  --wb-role-switcher-avatar-size: 24px;
+  --wb-role-switcher-padding: 3px 10px 3px 4px;
   --wb-workspace-tab-list-max-width: 100%;
   --wb-workspace-tab-height: 34px;
   --wb-workspace-tab-gap: 2px;
   --wb-quick-card-min-height: 64px;
   --wb-quick-grid-gap: var(--wb-gap-md);
   --wb-quick-content-gap: 10px;
+  --wb-object-entry-column-min: 220px;
+  --wb-object-entry-column-max: 5;
+  --wb-object-entry-catalog-max-width: 1600px;
+  --wb-object-entry-surface-strength: 4%;
+  --wb-object-entry-hover-surface-strength: 8%;
+  --wb-object-entry-icon-surface-strength: 10%;
+  --wb-object-entry-icon-shadow: none;
+  --wb-object-entry-shadow: var(--wb-card-shadow);
+  --wb-object-entry-vertical-min-height: calc(var(--wb-quick-card-min-height) * 2);
   --wb-compact-analysis-row-height: 32px;
   --wb-compact-analysis-row-gap: 4px;
   --wb-inline-action-min-width: 64px;
@@ -124,6 +170,21 @@
   --wb-compact-action-height: 32px;
   --wb-search-control-height: 32px;
   --wb-ai-composer-min-height: 104px;
+  --wb-agent-composer-min-height: 160px;
+  --wb-agent-composer-padding: 18px 16px 12px;
+  --wb-agent-composer-radius: 20px;
+  --wb-agent-composer-surface: color-mix(in srgb, var(--wb-bg) 34%, var(--wb-surface-strong));
+  --wb-agent-composer-border: color-mix(in srgb, var(--wb-text-muted) 22%, var(--wb-border));
+  --wb-agent-composer-focus-shadow: 0 0 0 1px var(--wb-accent), 0 14px 34px color-mix(in srgb, var(--wb-accent) 16%, transparent);
+  --wb-agent-send-surface: color-mix(in srgb, var(--wb-purple) 18%, var(--wb-surface-strong));
+  --wb-agent-send-active-surface: var(--wb-accent);
+  --wb-agent-mobile-avatar-size: 32px;
+  --wb-agent-mobile-welcome-gap: 12px;
+  --wb-agent-mobile-min-height: 56px;
+  --wb-agent-mobile-padding: 5px 4px;
+  --wb-agent-mobile-radius: 20px;
+  --wb-agent-mobile-surface: var(--wb-surface-strong);
+  --wb-agent-mobile-shadow: 0 4px 12px color-mix(in srgb, var(--wb-text) 7%, transparent);
   --wb-stage-step-min-width: 148px;
   --wb-stage-step-head-height: 42px;
   --wb-stage-step-body-min-height: 92px;
@@ -152,17 +213,33 @@
   --wb-chart-tooltip-shadow: 0 10px 28px rgba(16, 32, 51, 0.14);
   --wb-range-track: #cfd4dc;
   --wb-range-progress: 50%;
+  /* Arrange spacing: dimensions are shared; Palette colors are resolved at the control. */
+  --wb-arrange-spacing-width: 320px;
+  --wb-arrange-spacing-viewport-inset: 32px;
+  --wb-arrange-spacing-padding: 16px;
+  --wb-arrange-spacing-radius: 16px;
+  --wb-arrange-spacing-head-gap: 12px;
+  --wb-arrange-spacing-font-size: 12px;
+  --wb-arrange-spacing-line-height: 18px;
+  --wb-arrange-range-hit-height: 44px;
+  --wb-arrange-range-track-height: 4px;
+  --wb-arrange-range-thumb-size: 16px;
+  --wb-arrange-range-thumb-border-width: 2px;
+  --wb-arrange-range-thumb-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+  --wb-arrange-range-focus-width: 2px;
+  --wb-arrange-range-focus-offset: 2px;
 }
 
-[data-color-theme="classic"] { --wb-bg: #eef4fb; --wb-accent: #4f8cff; }
-[data-color-theme="spruce"] { --wb-bg: #eef7f3; --wb-accent: #168b68; }
-[data-color-theme="coral"] { --wb-bg: #fff4ed; --wb-accent: #e66a35; }
-[data-color-theme="indigo"] { --wb-bg: #f1f2fb; --wb-accent: #5965d8; }
-[data-color-theme="rose"] { --wb-bg: #f9f1f3; --wb-accent: #c3475c; }
-[data-color-theme="graphite"] { --wb-bg: #f1f4f6; --wb-accent: #425a70; }
+[data-color-theme="classic"] { --wb-bg: #eef4fb; --wb-accent: var(--wb-palette-classic-accent); }
+[data-color-theme="spruce"] { --wb-bg: #eef7f3; --wb-accent: var(--wb-palette-spruce-accent); }
+[data-color-theme="coral"] { --wb-bg: #fff4ed; --wb-accent: var(--wb-palette-coral-accent); }
+[data-color-theme="iris"] { --wb-bg: #f5f1fb; --wb-accent: var(--wb-palette-iris-accent); }
+[data-color-theme="rose"] { --wb-bg: #f9f1f3; --wb-accent: var(--wb-palette-rose-accent); }
+[data-color-theme="graphite"] { --wb-bg: #f1f4f6; --wb-accent: var(--wb-palette-graphite-accent); }
 
 [data-theme="dark"] {
   color-scheme: dark;
+  --wb-status-tag-tone-mix: 35%;
   --wb-bg: #0d1118;
   --wb-surface: #1a212c;
   --wb-surface-strong: #232c38;
@@ -188,6 +265,10 @@
   --wb-text-muted: #8e98a8;
   --wb-border: #303947;
   --wb-border-soft: rgba(180, 193, 210, 0.14);
+  --wb-ai-insight-border: color-mix(in srgb, #4f68ff 74%, #ffffff);
+  --wb-ai-insight-surface: linear-gradient(96deg, color-mix(in srgb, #ffffff 12%, var(--wb-surface-strong)) 0.58%, color-mix(in srgb, #ebf2ff 18%, var(--wb-surface-strong)) 102.07%);
+  --color-neutrals11: #a8b1bf;
+  --wb-ai-regenerate-icon: #f3f5f8;
   --wb-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
   --wb-shadow-control: 0 8px 24px rgba(0, 0, 0, 0.16);
   --wb-shadow-popover: 0 16px 34px rgba(0, 0, 0, 0.32);
@@ -235,7 +316,12 @@
   --wb-library-sidebar-width: 208px;
   --wb-library-section-gap: 32px;
   --wb-library-preview-gap: 16px;
+  --wb-library-footer-gap: 24px;
   --wb-library-label-size: 12px;
+  --wb-library-nav-group-gap: 24px;
+  --wb-library-industry-gap: var(--wb-library-preview-gap);
+  --wb-aipaas-preview-gap: 24px;
+  --wb-aipaas-variant-label-size: 28px;
   --wb-library-muted-surface: color-mix(in srgb, var(--wb-bg) 55%, var(--wb-surface-strong));
   --wb-library-divider: color-mix(in srgb, var(--wb-text-muted) 18%, transparent);
 }

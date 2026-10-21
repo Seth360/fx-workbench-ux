@@ -4,15 +4,25 @@
 
 当前规范版本以 bundled `CARD_SPEC.md` 为准。分享时必须发送完整 ZIP（包含 `assets/workbench-runtime/`、`assets/workbench-runtime/workbench-card-library/role-image/`、`references/semantic-components.md`、`references/regression-feedback.md` 和验证脚本），不能只发送 `SKILL.md`；顶部页签、头部卡片角色形象、按当前页隐藏/还原和逐页导出能力都来自 bundled runtime。分享前确认 standalone 画布的 `#canvasRoleImageAssets` 已内联八张 PNG，使复制后的 HTML 仍能切换形象。
 
-Rich Header 的人物可见头部需在桌面高出卡片 26px，并随角色切换七套服装色浅渐变；页头复合下拉菜单必须能越过横向控制组显示，不能只改变 `aria-expanded` 而被 overflow 裁掉。
+Rich Header 的人物可见头部需在桌面高出卡片 36px，并随角色切换七套服装色浅渐变；页头复合下拉菜单必须能越过横向控制组显示，不能只改变 `aria-expanded` 而被 overflow 裁掉。
 
 富页头只用于一级工作区页面；客户/商机洞察详情页、列表页等二级下钻页面使用 `.wb-secondary-page`，不渲染页面级 `wb-header`，直接从记录卡、首个业务指标卡或列表卡开始。
 
 ## 安装
 
-1. 解压最新的 `fx-workbench-ux-<date>.zip`。
-2. 将解压后的 `fx-workbench-ux` 文件夹复制到本机 Codex 的 `~/.codex/skills/` 目录。
-3. 新开一个 Codex 任务；在技能列表中确认可以看到 `FX Workbench UX`。
+推荐从 GitHub 安装：
+
+```bash
+git clone https://github.com/Seth360/fx-workbench-ux.git ~/.codex/skills/fx-workbench-ux
+```
+
+通过 Git 克隆安装的副本可以更新：
+
+```bash
+git -C ~/.codex/skills/fx-workbench-ux pull --ff-only
+```
+
+如果已有目录是 ZIP 或手工复制安装，请先将它备份到 Skills 目录以外，再克隆仓库，避免覆盖本地修改。也可解压完整分发 ZIP，将 `fx-workbench-ux` 文件夹放入 `~/.codex/skills/`。安装或更新后新开一个 Codex 任务，在技能列表中确认可以看到 `FX Workbench UX`。
 
 ## 使用
 

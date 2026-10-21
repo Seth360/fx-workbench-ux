@@ -1,0 +1,24 @@
+{
+  "version": "1.6.38",
+  "date": "2026-10-21",
+  "source": "local fx-workbench-ux plus canonical library parity repair",
+  "packaging_repair": [
+    "Added missing information-list-card and ai-assistance files",
+    "Synchronized catalog.js and preferences.js",
+    "Added verify_information_list_empty.mjs"
+  ],
+  "checks": {
+    "runtime": "passed",
+    "standalone": "passed",
+    "workspace_routes": 13,
+    "javascript_syntax_files": 17,
+    "catalog_states": 144,
+    "composite_states": 144,
+    "theme_config_states": 144,
+    "aipaas_states": 1296,
+    "ai_assistance_states": 192,
+    "information_list_empty_states": 192,
+    "errors": []
+  },
+  "scope": "Full catalog and dedicated information-list tests; canvas runtime/standalone/routing checks. Canvas settings/export browser flow not rerun for this source synchronization."
+}
